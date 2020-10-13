@@ -1,3 +1,5 @@
+import 'package:app_tv/app/landing/landing.view.dart';
+import 'package:app_tv/app/login/login.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -24,6 +26,7 @@ class AppWidget extends StatelessWidget {
         accentColor: Colors.redAccent,
         fontFamily: "Quicksand",
       ),
+      home: Landing(),
       navigatorKey: Modular.navigatorKey,
       // add Modular to manage the routing system
       onGenerateRoute: Modular.generateRoute,
