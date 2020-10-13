@@ -12,7 +12,7 @@ class API {
       sendTimeout: 30000,
       receiveTimeout: 30000,
       contentType: 'application/json; charset=utf-8',
-      baseUrl: "",
+      baseUrl: "http://api.tvclubuet.com",
     ),
   );
 
@@ -39,17 +39,17 @@ class API {
     }, onError: (DioError e) async {
       // Do something with response error
       // Refresh Token
-      if (e.response?.statusCode == 401) {
-        Map<String, dynamic> data = <String, dynamic>{
-          "refreshToken": await Application.sharePreference.getString("refreshToken"),
-        };
-        var response = await dio.post("/api/TokenAuth/RefreshToken", data: data);
-        if (response.statusCode == 200) {
-          var newAccessToken = response.data["data"]["accessToken"]; // get new access token from response
-          Application.sharePreference.putString("accessToken", "$newAccessToken");
-          return dio.request(e.request.baseUrl + e.request.path, options: e.request);
-        }
-      }
+//      if (e.response?.statusCode == 401) {
+//        Map<String, dynamic> data = <String, dynamic>{
+//          "refreshToken": await Application.sharePreference.getString("refreshToken"),
+//        };
+//        var response = await dio.post("/api/TokenAuth/RefreshToken", data: data);
+//        if (response.statusCode == 200) {
+//          var newAccessToken = response.data["data"]["accessToken"]; // get new access token from response
+//          Application.sharePreference.putString("accessToken", "$newAccessToken");
+//          return dio.request(e.request.baseUrl + e.request.path, options: e.request);
+//        }
+//      }
       return e.response; //continue
     }));
   }
