@@ -1,4 +1,5 @@
 // app_module.dart
+import 'package:app_tv/app/home/home.module.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:app_tv/app/app.view.dart';
@@ -18,7 +19,7 @@ class AppModule extends MainModule {
   // Provide all the routes for your module
   @override
   List<ModularRouter> get routers => [
-//        ModularRouter(home, module: HomeModule(), transition: TransitionType.rightToLeftWithFade),
+        ModularRouter(home, module: HomeModule(), transition: TransitionType.rightToLeftWithFade),
         ModularRouter(login, child: (context, args) => LoginWidget(), transition: TransitionType.downToUp),
         ModularRouter('/', child: (context, args) => Landing(), transition: TransitionType.scale),
       ];
