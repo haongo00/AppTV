@@ -1,4 +1,7 @@
+import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class ListBookView extends StatefulWidget {
   @override
@@ -9,6 +12,15 @@ class _ListBookViewState extends State<ListBookView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff068189),
+        foregroundColor: Colors.black,
+        onPressed: () {
+          Modular.link.pushNamed(HomeModule.newBookView);
+          // Respond to button press
+        },
+        child: Icon(Icons.add, color: Colors.white),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -22,7 +34,8 @@ class _ListBookViewState extends State<ListBookView> {
                     height: 3,
                   ),
                 ),
-                Text("Tổng số : 10000",style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
+                Text("Tổng số : 10000",
+                    style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
                 Expanded(
                   child: Container(
                     color: Colors.green,
@@ -33,14 +46,21 @@ class _ListBookViewState extends State<ListBookView> {
               ],
             ),
             SizedBox(height: 20),
-            ...List.generate(5, (index) {
+            ...List.generate(50, (index) {
               return Card(
-                margin: EdgeInsets.only(top: 5.0),
-                color: (index % 2 == 0) ? Colors.grey.withOpacity(0.3) : Colors.teal.withOpacity(0.3),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                elevation: 1.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                margin: EdgeInsets.only(top : 8.0,right: 15.0,left: 15.0),
+                color: (index % 2 == 0) ? Colors.grey.withOpacity(0.2) : Colors.teal.withOpacity(0.2),
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  onPressed: () {},
                   child: Container(
-                    height: 50,
+                    height: SizeConfig.blockSizeVertical*10,
                     child: Row(
                       children: [
                         Icon(
@@ -49,7 +69,7 @@ class _ListBookViewState extends State<ListBookView> {
                           size: 25,
                         ),
                         SizedBox(width: 10.0),
-                        Text("Toán Cao Cấp - 1001",style: TextStyle(color: Colors.black, fontSize: 17)),
+                        Text("Toán Cao Cấp - 1001", style: TextStyle(color: Colors.black, fontSize: 17)),
                       ],
                     ),
                   ),
