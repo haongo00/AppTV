@@ -15,16 +15,20 @@ class _ListBookViewState extends State<ListBookView> {
             SizedBox(height: 20),
             Row(
               children: [
-                Container(
-                  color: Colors.green,
-                  width: 130,
-                  height: 3,
+                Expanded(
+                  child: Container(
+                    color: Colors.green,
+                    width: 130,
+                    height: 3,
+                  ),
                 ),
                 Text("Tổng số : 10000",style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
-                Container(
-                  color: Colors.green,
-                  width: 135,
-                  height: 3,
+                Expanded(
+                  child: Container(
+                    color: Colors.green,
+                    width: 135,
+                    height: 3,
+                  ),
                 ),
               ],
             ),
@@ -32,11 +36,11 @@ class _ListBookViewState extends State<ListBookView> {
             ...List.generate(5, (index) {
               return Card(
                 margin: EdgeInsets.only(top: 5.0),
-                elevation: 1.0,
                 color: (index % 2 == 0) ? Colors.grey.withOpacity(0.3) : Colors.teal.withOpacity(0.3),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
+                    height: 50,
                     child: Row(
                       children: [
                         Icon(
