@@ -15,26 +15,29 @@ class _InputViewState extends State<InputView> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            elevation: 0,
             toolbarHeight: SizeConfig.blockSizeVertical * 10,
-            backgroundColor: Colors.teal,
+            backgroundColor: Colors.white,
             bottom: TabBar(
+              unselectedLabelColor: Colors.grey,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Color(0xff068189)),
               labelPadding: EdgeInsets.zero,
               isScrollable: true,
               indicatorWeight: 2.0,
-              indicatorColor: Colors.white,
               tabs: [
-                Tab(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal*50,
-                    alignment: Alignment.center,
-                    child: Text("Sách", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: 100,
+                  child: Tab(
+                    text: "Sách",
                   ),
                 ),
-                Tab(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal*50,
-                    alignment: Alignment.center,
-                    child: Text("Mượn / Trả", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: 100,
+                  child: Tab(
+                    text: "Mượn / Trả",
                   ),
                 ),
               ],

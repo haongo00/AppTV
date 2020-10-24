@@ -23,9 +23,9 @@ class API {
     };
 //    dio.interceptors
     dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-      // Application.sharePreference.hasKey("token")
-      //     ? options.headers["Authorization"] = "Bearer ${Application.sharePreference.getString("token")}"
-      //     : {};
+       Application.sharePreference.hasKey("token")
+           ? options.headers["token"] = "${Application.sharePreference.getString("token")}"
+           : {};
       print(options.uri);
       // Do something before request is sent
       return options; //continue
