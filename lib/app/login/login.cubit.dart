@@ -35,6 +35,7 @@ class LoginCubit extends Cubit<bool> {
     if (response.statusCode == 200) {
       var mapResponse = response.data;
       if(mapResponse["status"] == 200) {
+        print(mapResponse['token']);
         Application.sharePreference
           ..putString('token', mapResponse['token'].toString());
       }

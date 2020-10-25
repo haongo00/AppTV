@@ -26,6 +26,8 @@ class _HomeWidgetState extends State<HomeWidget> {
               labelPadding: EdgeInsets.zero,
               isScrollable: true,
               indicatorWeight: 3.0,
+              unselectedLabelColor: Colors.grey,
+              labelColor: Colors.blue,
               indicatorColor: Colors.blue,
               tabs: [
                 Tab(
@@ -34,7 +36,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                       height: SizeConfig.blockSizeVertical*10,
                       child: Icon(
                         Icons.house,
-                        color: Colors.grey,
                         size: 30,
                       ),
                     )
@@ -45,7 +46,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                       height: SizeConfig.blockSizeVertical*10,
                       child: Icon(
                         Icons.library_books,
-                        color: Colors.grey,
                         size: 30,
                       ),
                     )
@@ -56,7 +56,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                       height: SizeConfig.blockSizeVertical*10,
                       child: Icon(
                         Icons.notifications_none_outlined,
-                        color: Colors.grey,
                         size: 30,
                       ),
                     )
@@ -67,7 +66,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                       height: SizeConfig.blockSizeVertical*10,
                       child: Icon(
                         Icons.search,
-                        color: Colors.grey,
                         size: 30,
                       ),
                     )
@@ -78,7 +76,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                       height: SizeConfig.blockSizeVertical*10,
                       child: Icon(
                         Icons.list,
-                        color: Colors.grey,
                         size: 30,
                       ),
                     )
