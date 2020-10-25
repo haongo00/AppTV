@@ -15,6 +15,9 @@ class _InputViewState extends State<InputView> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            leading: BackButton(
+              color: Color(0xff068189),
+            ),
             elevation: 0,
             toolbarHeight: SizeConfig.blockSizeVertical * 10,
             backgroundColor: Colors.white,

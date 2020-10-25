@@ -1,3 +1,4 @@
+import 'package:app_tv/app/app.module.dart';
 import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/utils/screen_config.dart';
@@ -65,7 +66,13 @@ class _CustomerState extends State<Customer> {
               height: 5.0,
               color: Colors.grey,
               thickness: 2.0,
-            )
+            ),
+            FlatButton(
+                color: Colors.red,
+                onPressed: () {
+                  Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+                },
+                child: Text("LogOut",style: TextStyle(color: Colors.white))),
           ],
         ),
       ),
