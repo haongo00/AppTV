@@ -92,7 +92,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       margin: EdgeInsets.only(top: 8.0, right: 15.0, left: 15.0),
-                      color: (index % 2 == 0) ? Colors.grey.withOpacity(0.8) : Color(0xff068189).withOpacity(0.8),
+                      color: (index % 2 == 0) ? Colors.white.withOpacity(0.8) : Color(0xff068189).withOpacity(0.8),
                       child: FlatButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
@@ -112,7 +112,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                   ),
                                   SizedBox(width: 10.0),
                                   Text("ID : ${_cubit.listBook[index].id}",
-                                      style: TextStyle(color: Colors.black, fontSize: 17)),
+                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 17)),
                                 ],
                               ),
                               Row(
@@ -124,7 +124,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                   ),
                                   SizedBox(width: 10.0),
                                   Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                      style: TextStyle(color: Colors.black, fontSize: 17)),
+                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 17)),
                                 ],
                               ),
                               Row(
@@ -136,7 +136,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                   ),
                                   SizedBox(width: 10.0),
                                   Text("Price : ${_cubit.listBook[index].price}",
-                                      style: TextStyle(color: Colors.black, fontSize: 17)),
+                                      style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 17)),
                                 ],
                               ),
                             ],

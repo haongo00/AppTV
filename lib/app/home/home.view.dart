@@ -27,8 +27,8 @@ class _HomeWidgetState extends State<HomeWidget> {
               isScrollable: true,
               indicatorWeight: 3.0,
               unselectedLabelColor: Colors.grey,
-              labelColor: Colors.blue,
-              indicatorColor: Colors.blue,
+              labelColor: Color(0xff068189),
+              indicatorColor: Color(0xff068189),
               tabs: [
                 Tab(
                     icon: SizedBox(
