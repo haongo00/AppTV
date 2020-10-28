@@ -16,4 +16,8 @@ class LibraryRepository {
         ? ListMember.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;
   }
+  Future<bool> createBook(Map<String, dynamic> params) async {
+    final response = await LibraryService.createBook(params);
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+  }
 }

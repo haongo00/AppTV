@@ -24,7 +24,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
         backgroundColor: Color(0xff068189),
         foregroundColor: Colors.black,
         onPressed: () {
-          Modular.link.pushNamed(HomeModule.newBook);
+          Modular.link.pushNamed(HomeModule.newBook,arguments: _cubit);
           // Respond to button press
         },
         child: Icon(Icons.add, color: Colors.white),
@@ -103,7 +103,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  ...List.generate(_cubit.listBook.length, (index) {
+                  ...List.generate(30, (index) {
                     return Card(
                       elevation: 1.0,
                       shape: RoundedRectangleBorder(
@@ -141,8 +141,10 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                   //   size: 25,
                                   // ),
                                   SizedBox(width: 10.0),
-                                  Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
+                                  Expanded(
+                                    child: Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
+                                        style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
+                                  ),
                                 ],
                               ),
                               Row(
