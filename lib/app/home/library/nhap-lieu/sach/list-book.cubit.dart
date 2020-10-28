@@ -28,6 +28,28 @@ class ListBookCubit extends Cubit<ListBookState> {
     }
   }
 
+  Future<void> newBook(String name,int price,String id,int amount) async {
+    Map<String, dynamic> params = {
+      "book" : {
+        "name" : name,
+        "price" : price,
+        "id" : id,
+        "amount" : amount
+      }
+    };
+    try {
+      emit(ListBookLoading());
+      if (await _libraryRepository.createBook(params)) {
+        emit((ItemsListBookUploaded()));
+      } else {
+        emit(ListBookError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(ListBookError("Error submitting data"));
+    }
+    loadData();
+  }
+
   @override
   void onChange(Change<ListBookState> change) {
     super.onChange(change);

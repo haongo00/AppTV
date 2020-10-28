@@ -3,6 +3,7 @@ import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart
 import 'package:app_tv/app/home/library/member/member.view.dart';
 import 'package:app_tv/app/home/library/member/new-member/new-member.view.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/input.view.dart';
+import 'package:app_tv/app/home/library/nhap-lieu/sach/list-book.cubit.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/new-book/new-book.view.dart';
 import 'package:app_tv/app/information/infor.view.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -25,7 +26,7 @@ class HomeModule extends ChildModule {
   List<ModularRouter> get routers => [
     ModularRouter('/', child: (context, args) => HomeWidget()),
     ModularRouter(inputView, child: (context, args) => InputView()),
-    ModularRouter(newBook, child: (context, args) => NewBookView()),
+    ModularRouter(newBook, child: (context, args) => NewBookView(cubit: args.data as ListBookCubit)),
     ModularRouter(inforView, child: (context, args) => InforView()),
     ModularRouter(member, child: (context, args) => MemberView()),
     ModularRouter(newMember, child: (context, args) => NewMemberView()),
