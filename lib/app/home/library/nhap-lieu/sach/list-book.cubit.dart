@@ -19,7 +19,7 @@ class ListBookCubit extends Cubit<ListBookState> {
     Map<String, dynamic> params = {};
     try {
       emit(ListBookLoading());
-      ListBook _listBook = await _libraryRepository.fetchApproved(params);
+      ListBook _listBook = await _libraryRepository.fetchListBook(params);
       listBook = _listBook.result;
       print(listBook.length);
       emit(ItemsListBookLoaded(listBook));

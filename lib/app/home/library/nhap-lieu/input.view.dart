@@ -19,7 +19,7 @@ class _InputViewState extends State<InputView> {
               color: Color(0xff068189),
             ),
             elevation: 0,
-            toolbarHeight: SizeConfig.blockSizeVertical * 10,
+            toolbarHeight: SizeConfig.blockSizeVertical * 12,
             backgroundColor: Colors.white,
             bottom: TabBar(
               unselectedLabelColor: Colors.grey,
@@ -29,7 +29,7 @@ class _InputViewState extends State<InputView> {
                   color: Color(0xff068189)),
               labelPadding: EdgeInsets.zero,
               isScrollable: true,
-              indicatorWeight: 2.0,
+              indicatorWeight: 0.0,
               tabs: [
                 SizedBox(
                   width: 100,
