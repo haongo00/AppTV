@@ -42,6 +42,6 @@ class LoginCubit extends Cubit<bool> {
     }
     _message = (response.data['message']) != null ? "${response.data['message']}" : '';
     emit(true);
-    return response.statusCode == 200;
+    return response.data['status'] == 200;
   }
 }
