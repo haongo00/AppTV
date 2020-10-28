@@ -1,8 +1,11 @@
 import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/app/home/library/member/member.cubit.dart';
+import 'package:app_tv/repositories/library/library.repositories.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class MemberView extends StatefulWidget {
@@ -11,39 +14,71 @@ class MemberView extends StatefulWidget {
 }
 
 class _MemberViewState extends State<MemberView> {
+  MemberCubit cubit = MemberCubit(LibraryRepository());
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: Color(0xff068189),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            color: Color(0xff068189),
+          ),
+          title: Container(
+              width: SizeConfig.blockSizeHorizontal * 40,
+              height: SizeConfig.blockSizeVertical * 5,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Color(0xff068189)),
+              child: Text("Thành Viên")),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        title: Container(
-            width: SizeConfig.blockSizeHorizontal * 40,
-            height: SizeConfig.blockSizeVertical * 5,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Color(0xff068189)),
-            child: Text("Thành Viên")),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xff068189),
+          foregroundColor: Colors.black,
+          onPressed: () {
+            Modular.link.pushNamed(HomeModule.newMember);
+            // Respond to button press
+          },
+          child: Icon(Icons.add, color: Colors.white),
+        ),
+        body: BlocBuilder<MemberCubit, MemberState>(
+            cubit: cubit,
+            buildWhen: (prev, now) => now is MemberLoading || now is ItemsMemberLoaded,
+            builder: (context, state) {
+              if (state is ItemsMemberLoaded) {
+                return _getBody(state);
+              } else if (state is MemberError) {
+                return Center(child: Text(state.message));
+              } else {
+                return Center(child: CupertinoActivityIndicator(radius: 15));
+              }
+            }),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff068189),
-        foregroundColor: Colors.black,
-        onPressed: () {
-          Modular.link.pushNamed(HomeModule.newMember);
-          // Respond to button press
-        },
-        child: Icon(Icons.add, color: Colors.white),
-      ),
-      body: Center(child: _getBody()),
     );
   }
 
-  Widget _getBody() {
+  Widget _getBody(MemberState state) {
     return Column(
       children: [
+        SizedBox(height: SizeConfig.blockSizeVertical*1),
+        Container(
+          padding: EdgeInsets.only(left: 10.0, right: 5.0),
+          width: SizeConfig.blockSizeHorizontal * 80,
+          height: SizeConfig.blockSizeVertical * 5,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.teal,width: 1.0),
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.white,
+          ),
+          child: FormBuilderTextField(
+            attribute: "search",
+            decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
+          ),
+        ),
+        SizedBox(height: SizeConfig.blockSizeVertical*3),
         Row(
           children: [
             Expanded(
@@ -53,7 +88,7 @@ class _MemberViewState extends State<MemberView> {
                 height: 3,
               ),
             ),
-            Text("Tổng số : 5",
+            Text("Tổng số : ${cubit.member.length}",
                 style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
             Expanded(
               child: Container(
@@ -64,12 +99,14 @@ class _MemberViewState extends State<MemberView> {
             ),
           ],
         ),
+        SizedBox(height: SizeConfig.blockSizeVertical*3),
         Expanded(
           child: Container(
             child: SingleChildScrollView(
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  ...List.generate(20, (index) {
+                  ...List.generate(cubit.member.length, (index) {
                     return Card(
                       elevation: 2.0,
                       shape: RoundedRectangleBorder(
@@ -86,14 +123,14 @@ class _MemberViewState extends State<MemberView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Phan Van Minh - Gen : 3',style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white)),
-                              Text('MSSV : 18020916',style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white)),
+                              Text('${cubit.member.elementAt(index).name}',style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white)),
+                              Text('${cubit.member.elementAt(index).department}',style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white)),
                             ],
                           ),
                         ),
                         onPressed: () {
-
-                        },
+                          Modular.link.pushNamed(HomeModule.memberInfo);
+                          },
                       ),
                     );
                   })

@@ -5,6 +5,7 @@ import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class ListBookView extends StatefulWidget {
@@ -59,6 +60,22 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
   Widget _getBody(ListBookState state) {
     return Column(
       children: [
+        SizedBox(height: SizeConfig.blockSizeVertical*1),
+        Container(
+          padding: EdgeInsets.only(left: 10.0, right: 5.0),
+          width: SizeConfig.blockSizeHorizontal * 80,
+          height: SizeConfig.blockSizeVertical * 5,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.teal,width: 1.0),
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.white,
+          ),
+          child: FormBuilderTextField(
+            attribute: "search",
+            decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
+          ),
+        ),
         SizedBox(height: 20),
         Row(
           children: [

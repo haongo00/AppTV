@@ -1,4 +1,5 @@
 import 'package:app_tv/app/home/home.view.dart';
+import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.view.dart';
 import 'package:app_tv/app/home/library/member/new-member/new-member.view.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/input.view.dart';
@@ -13,6 +14,7 @@ class HomeModule extends ChildModule {
   static String newBook = "/new-book";
   static String member = "/member";
   static String newMember = "/new-member";
+  static String memberInfo = "/member-info";
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -27,5 +29,6 @@ class HomeModule extends ChildModule {
     ModularRouter(inforView, child: (context, args) => InforView()),
     ModularRouter(member, child: (context, args) => MemberView()),
     ModularRouter(newMember, child: (context, args) => NewMemberView()),
+    ModularRouter(memberInfo, child: (context, args) => MemberInfoView()),
   ];
 }
