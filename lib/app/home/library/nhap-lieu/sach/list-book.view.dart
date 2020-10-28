@@ -16,6 +16,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
   ListBookCubit _cubit = ListBookCubit(LibraryRepository());
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -29,15 +30,15 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
       ),
       body: Stack(
         children: [
-          Center(
-            child: Opacity(
-              opacity: 0.5,
-              child: Image.network(
-                "https://scontent.fhan2-3.fna.fbcdn.net/v/t31.0-8/11062339_936357076423736_8686865242051210984_o.jpg?_nc_cat=108&ccb=2&_nc_sid=09cbfe&_nc_ohc=KfvB_wquuYoAX_Yu869&_nc_ht=scontent.fhan2-3.fna&oh=906780f218fbf138114378e2ed1b9994&oe=5FBA62D8",
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Center(
+          //   child: Opacity(
+          //     opacity: 0.5,
+          //     child: Image.network(
+          //       "https://scontent.fhan2-3.fna.fbcdn.net/v/t31.0-8/11062339_936357076423736_8686865242051210984_o.jpg?_nc_cat=108&ccb=2&_nc_sid=09cbfe&_nc_ohc=KfvB_wquuYoAX_Yu869&_nc_ht=scontent.fhan2-3.fna&oh=906780f218fbf138114378e2ed1b9994&oe=5FBA62D8",
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           BlocBuilder<ListBookCubit, ListBookState>(
               cubit: _cubit,
               buildWhen: (prev, now) => now is ListBookLoading || now is ItemsListBookLoaded,
@@ -105,38 +106,38 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                             children: [
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.confirmation_number,
-                                    color: Colors.green,
-                                    size: 25,
-                                  ),
+                                  // Icon(
+                                  //   Icons.confirmation_number,
+                                  //   color: Colors.green,
+                                  //   size: 25,
+                                  // ),
                                   SizedBox(width: 10.0),
                                   Text("ID : ${_cubit.listBook[index].id}",
-                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 17)),
+                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.my_library_books_rounded,
-                                    color: Colors.green,
-                                    size: 25,
-                                  ),
+                                  // Icon(
+                                  //   Icons.my_library_books_rounded,
+                                  //   color: Colors.green,
+                                  //   size: 25,
+                                  // ),
                                   SizedBox(width: 10.0),
                                   Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 17)),
+                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.attach_money,
-                                    color: Colors.green,
-                                    size: 25,
-                                  ),
+                                  // Icon(
+                                  //   Icons.attach_money,
+                                  //   color: Colors.green,
+                                  //   size: 25,
+                                  // ),
                                   SizedBox(width: 10.0),
                                   Text("Price : ${_cubit.listBook[index].price}",
-                                      style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 17)),
+                                      style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
                                 ],
                               ),
                             ],

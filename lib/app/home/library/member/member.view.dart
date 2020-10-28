@@ -19,7 +19,7 @@ class _MemberViewState extends State<MemberView> {
           color: Color(0xff068189),
         ),
         title: Container(
-            width: SizeConfig.blockSizeHorizontal * 30,
+            width: SizeConfig.blockSizeHorizontal * 40,
             height: SizeConfig.blockSizeVertical * 5,
             alignment: Alignment.center,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Color(0xff068189)),
