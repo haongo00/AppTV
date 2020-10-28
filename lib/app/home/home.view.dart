@@ -2,6 +2,7 @@ import 'package:app_tv/app/home/customer/customer.view.dart';
 import 'package:app_tv/app/home/home-page/home-page.view.dart';
 import 'package:app_tv/app/home/library/library.view.dart';
 import 'package:app_tv/app/home/notification/notification.view.dart';
+import 'package:app_tv/app/home/search/borrow-give/give-book.view.dart';
 import 'package:app_tv/app/home/search/search.view.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -91,6 +92,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               Library(),
               NotificationApp(),
               Search(),
+//            GiveBookView(),
               Customer(),
             ],
           ),
