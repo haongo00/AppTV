@@ -87,7 +87,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
               ),
             ),
             Text("Tổng số : ${_cubit.listBook.length}",
-                style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
             Expanded(
               child: Container(
                 color: Colors.green,
@@ -103,60 +103,46 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  ...List.generate(30, (index) {
+                  ...List.generate(_cubit.listBook.length, (index) {
                     return Card(
-                      elevation: 1.0,
+                      elevation: 5.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       margin: EdgeInsets.only(top: 8.0, right: 15.0, left: 15.0),
                       color: (index % 2 == 0) ? Colors.white.withOpacity(0.8) : Color(0xff068189).withOpacity(0.8),
                       child: FlatButton(
+                        padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         onPressed: () {},
                         child: Container(
+                          height: SizeConfig.blockSizeVertical*10,
                           margin: EdgeInsets.all(15),
-                          child: Column(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  // Icon(
-                                  //   Icons.confirmation_number,
-                                  //   color: Colors.green,
-                                  //   size: 25,
-                                  // ),
-                                  SizedBox(width: 10.0),
-                                  Text("ID : ${_cubit.listBook[index].id}",
-                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
-                                ],
+                              CircleAvatar(
+                                radius: SizeConfig.blockSizeHorizontal*3,
+                                backgroundImage:
+                                NetworkImage('https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
+                                backgroundColor: Colors.transparent,
                               ),
-                              Row(
+                              SizedBox(width: 20.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Icon(
-                                  //   Icons.my_library_books_rounded,
-                                  //   color: Colors.green,
-                                  //   size: 25,
-                                  // ),
-                                  SizedBox(width: 10.0),
+                                  Text("ID : ${_cubit.listBook[index].id}",
+                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
+                                  SizedBox(height: 10.0),
                                   Expanded(
                                     child: Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                        style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
+                                        style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                   ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  // Icon(
-                                  //   Icons.attach_money,
-                                  //   color: Colors.green,
-                                  //   size: 25,
-                                  // ),
-                                  SizedBox(width: 10.0),
+                                  SizedBox(height: 10.0),
                                   Text("Price : ${_cubit.listBook[index].price}",
-                                      style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 15)),
+                                      style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                 ],
                               ),
                             ],
