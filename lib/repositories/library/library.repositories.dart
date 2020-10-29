@@ -20,4 +20,10 @@ class LibraryRepository {
     final response = await LibraryService.createBook(params);
     return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
   }
+  Future<Book> fetchBookInfo(Map<String, dynamic> params,int id) async {
+    final response = await LibraryService.getBookInfo(params,id);
+    return (response.statusCode == 200)
+        ? Book.fromJson(response.data['result'] as Map<String, dynamic>)
+        : throw NetworkException;
+  }
 }
