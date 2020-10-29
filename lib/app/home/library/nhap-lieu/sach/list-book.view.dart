@@ -116,7 +116,9 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Modular.link.pushNamed(HomeModule.bookInfo,arguments: _cubit.listBook.elementAt(index));
+                        },
                         child: Container(
                           height: SizeConfig.blockSizeVertical*10,
                           margin: EdgeInsets.all(15),

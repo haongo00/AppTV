@@ -3,9 +3,11 @@ import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart
 import 'package:app_tv/app/home/library/member/member.view.dart';
 import 'package:app_tv/app/home/library/member/new-member/new-member.view.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/input.view.dart';
+import 'package:app_tv/app/home/library/nhap-lieu/sach/book-info/book-info.view.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/list-book.cubit.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/new-book/new-book.view.dart';
 import 'package:app_tv/app/information/infor.view.dart';
+import 'package:app_tv/model/library/list_book.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeModule extends ChildModule {
@@ -16,6 +18,7 @@ class HomeModule extends ChildModule {
   static String member = "/member";
   static String newMember = "/new-member";
   static String memberInfo = "/member-info";
+  static String bookInfo = "/book-info";
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -31,5 +34,6 @@ class HomeModule extends ChildModule {
     ModularRouter(member, child: (context, args) => MemberView()),
     ModularRouter(newMember, child: (context, args) => NewMemberView()),
     ModularRouter(memberInfo, child: (context, args) => MemberInfoView()),
+    ModularRouter(bookInfo, child: (context, args) => BookInfoView(book: args.data as Book)),
   ];
 }
