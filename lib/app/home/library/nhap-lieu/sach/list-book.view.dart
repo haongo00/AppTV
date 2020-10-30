@@ -138,10 +138,8 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                   Text("ID : ${_cubit.listBook[index].id}",
                                       style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                   SizedBox(height: 10.0),
-                                  Expanded(
-                                    child: Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                        style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
-                                  ),
+                                  Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
+                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                   SizedBox(height: 10.0),
                                   Text("Price : ${_cubit.listBook[index].price}",
                                       style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),

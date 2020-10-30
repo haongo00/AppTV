@@ -1,4 +1,4 @@
-import 'package:app_tv/app/home/search/search.module.dart';
+import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,9 +120,23 @@ class _SearchState extends State<Search> {
               ],
             ),
             _studentInfo('QH-2018-I/CQ-C-CLC'),
-            _text('Tình trạng mượn sách'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _text('Tình trạng mượn sách'),
+                IconButton(
+                    icon: Icon(Icons.add_circle),
+                    color: Colors.teal,
+                    onPressed: (){
+                      Modular.link.pushNamed(HomeModule.borrowBook);
+                    })
+              ],
+            ),
             _bookInfor(false),
-            _text('Lịch sử mượn sách'),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: _text('Lịch sử mượn sách'),
+            ),
             _bookInfor(true)
           ],
         ),
@@ -200,7 +214,7 @@ class _SearchState extends State<Search> {
       child: FlatButton(
         color: Colors.grey[400],
         onPressed: () {
-          Modular.link.pushNamed(SearchModule.giveBook);
+          Modular.link.pushNamed(HomeModule.giveBook);
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 8.0),
