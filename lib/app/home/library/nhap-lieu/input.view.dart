@@ -1,4 +1,5 @@
 import 'package:app_tv/app/home/library/nhap-lieu/sach/list-book.view.dart';
+import 'package:app_tv/app/home/search/search.view.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,7 @@ class _InputViewState extends State<InputView> {
           body: TabBarView(
             children: [
               ListBookView(),
-              Container(),
+              Search(),
             ],
           ),
         ),

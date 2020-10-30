@@ -1,5 +1,6 @@
 // app_module.dart
 import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/app/home/search/search.module.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:app_tv/app/app.view.dart';
