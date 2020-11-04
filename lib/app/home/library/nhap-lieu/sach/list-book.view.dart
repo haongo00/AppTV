@@ -106,16 +106,16 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                   ...List.generate(_cubit.listBook.length, (index) {
                     return Card(
                       elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(15.0),
+                      // ),
                       margin: EdgeInsets.only(top: 8.0, right: 15.0, left: 15.0),
                       color: (index % 2 == 0) ? Colors.white.withOpacity(0.8) : Color(0xff068189).withOpacity(0.8),
                       child: FlatButton(
                         padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
+                        // shape: RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.circular(15.0),
+                        // ),
                         onPressed: () {
                           Modular.link.pushNamed(HomeModule.bookInfo,arguments: _cubit.listBook.elementAt(index));
                         },

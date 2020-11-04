@@ -26,4 +26,9 @@ class LibraryRepository {
         ? Book.fromJson(response.data['result'] as Map<String, dynamic>)
         : throw NetworkException;
   }
+
+  Future<bool> editBookInfo(Map<String, dynamic> params) async {
+    final response = await LibraryService.editBookInfo(params);
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+  }
 }

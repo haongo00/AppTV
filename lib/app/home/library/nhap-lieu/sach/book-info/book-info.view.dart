@@ -1,19 +1,41 @@
+import 'package:app_tv/app/home/library/nhap-lieu/sach/book-info/book-info.cubit.dart';
 import 'package:app_tv/model/library/list_book.dart';
+import 'package:app_tv/repositories/library/library.repositories.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class BookInfoView extends StatefulWidget {
-  final Book book ;
+  final Book book;
 
   const BookInfoView({this.book}) : super();
+
   @override
   _BookInfoViewState createState() => _BookInfoViewState();
 }
 
 class _BookInfoViewState extends State<BookInfoView> {
+  BookInfoCubit _cubit = BookInfoCubit(LibraryRepository());
+  String name;
+  int price;
+  String id;
+  int amount;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    name = widget.book.name;
+    price = widget.book.price;
+    id = widget.book.idBook;
+    amount = widget.book.amount;
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -23,12 +45,26 @@ class _BookInfoViewState extends State<BookInfoView> {
           centerTitle: true,
           backgroundColor: Color(0xff068189),
           title: Text("Edit Book"),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                _cubit.changeEdit();
+              },
+            )
+          ],
         ),
-        body: _getBody(),
+        body: BlocBuilder<BookInfoCubit,BookInfoState>(
+          cubit: _cubit,
+          builder: (context,state) {
+            return _getBody(state);
+          },
+        )
       ),
     );
   }
-  Widget _getBody() {
+
+  Widget _getBody(BookInfoState state) {
     return Container(
       child: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
@@ -42,6 +78,7 @@ class _BookInfoViewState extends State<BookInfoView> {
                 FormBuilderValidators.required(),
               ],
               onChanged: (value) {
+                id = value.toString();
               },
             ),
             FormBuilderTextField(
@@ -52,6 +89,7 @@ class _BookInfoViewState extends State<BookInfoView> {
                 FormBuilderValidators.required(),
               ],
               onChanged: (value) {
+                name = value.toString();
               },
             ),
             FormBuilderTextField(
@@ -62,6 +100,7 @@ class _BookInfoViewState extends State<BookInfoView> {
                 FormBuilderValidators.required(),
               ],
               onChanged: (value) {
+                price = int.parse(value.toString());
               },
             ),
             FormBuilderTextField(
@@ -72,24 +111,39 @@ class _BookInfoViewState extends State<BookInfoView> {
                 FormBuilderValidators.required(),
               ],
               onChanged: (value) {
+                amount = int.parse(value.toString());
               },
             ),
-
-            SizedBox(height: SizeConfig.blockSizeVertical*10),
+            SizedBox(height: SizeConfig.blockSizeVertical * 10),
+            (_cubit.edit) ?
             Row(
               children: [
-                SizedBox(width: SizeConfig.blockSizeHorizontal*15),
-                Expanded(child: FlatButton( color : Colors.red,onPressed: () {
-                  Modular.navigator.pop();
-                }, child: Text("Hủy",style: TextStyle(color: Colors.white),))),
-                SizedBox(width: SizeConfig.blockSizeHorizontal*15),
-                Expanded(child: FlatButton( color : Color(0xff068189),onPressed: () {
-                  Modular.navigator.pop();
-                }, child: Text("Lưu",style: TextStyle(color: Colors.white),))),
-                SizedBox(width: SizeConfig.blockSizeHorizontal*15),
+                SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
+                Expanded(
+                    child: FlatButton(
+                        color: Colors.red,
+                        onPressed: () {
+                          Modular.navigator.pop();
+                        },
+                        child: Text(
+                          "Hủy",
+                          style: TextStyle(color: Colors.white),
+                        ))),
+                SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
+                Expanded(
+                    child: FlatButton(
+                        color: Color(0xff068189),
+                        onPressed: () {
+                          _cubit.editBook(name, price, id, amount);
+                          Modular.navigator.pop();
+                        },
+                        child: Text(
+                          "Lưu",
+                          style: TextStyle(color: Colors.white),
+                        ))),
+                SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
               ],
-
-            )
+            ): SizedBox()
           ],
         ),
       ),
