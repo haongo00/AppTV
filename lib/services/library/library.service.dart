@@ -16,4 +16,9 @@ class LibraryService {
   static Future<dynamic> getBookInfo(Map<String, dynamic> params, int id) {
     return Application.api.get('/book/$id', params);
   }
+
+  static Future<dynamic> editBookInfo(Map<String, dynamic> params) {
+    return Application.api.put('/book/', params);
+  }
+
 }
