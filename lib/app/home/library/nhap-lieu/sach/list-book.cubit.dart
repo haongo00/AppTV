@@ -16,7 +16,10 @@ class ListBookCubit extends Cubit<ListBookState> {
   List<Book> listBook;
 
   Future<void> loadData() async {
-    Map<String, dynamic> params = {};
+    Map<String, dynamic> params = {
+      "skip" : 0,
+      "take" : 20
+    };
     try {
       emit(ListBookLoading());
       ListBook _listBook = await _libraryRepository.fetchListBook(params);
@@ -33,13 +36,30 @@ class ListBookCubit extends Cubit<ListBookState> {
       "book" : {
         "name" : name,
         "price" : price,
-        "id" : id,
+        "idBook" : id,
         "amount" : amount
       }
     };
     try {
       emit(ListBookLoading());
       if (await _libraryRepository.createBook(params)) {
+        emit((ItemsListBookUploaded()));
+      } else {
+        emit(ListBookError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(ListBookError("Error submitting data"));
+    }
+    loadData();
+  }
+
+  Future<void> deleteBook(String id) async {
+    Map<String, dynamic> params = {
+      "idBook" : id
+    };
+    try {
+      emit(ListBookLoading());
+      if (await _libraryRepository.deleteBook(params)) {
         emit((ItemsListBookUploaded()));
       } else {
         emit(ListBookError("Submit failed"));

@@ -38,7 +38,7 @@ class _MemberViewState extends State<MemberView> {
           backgroundColor: Color(0xff068189),
           foregroundColor: Colors.black,
           onPressed: () {
-            Modular.link.pushNamed(HomeModule.newMember);
+            Modular.link.pushNamed(HomeModule.newMember,arguments: cubit);
             // Respond to button press
           },
           child: Icon(Icons.add, color: Colors.white),
@@ -62,14 +62,14 @@ class _MemberViewState extends State<MemberView> {
   Widget _getBody(MemberState state) {
     return Column(
       children: [
-        SizedBox(height: SizeConfig.blockSizeVertical*1),
+        SizedBox(height: SizeConfig.blockSizeVertical * 1),
         Container(
           padding: EdgeInsets.only(left: 10.0, right: 5.0),
           width: SizeConfig.blockSizeHorizontal * 80,
           height: SizeConfig.blockSizeVertical * 5,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.teal,width: 1.0),
+            border: Border.all(color: Colors.teal, width: 1.0),
             borderRadius: BorderRadius.circular(20.0),
             color: Colors.white,
           ),
@@ -78,7 +78,7 @@ class _MemberViewState extends State<MemberView> {
             decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
           ),
         ),
-        SizedBox(height: SizeConfig.blockSizeVertical*3),
+        SizedBox(height: SizeConfig.blockSizeVertical * 3),
         Row(
           children: [
             Expanded(
@@ -99,7 +99,7 @@ class _MemberViewState extends State<MemberView> {
             ),
           ],
         ),
-        SizedBox(height: SizeConfig.blockSizeVertical*3),
+        SizedBox(height: SizeConfig.blockSizeVertical * 3),
         Expanded(
           child: Container(
             child: SingleChildScrollView(
@@ -118,19 +118,32 @@ class _MemberViewState extends State<MemberView> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Container(
-                          width: SizeConfig.blockSizeHorizontal*95,
+                          width: SizeConfig.blockSizeHorizontal * 95,
                           margin: EdgeInsets.all(20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('${cubit.member.elementAt(index).name}',style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white)),
-                              Text('${cubit.member.elementAt(index).department}',style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white)),
+                              Text('${cubit.member.elementAt(index).name}',
+                                  style: TextStyle(
+                                      color: (index % 2 == 0) ? Colors.black : Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16)),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text('${cubit.member.elementAt(index).department.name}',
+                                  style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text('${cubit.member.elementAt(index).GenCode}',
+                                  style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
                             ],
                           ),
                         ),
                         onPressed: () {
-                          Modular.link.pushNamed(HomeModule.memberInfo);
-                          },
+                          Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
+                        },
                       ),
                     );
                   })
@@ -139,7 +152,6 @@ class _MemberViewState extends State<MemberView> {
             ),
           ),
         )
-
       ],
     );
   }

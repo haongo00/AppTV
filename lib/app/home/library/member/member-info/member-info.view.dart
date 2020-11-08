@@ -1,3 +1,4 @@
+import 'package:app_tv/model/member/list_member.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,9 @@ import 'package:intl/intl.dart';
 
 
 class MemberInfoView extends StatefulWidget {
+  final Member member;
+
+  const MemberInfoView({this.member}) : super();
   @override
   _MemberInfoViewState createState() => _MemberInfoViewState();
 }
@@ -19,6 +23,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           elevation: 0,
           centerTitle: true,
           backgroundColor: Color(0xff068189),
+
           title: Text("Thông Tin Thành Viên"),
         ),
         body: _getBody(),
@@ -30,11 +35,12 @@ class _MemberInfoViewState extends State<MemberInfoView> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          SizedBox(height: 20.0,),
           Center(
             child: CircleAvatar(
-              radius: SizeConfig.blockSizeHorizontal*25,
+              radius: SizeConfig.blockSizeHorizontal*20,
               backgroundImage:
-              NetworkImage('https://kenh14cdn.com/thumb_w/660/2019/8/8/photo-1-156524637935855688464.jpg'),
+              NetworkImage('${widget.member.avatar}'),
               backgroundColor: Colors.transparent,
             ),
           ),
@@ -47,17 +53,13 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 child: FormBuilderTextField(
                   attribute: 'sach',
                   decoration: InputDecoration(hintText: "Ahn Hani"),
+                  initialValue: "${widget.member.name}",
                   textAlign: TextAlign.center,
                   validators: [
                     FormBuilderValidators.required(),
                   ],
                 ),
               ),
-              Icon(
-                Icons.edit,
-                size: 20,
-                color: Colors.grey,
-              )
             ],
           ),
           SizedBox(height: SizeConfig.blockSizeVertical*2),
@@ -72,7 +74,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Colors.grey,
                   ),
                   SizedBox(width: SizeConfig.blockSizeHorizontal*3),
-                  Text("Ban TCSK")
+                  Text("${widget.member.department.name}")
                 ],
               ),
               Row(
@@ -83,7 +85,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Colors.grey,
                   ),
                   SizedBox(width: SizeConfig.blockSizeHorizontal*3),
-                  Text("Thành viên")
+                  Text("${widget.member.role.Code}")
                 ],
               )
             ],
@@ -100,7 +102,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Colors.grey,
                   ),
                   SizedBox(width: SizeConfig.blockSizeHorizontal*3),
-                  Text("Gen 3 ")
+                  Text("${widget.member.GenCode}")
                 ],
               ),
               Row(
@@ -111,7 +113,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Colors.grey,
                   ),
                   SizedBox(width: SizeConfig.blockSizeHorizontal*3),
-                  Text("Nam")
+                  Text((widget.member.gender) ? "Nam" : "Nữ")
                 ],
               )
             ],
@@ -122,7 +124,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               attribute: 'expiry_date',
               inputType: InputType.date,
               initialDate: DateTime.now(),
-              decoration: InputDecoration(labelText: "Ngày sinh", suffixIcon: Icon(Icons.calendar_today)),
+              initialValue: (widget.member.born == null) ? null : DateTime.parse("${widget.member.born}"),
+              decoration: InputDecoration(labelText: "",icon: Icon(Icons.calendar_today)),
               format: DateFormat("dd-MM-yyyy"),
               onChanged: (value) {
               },

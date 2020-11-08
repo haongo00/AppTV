@@ -1,7 +1,10 @@
 import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/app/home/search/search.cubit.dart';
+import 'package:app_tv/repositories/search/search.repository.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -11,6 +14,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  SearchCubit cubit = SearchCubit(SearchRepository());
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,7 +28,18 @@ class _SearchState extends State<Search> {
             color: Colors.grey,
             thickness: 2.0,
           ),
-          _infor(),
+          BlocBuilder<SearchCubit, SearchState>(
+              cubit: cubit,
+              buildWhen: (prev, now) => now is SearchLoading || now is ItemsSearchLoaded,
+              builder: (context, state) {
+                if (state is ItemsSearchLoaded) {
+                  return _info(state);
+                } else if (state is SearchError) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return Center(child: CupertinoActivityIndicator(radius: 15));
+                }
+              }),
         ],
       ),
     );
@@ -77,15 +93,11 @@ class _SearchState extends State<Search> {
             child: isLoaded
                 ? Text(
                     "Tra cứu",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal),
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.normal),
                   )
                 : Theme(
                     data: ThemeData(
-                      cupertinoOverrideTheme:
-                          CupertinoThemeData(brightness: Brightness.dark),
+                      cupertinoOverrideTheme: CupertinoThemeData(brightness: Brightness.dark),
                     ),
                     child: CupertinoActivityIndicator(),
                   ),
@@ -95,7 +107,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget _infor() {
+  Widget _info(SearchState state) {
     return Card(
       elevation: 1.0,
       shape: RoundedRectangleBorder(
@@ -114,12 +126,13 @@ class _SearchState extends State<Search> {
             _text('Thông tin'),
             Row(
               children: [
-                _studentInfoRow('SN', '11/12/2000'),
+                _studentInfoRow('',
+                    '${DateTime.parse("${cubit.bookOrder.studentInfo.born}").day} - ${DateTime.parse("${cubit.bookOrder.studentInfo.born}").month} - ${DateTime.parse("${cubit.bookOrder.studentInfo.born}").year}'),
                 Spacer(),
                 _studentInfoRow('Giới tính', 'Nam')
               ],
             ),
-            _studentInfo('QH-2018-I/CQ-C-CLC'),
+            _studentInfo('${cubit.bookOrder.studentInfo.grade}'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -127,17 +140,23 @@ class _SearchState extends State<Search> {
                 IconButton(
                     icon: Icon(Icons.add_circle),
                     color: Colors.teal,
-                    onPressed: (){
+                    onPressed: () {
                       Modular.link.pushNamed(HomeModule.borrowBook);
                     })
               ],
             ),
-            _bookInfor(false),
+            ...List.generate(cubit.bookOrder.bookBorrowed.length, (index) {
+              return _bookInfor(false, index);
+            }),
+            // _bookInfor(false,),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: _text('Lịch sử mượn sách'),
             ),
-            _bookInfor(true)
+            ...List.generate(cubit.bookOrder.bookPaid.length, (index) {
+              return _bookInfor(true, index);
+            }),
+            // _bookInfor(true)
           ],
         ),
       ),
@@ -155,17 +174,17 @@ class _SearchState extends State<Search> {
             height: 100,
             child: ClipOval(
               child: Image.network(
-                'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg',
+                'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg',
                 fit: BoxFit.fill,
               ),
             ),
           ),
           Text(
-            'Nguyen Van A',
-            style: TextStyle(fontSize: 25),
+            '${cubit.bookOrder.studentInfo.name}',
+            style: TextStyle(fontSize: 22),
           ),
           Text(
-            '18020459',
+            '${cubit.bookOrder.studentInfo.idStudent}',
             style: TextStyle(fontSize: 18, color: Colors.grey),
           ),
         ],
@@ -186,11 +205,10 @@ class _SearchState extends State<Search> {
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Text(
-        '${_title} : ${_infor}',
+        '${_title}  ${_infor}',
         style: TextStyle(fontSize: 20),
       ),
-      decoration: BoxDecoration(
-          color: Colors.grey[500], borderRadius: BorderRadius.circular(15.0)),
+      decoration: BoxDecoration(color: Colors.grey[500], borderRadius: BorderRadius.circular(15.0)),
     );
   }
 
@@ -203,12 +221,11 @@ class _SearchState extends State<Search> {
         'Lớp : ${_infor}',
         style: TextStyle(fontSize: 20),
       ),
-      decoration: BoxDecoration(
-          color: Colors.grey[500], borderRadius: BorderRadius.circular(15.0)),
+      decoration: BoxDecoration(color: Colors.grey[500], borderRadius: BorderRadius.circular(15.0)),
     );
   }
 
-  Widget _bookInfor(bool _val) {
+  Widget _bookInfor(bool _val, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: FlatButton(
@@ -223,26 +240,27 @@ class _SearchState extends State<Search> {
             children: [
               Container(
                 alignment: Alignment.center,
-                width: 48,
-                height: 48,
+                width: 30,
+                height: 30,
                 margin: EdgeInsets.zero,
                 child: Text(
-                  '1',
-                  style: TextStyle(fontSize: 30),
+                  '${index + 1}',
+                  style: TextStyle(fontSize: 20),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(35.0)),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(35.0)),
               ),
               Container(
                 child: Column(
                   children: [
-                    Text(
-                      'Toán cao cấp 1',
-                      style: TextStyle(fontSize: 20, color: Colors.blueAccent),
+                    Container(
+                      child: Text(_val ?
+                        '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}' : '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}',
+                        style: TextStyle(fontSize: 16, color: Colors.blueAccent),overflow: TextOverflow.ellipsis,
+                      ),
+                      width: SizeConfig.blockSizeHorizontal*40,
                     ),
-                    Text(
-                      '112-231',
+                    Text( _val ?
+                      '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}' : '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}',
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
@@ -254,16 +272,18 @@ class _SearchState extends State<Search> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ngày mượn : 26/10/2000',
+                      'M : ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").year} ',
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     _val
                         ? Text(
-                            'Ngày trả : 26/10/2000',
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[600]),
+                            'T : ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").year} ',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                           )
-                        : SizedBox(),
+                        : Text(
+                            'H : ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].deadline}").day} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].deadline}").month} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].deadline}").year} ',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          ),
                   ],
                 ),
               )
