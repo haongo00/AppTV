@@ -21,14 +21,14 @@ class BookInfoCubit extends Cubit<BookInfoState> {
       "book" : {
         "name" : name,
         "price" : price,
-        "id" : id,
+        "idBook" : id,
         "amount" : amount
       }
     };
     print(params);
     try {
       emit(ItemsBookInfoUploading());
-      if (await _libraryRepository.createBook(params)) {
+      if (await _libraryRepository.editBookInfo(params)) {
         emit((ItemsBookInfoUploaded()));
       } else {
         emit(BookInfoError("Submit failed"));

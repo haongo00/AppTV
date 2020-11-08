@@ -31,4 +31,14 @@ class LibraryRepository {
     final response = await LibraryService.editBookInfo(params);
     return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
   }
+  Future<bool> deleteBook(Map<String, dynamic> params) async {
+    final response = await LibraryService.deleteBook(params);
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+  }
+
+  Future<bool> createUser(Map<String, dynamic> params) async {
+    final response = await LibraryService.createUser(params);
+    print(response);
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+  }
 }

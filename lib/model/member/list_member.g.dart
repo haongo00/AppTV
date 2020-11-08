@@ -24,11 +24,17 @@ Member _$MemberFromJson(Map<String, dynamic> json) {
   return Member(
     id: json['id'] as int,
     name: json['name'] as String,
+    gender: json['gender'] as bool,
     userName: json['userName'] as String,
-    role: json['role'] as String,
-    department: json['department'] as String,
-    born: json['born'] as int,
+    role: json['role'] == null
+        ? null
+        : Role.fromJson(json['role'] as Map<String, dynamic>),
+    department: json['department'] == null
+        ? null
+        : Department.fromJson(json['department'] as Map<String, dynamic>),
+    born: json['born'] as String,
     avatar: json['avatar'] as String,
+    GenCode: json['GenCode'] as String,
   );
 }
 
@@ -37,7 +43,38 @@ Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
       'name': instance.name,
       'userName': instance.userName,
       'role': instance.role,
+      'gender': instance.gender,
       'department': instance.department,
       'born': instance.born,
       'avatar': instance.avatar,
+      'GenCode': instance.GenCode,
+    };
+
+Role _$RoleFromJson(Map<String, dynamic> json) {
+  return Role(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    Code: json['Code'] as String,
+  );
+}
+
+Map<String, dynamic> _$RoleToJson(Role instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'Code': instance.Code,
+    };
+
+Department _$DepartmentFromJson(Map<String, dynamic> json) {
+  return Department(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    Code: json['Code'] as String,
+  );
+}
+
+Map<String, dynamic> _$DepartmentToJson(Department instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'Code': instance.Code,
     };

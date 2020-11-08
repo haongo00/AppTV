@@ -26,6 +26,18 @@ class MemberUploading extends MemberState {
   @override
   List<Object> get props => [];
 }
+class RoleLoading extends MemberState {
+  const RoleLoading();
+
+  @override
+  List<Object> get props => [];
+}
+class DepartmentLoading extends MemberState {
+  const DepartmentLoading();
+
+  @override
+  List<Object> get props => [];
+}
 
 class ItemsMemberLoaded extends MemberState {
   final List<Member> member;
@@ -34,6 +46,19 @@ class ItemsMemberLoaded extends MemberState {
 
   @override
   List<Object> get props => [member];
+}
+
+class ItemsRoleLoaded extends MemberState {
+  final List<dynamic> role;
+  ItemsRoleLoaded(this.role);
+  @override
+  List<Object> get props => [role];
+}
+class ItemsDepartmentLoaded extends MemberState {
+  final List<dynamic> department;
+  ItemsDepartmentLoaded(this.department);
+  @override
+  List<Object> get props => [department];
 }
 
 class ItemsMemberUploading extends MemberState {

@@ -1,3 +1,4 @@
+import 'package:app_tv/app/home/library/member/member.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,24 @@ import 'package:intl/intl.dart';
 
 
 class NewMemberView extends StatefulWidget {
+  final MemberCubit cubit;
+
+  const NewMemberView({this.cubit}) : super();
   @override
   _NewMemberViewState createState() => _NewMemberViewState();
 }
 
 class _NewMemberViewState extends State<NewMemberView> {
+
+  String name ="";
+  String date = "";
+  bool gender = true;
+  String gen = "";
+  String user = "";
+  String pass = "";
+  int roleId = 0;
+  int departmentId = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,6 +65,9 @@ class _NewMemberViewState extends State<NewMemberView> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
+                  onChanged: (value) {
+                    name = value.toString();
+                  },
                 ),
                 FormBuilderDateTimePicker(
                   attribute: 'expiry_date',
@@ -59,6 +76,7 @@ class _NewMemberViewState extends State<NewMemberView> {
                   decoration: InputDecoration(labelText: "Ngày sinh", suffixIcon: Icon(Icons.calendar_today)),
                   format: DateFormat("dd-MM-yyyy"),
                   onChanged: (value) {
+                    date = value.toString();
                   },
                 ),
                 // Row(
@@ -91,7 +109,13 @@ class _NewMemberViewState extends State<NewMemberView> {
                   decoration: InputDecoration(labelText: "Giới Tính"),
                   validators: [FormBuilderValidators.required()],
                   items: ['Nam', 'nữ'].map((item) => DropdownMenuItem(value: item, child: Text("$item"))).toList(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value.toString() == "Nam") {
+                      gender = true;
+                    } else {
+                      gender = false;
+                    }
+                  },
                 ),
                 FormBuilderTextField(
                   attribute: 'sach',
@@ -99,6 +123,9 @@ class _NewMemberViewState extends State<NewMemberView> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
+                  onChanged: (value) {
+                    gen = value.toString();
+                  },
                 ),
                 FormBuilderTextField(
                   attribute: 'sach',
@@ -106,6 +133,9 @@ class _NewMemberViewState extends State<NewMemberView> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
+                  onChanged: (value) {
+                    user = value.toString();
+                  },
                 ),
                 FormBuilderTextField(
                   attribute: 'sach',
@@ -113,13 +143,27 @@ class _NewMemberViewState extends State<NewMemberView> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
+                  onChanged: (value) {
+                    pass = value.toString();
+                  },
                 ),
                 FormBuilderDropdown(
-                  attribute: "bank",
+                  attribute: "vt",
                   decoration: InputDecoration(labelText: "Vai trò"),
                   validators: [FormBuilderValidators.required()],
-                  items: ['Nhập liệu', 'Thu sách'].map((item) => DropdownMenuItem(value: item, child: Text("$item"))).toList(),
-                  onChanged: (value) {},
+                  items: widget.cubit.roles.map((item) => DropdownMenuItem(value: item, child: Text("${item['name']}"))).toList(),
+                  onChanged: (value) {
+                    roleId = int.parse(value['id'].toString());
+                  },
+                ),
+                FormBuilderDropdown(
+                  attribute: "vt",
+                  decoration: InputDecoration(labelText: "Ban"),
+                  validators: [FormBuilderValidators.required()],
+                  items: widget.cubit.departments.map((item) => DropdownMenuItem(value: item, child: Text("${item['name']}"))).toList(),
+                  onChanged: (value) {
+                    departmentId = int.parse(value['id'].toString());
+                  },
                 ),
                 SizedBox(height: SizeConfig.blockSizeVertical * 10),
                 Row(
@@ -140,6 +184,7 @@ class _NewMemberViewState extends State<NewMemberView> {
                         child: FlatButton(
                             color: Color(0xff068189),
                             onPressed: () {
+                              widget.cubit.newUser(name, date, gender, gen, user, pass, roleId, departmentId);
                               Modular.navigator.pop();
                             },
                             child: Text(

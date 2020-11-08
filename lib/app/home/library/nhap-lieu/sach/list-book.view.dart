@@ -24,7 +24,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
         backgroundColor: Color(0xff068189),
         foregroundColor: Colors.black,
         onPressed: () {
-          Modular.link.pushNamed(HomeModule.newBook,arguments: _cubit);
+          Modular.link.pushNamed(HomeModule.newBook, arguments: _cubit);
           // Respond to button press
         },
         child: Icon(Icons.add, color: Colors.white),
@@ -60,14 +60,14 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
   Widget _getBody(ListBookState state) {
     return Column(
       children: [
-        SizedBox(height: SizeConfig.blockSizeVertical*1),
+        SizedBox(height: SizeConfig.blockSizeVertical * 1),
         Container(
           padding: EdgeInsets.only(left: 10.0, right: 5.0),
           width: SizeConfig.blockSizeHorizontal * 80,
           height: SizeConfig.blockSizeVertical * 5,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.teal,width: 1.0),
+            border: Border.all(color: Colors.teal, width: 1.0),
             borderRadius: BorderRadius.circular(20.0),
             color: Colors.white,
           ),
@@ -117,18 +117,23 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                         //   borderRadius: BorderRadius.circular(15.0),
                         // ),
                         onPressed: () {
-                          Modular.link.pushNamed(HomeModule.bookInfo,arguments: _cubit.listBook.elementAt(index));
+                          Modular.link
+                              .pushNamed(HomeModule.bookInfo, arguments: _cubit.listBook.elementAt(index))
+                              .then((value) {
+                            _cubit.loadData();
+                          });
                         },
+                        onLongPress: () => _showAlert(context, index),
                         child: Container(
-                          height: SizeConfig.blockSizeVertical*10,
+                          height: SizeConfig.blockSizeVertical * 10,
                           margin: EdgeInsets.all(15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CircleAvatar(
-                                radius: SizeConfig.blockSizeHorizontal*3,
-                                backgroundImage:
-                                NetworkImage('https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
+                                radius: SizeConfig.blockSizeHorizontal * 3,
+                                backgroundImage: NetworkImage(
+                                    'https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
                                 backgroundColor: Colors.transparent,
                               ),
                               SizedBox(width: 20.0),
@@ -136,13 +141,21 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("ID : ${_cubit.listBook[index].id}",
-                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
+                                      style: TextStyle(
+                                          color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                   SizedBox(height: 10.0),
-                                  Text("Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                      style: TextStyle(color:(index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
+                                  Container(
+                                    width: SizeConfig.blockSizeHorizontal * 65,
+                                    child: Text(
+                                        "Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
+                                        style: TextStyle(
+                                            color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
                                   SizedBox(height: 10.0),
                                   Text("Price : ${_cubit.listBook[index].price}",
-                                      style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
+                                      style: TextStyle(
+                                          color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                 ],
                               ),
                             ],
@@ -158,6 +171,39 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
         ),
       ],
     );
+  }
+
+  void _showAlert(BuildContext context, int index) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          message: Text(
+            "Do you want to Delete ?",
+            style: TextStyle(fontWeight: FontWeight.w400),
+          ),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: Text(
+                "Delete",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              ),
+              isDestructiveAction: true,
+              onPressed: () {
+                _cubit.deleteBook(_cubit.listBook[index].idBook);
+                Navigator.pop(context);
+              },
+            )
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: Text(
+              "Cancel",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ));
   }
 
   @override

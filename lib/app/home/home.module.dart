@@ -1,5 +1,6 @@
 import 'package:app_tv/app/home/home.view.dart';
 import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
+import 'package:app_tv/app/home/library/member/member.cubit.dart';
 import 'package:app_tv/app/home/library/member/member.view.dart';
 import 'package:app_tv/app/home/library/member/new-member/new-member.view.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/input.view.dart';
@@ -10,6 +11,7 @@ import 'package:app_tv/app/home/search/borrow-give/borrow-book.view.dart';
 import 'package:app_tv/app/home/search/borrow-give/give-book.view.dart';
 import 'package:app_tv/app/information/infor.view.dart';
 import 'package:app_tv/model/library/list_book.dart';
+import 'package:app_tv/model/member/list_member.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeModule extends ChildModule {
@@ -39,8 +41,8 @@ class HomeModule extends ChildModule {
                 NewBookView(cubit: args.data as ListBookCubit)),
         ModularRouter(inforView, child: (context, args) => InforView()),
         ModularRouter(member, child: (context, args) => MemberView()),
-        ModularRouter(newMember, child: (context, args) => NewMemberView()),
-        ModularRouter(memberInfo, child: (context, args) => MemberInfoView()),
+        ModularRouter(newMember, child: (context, args) => NewMemberView(cubit: args.data as MemberCubit)),
+        ModularRouter(memberInfo, child: (context, args) => MemberInfoView(member: args.data as Member)),
         ModularRouter(borrowBook, child: (context, args) => BorrowBookView()),
         ModularRouter(giveBook, child: (context, args) => GiveBookView()),
         ModularRouter(bookInfo,
