@@ -12,7 +12,8 @@ class API {
       sendTimeout: 30000,
       receiveTimeout: 30000,
       contentType: 'application/json; charset=utf-8',
-      baseUrl: "http://api.tvclubuet.com",
+      // baseUrl: "http://api.tvclubuet.com",
+      baseUrl: "http://192.168.43.89:3001",
     ),
   );
 
@@ -63,10 +64,11 @@ class API {
   }
 
   Future put(String url, [Map<String, dynamic> params]) async {
-    return dio.put(url, data: params);
+    return dio.put(url , data: params);
   }
 
   Future delete(String url, [Map<String, dynamic> params]) async {
     return dio.delete(url, queryParameters: params);
   }
+
 }

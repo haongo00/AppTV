@@ -1,3 +1,5 @@
+import 'package:app_tv/app/home/home-page/cmt/cmt.view.dart';
+import 'package:app_tv/app/home/home-page/post/post.view.dart';
 import 'package:app_tv/app/home/home.view.dart';
 import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.view.dart';
@@ -9,6 +11,7 @@ import 'package:app_tv/app/home/library/nhap-lieu/sach/new-book/new-book.view.da
 import 'package:app_tv/app/home/search/borrow-give/borrow-book.view.dart';
 import 'package:app_tv/app/home/search/borrow-give/give-book.view.dart';
 import 'package:app_tv/app/information/infor.view.dart';
+import 'package:app_tv/app/information/pass.view.dart';
 import 'package:app_tv/model/library/list_book.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -24,6 +27,10 @@ class HomeModule extends ChildModule {
   static String giveBook = "/give";
   static String search = "/search";
   static String bookInfo = "/book-info";
+  static String passView = "/pass";
+  static String postView = "/post";
+  static String cmtView = "/cmt";
+
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -43,6 +50,9 @@ class HomeModule extends ChildModule {
         ModularRouter(memberInfo, child: (context, args) => MemberInfoView()),
         ModularRouter(borrowBook, child: (context, args) => BorrowBookView()),
         ModularRouter(giveBook, child: (context, args) => GiveBookView()),
+        ModularRouter(passView, child: (context, args) => PassView()),
+        ModularRouter(postView, child: (context, args) => PostView()),
+        ModularRouter(cmtView, child: (context, args) => CmtView()),
         ModularRouter(bookInfo,
             child: (context, args) => BookInfoView(book: args.data as Book)),
       ];
