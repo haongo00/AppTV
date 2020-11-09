@@ -1,4 +1,5 @@
 import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
 import 'package:app_tv/utils/screen_config.dart';
@@ -142,7 +143,11 @@ class _MemberViewState extends State<MemberView> {
                           ),
                         ),
                         onPressed: () {
-                          Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
+                          // Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MemberInfoView(member: cubit.member.elementAt(index),cubit: cubit)),
+                          );
                         },
                       ),
                     );

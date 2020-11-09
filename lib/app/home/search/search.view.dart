@@ -13,7 +13,7 @@ class Search extends StatefulWidget {
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<Search> {
+class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
   SearchCubit cubit = SearchCubit(SearchRepository());
 
   @override
@@ -36,14 +36,17 @@ class _SearchState extends State<Search> {
                   return _info(state);
                 } else if (state is SearchError) {
                   return Center(child: Text(state.message));
-                } else {
+                } else if (state is SearchLoading) {
                   return Center(child: CupertinoActivityIndicator(radius: 15));
+                } else {
+                  return SizedBox();
                 }
               }),
         ],
       ),
     );
   }
+  int id = 0;
 
   Widget _textField() {
     return Container(
@@ -70,7 +73,9 @@ class _SearchState extends State<Search> {
         ),
         keyboardType: TextInputType.number,
         validators: [FormBuilderValidators.required()],
-        onChanged: (dynamic val) {},
+        onChanged: (dynamic val) {
+          id = int.parse(val.toString());
+        },
       ),
     );
   }
@@ -89,7 +94,9 @@ class _SearchState extends State<Search> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100.0),
             ),
-            onPressed: () async {},
+            onPressed: () async {
+              cubit.loadData(id);
+            },
             child: isLoaded
                 ? Text(
                     "Tra cứu",
@@ -108,7 +115,7 @@ class _SearchState extends State<Search> {
   }
 
   Widget _info(SearchState state) {
-    return Card(
+    return (cubit.bookOrder == null) ? SizedBox() : Card(
       elevation: 1.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -141,14 +148,13 @@ class _SearchState extends State<Search> {
                     icon: Icon(Icons.add_circle),
                     color: Colors.teal,
                     onPressed: () {
-                      Modular.link.pushNamed(HomeModule.borrowBook);
+                      Modular.link.pushNamed(HomeModule.borrowBook,arguments: cubit).then((value) => cubit.bookDetail = null);
                     })
               ],
             ),
             ...List.generate(cubit.bookOrder.bookBorrowed.length, (index) {
               return _bookInfor(false, index);
             }),
-            // _bookInfor(false,),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: _text('Lịch sử mượn sách'),
@@ -156,7 +162,6 @@ class _SearchState extends State<Search> {
             ...List.generate(cubit.bookOrder.bookPaid.length, (index) {
               return _bookInfor(true, index);
             }),
-            // _bookInfor(true)
           ],
         ),
       ),
@@ -231,7 +236,7 @@ class _SearchState extends State<Search> {
       child: FlatButton(
         color: Colors.grey[400],
         onPressed: () {
-          Modular.link.pushNamed(HomeModule.giveBook);
+          Modular.link.pushNamed(HomeModule.giveBook,arguments: cubit);
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -254,13 +259,13 @@ class _SearchState extends State<Search> {
                   children: [
                     Container(
                       child: Text(_val ?
-                        '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}' : '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}',
+                        '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}' : '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}',
                         style: TextStyle(fontSize: 16, color: Colors.blueAccent),overflow: TextOverflow.ellipsis,
                       ),
                       width: SizeConfig.blockSizeHorizontal*40,
                     ),
                     Text( _val ?
-                      '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}' : '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}',
+                      '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}' : '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}',
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
@@ -296,4 +301,8 @@ class _SearchState extends State<Search> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

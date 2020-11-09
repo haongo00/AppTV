@@ -1,14 +1,24 @@
+import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class BorrowBookView extends StatefulWidget {
+  final SearchCubit cubit;
+
+  const BorrowBookView({this.cubit}) : super();
   _BorrowBookView createState() => _BorrowBookView();
 }
 
 class _BorrowBookView extends State<BorrowBookView> {
+
+  String idBook;
+  int time;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -29,9 +39,40 @@ class _BorrowBookView extends State<BorrowBookView> {
       child: Column(
         children: [
           _textFiled('Mã sách'),
-          _textFiled('Mã'),
-          _textFiled('Tên sách'),
-          _textFiled('Giá sách'),
+        BlocBuilder<SearchCubit,SearchState>(
+          cubit: widget.cubit,
+          buildWhen: (prev,now) => now is ItemsBookDetailLoaded || now is ItemsSearchLoaded || now is SearchLoading,
+          builder: (context,state) {
+            return (state is ItemsSearchLoaded) ? FormBuilderTextField(
+              attribute: 'sach',
+              decoration: InputDecoration(labelText: "Tên Sách"),
+              initialValue: (widget.cubit.bookDetail == null) ? null : widget.cubit.bookDetail['book']['name'].toString(),
+              validators: [
+                FormBuilderValidators.required(),
+              ],
+              readOnly: true,
+            ) : SizedBox();
+          },
+        ),
+          _textFiled('MSV'),
+          // _textFiled('Tên sách'),
+          // _textFiled('Giá sách'),
+          FormBuilderDropdown(
+            attribute: "vt",
+            decoration: InputDecoration(labelText: "Thời gian mượn sách"),
+            validators: [FormBuilderValidators.required()],
+            items: ['3 Tháng','6 Tháng','1 Năm'].map((item) => DropdownMenuItem(value: item, child: Text("${item}"))).toList(),
+            onChanged: (value){
+              if (value.toString() == "3 Tháng") {
+                time = 3;
+              }
+              if (value.toString() == "6 Tháng") {
+                time = 6;
+              } else {
+                time = 12;
+              }
+            },
+          ),
           SizedBox(height: SizeConfig.blockSizeVertical * 10),
           Row(
             children: [
@@ -57,6 +98,7 @@ class _BorrowBookView extends State<BorrowBookView> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       onPressed: () {
+                        widget.cubit.newBook(idBook,widget.cubit.bookOrder.studentInfo.idStudent,time);
                         Modular.navigator.pop();
                       },
                       child: Text(
@@ -75,9 +117,21 @@ class _BorrowBookView extends State<BorrowBookView> {
     return FormBuilderTextField(
       attribute: 'sach',
       decoration: InputDecoration(labelText: "${_tile} : "),
+      initialValue: (_tile == "MSV") ? widget.cubit.bookOrder.studentInfo.idStudent : null,
       validators: [
         FormBuilderValidators.required(),
       ],
+      onFieldSubmitted: (newValue) {
+        print(newValue.toString());
+        if (_tile == "Mã sách") {
+          widget.cubit.getBookDetail(idBook);
+        }
+      },
+      onChanged: (value) {
+        if (_tile == "Mã sách") {
+          idBook = value.toString();
+        }
+      },
     );
   }
 }

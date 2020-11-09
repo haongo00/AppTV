@@ -9,6 +9,7 @@ import 'package:app_tv/app/home/library/nhap-lieu/sach/list-book.cubit.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/new-book/new-book.view.dart';
 import 'package:app_tv/app/home/search/borrow-give/borrow-book.view.dart';
 import 'package:app_tv/app/home/search/borrow-give/give-book.view.dart';
+import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/app/information/infor.view.dart';
 import 'package:app_tv/model/library/list_book.dart';
 import 'package:app_tv/model/member/list_member.dart';
@@ -43,8 +44,8 @@ class HomeModule extends ChildModule {
         ModularRouter(member, child: (context, args) => MemberView()),
         ModularRouter(newMember, child: (context, args) => NewMemberView(cubit: args.data as MemberCubit)),
         ModularRouter(memberInfo, child: (context, args) => MemberInfoView(member: args.data as Member)),
-        ModularRouter(borrowBook, child: (context, args) => BorrowBookView()),
-        ModularRouter(giveBook, child: (context, args) => GiveBookView()),
+        ModularRouter(borrowBook, child: (context, args) => BorrowBookView(cubit: args.data as SearchCubit)),
+        ModularRouter(giveBook, child: (context, args) => GiveBookView(cubit: args.data as SearchCubit)),
         ModularRouter(bookInfo,
             child: (context, args) => BookInfoView(book: args.data as Book)),
       ];
