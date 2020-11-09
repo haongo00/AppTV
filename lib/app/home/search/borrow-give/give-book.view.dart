@@ -93,7 +93,7 @@ class _GiveBookView extends State<GiveBookView> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       onPressed: () {
-                        widget.cubit.createBookPay(widget.cubit.bookOrderInfo.bookdetail.idBookDetails, date);
+                        widget.cubit.createBookPay(widget.cubit.bookOrderInfo.id, date);
                         Modular.navigator.pop();
                       },
                       child: Text(

@@ -97,10 +97,10 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  Future<void> createBookPay(String idBook,String date) async {
+  Future<void> createBookPay(int idBook,String date) async {
     Map<String, dynamic> params = {
       "bookOrder" : {
-        "idBookDetail" : idBook,
+        "id" : idBook,
         "payDate" : date
       }
     };
