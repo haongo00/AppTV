@@ -125,7 +125,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                         },
                         onLongPress: () => _showAlert(context, index),
                         child: Container(
-                          height: SizeConfig.blockSizeVertical * 10,
+                          height: SizeConfig.blockSizeVertical * 11,
                           margin: EdgeInsets.all(15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,

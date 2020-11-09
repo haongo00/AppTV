@@ -56,7 +56,7 @@ UserCheckOut _$UserCheckOutFromJson(Map<String, dynamic> json) {
   return UserCheckOut(
     id: json['id'] as int,
     name: json['name'] as String,
-    genCode: json['genCode'] as String,
+    GenCode: json['GenCode'] as String,
     gender: json['gender'] as bool,
   );
 }
@@ -65,6 +65,6 @@ Map<String, dynamic> _$UserCheckOutToJson(UserCheckOut instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'genCode': instance.genCode,
+      'GenCode': instance.GenCode,
       'gender': instance.gender,
     };

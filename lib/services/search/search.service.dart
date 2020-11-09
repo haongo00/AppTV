@@ -16,4 +16,8 @@ class SearchService {
   static Future<dynamic> getBookOrderInfo(Map<String, dynamic> params) {
     return Application.api.get('/book/bookOrder/${params['id']}');
   }
+
+  static Future<dynamic> createBookPay(Map<String, dynamic> params) {
+    return Application.api.post('/book/bookOrder/pay/', params);
+  }
 }

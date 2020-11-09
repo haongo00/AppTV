@@ -46,6 +46,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
       ),
     );
   }
+
   int id = 0;
 
   Widget _textField() {
@@ -115,57 +116,61 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _info(SearchState state) {
-    return (cubit.bookOrder == null) ? SizedBox() : Card(
-      elevation: 1.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      margin: EdgeInsets.only(top: 8.0, right: 15.0, left: 15.0),
-      color: Color(0xffF0EFEF),
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _profile(),
-            _text('Thông tin'),
-            Row(
-              children: [
-                _studentInfoRow('',
-                    '${DateTime.parse("${cubit.bookOrder.studentInfo.born}").day} - ${DateTime.parse("${cubit.bookOrder.studentInfo.born}").month} - ${DateTime.parse("${cubit.bookOrder.studentInfo.born}").year}'),
-                Spacer(),
-                _studentInfoRow('Giới tính', 'Nam')
-              ],
+    return (cubit.bookOrder == null)
+        ? SizedBox()
+        : Card(
+            elevation: 1.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            _studentInfo('${cubit.bookOrder.studentInfo.grade}'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _text('Tình trạng mượn sách'),
-                IconButton(
-                    icon: Icon(Icons.add_circle),
-                    color: Colors.teal,
-                    onPressed: () {
-                      Modular.link.pushNamed(HomeModule.borrowBook,arguments: cubit).then((value) => cubit.bookDetail = null);
-                    })
-              ],
+            margin: EdgeInsets.only(top: 8.0, right: 15.0, left: 15.0),
+            color: Color(0xffF0EFEF),
+            child: Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
+              padding: EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _profile(),
+                  _text('Thông tin'),
+                  Row(
+                    children: [
+                      _studentInfoRow('',
+                          '${DateTime.parse("${cubit.bookOrder.studentInfo.born}").day} - ${DateTime.parse("${cubit.bookOrder.studentInfo.born}").month} - ${DateTime.parse("${cubit.bookOrder.studentInfo.born}").year}'),
+                      Spacer(),
+                      _studentInfoRow('Giới tính', 'Nam')
+                    ],
+                  ),
+                  _studentInfo('${cubit.bookOrder.studentInfo.grade}'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _text('Tình trạng mượn sách'),
+                      IconButton(
+                          icon: Icon(Icons.add_circle),
+                          color: Colors.teal,
+                          onPressed: () {
+                            Modular.link
+                                .pushNamed(HomeModule.borrowBook, arguments: cubit)
+                                .then((value) => cubit.bookDetail = null);
+                          })
+                    ],
+                  ),
+                  ...List.generate(cubit.bookOrder.bookBorrowed.length, (index) {
+                    return _bookInfor(false, index);
+                  }),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: _text('Lịch sử mượn sách'),
+                  ),
+                  ...List.generate(cubit.bookOrder.bookPaid.length, (index) {
+                    return _bookInfor(true, index);
+                  }),
+                ],
+              ),
             ),
-            ...List.generate(cubit.bookOrder.bookBorrowed.length, (index) {
-              return _bookInfor(false, index);
-            }),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: _text('Lịch sử mượn sách'),
-            ),
-            ...List.generate(cubit.bookOrder.bookPaid.length, (index) {
-              return _bookInfor(true, index);
-            }),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _profile() {
@@ -236,7 +241,13 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
       child: FlatButton(
         color: Colors.grey[400],
         onPressed: () {
-          Modular.link.pushNamed(HomeModule.giveBook,arguments: cubit);
+          if (_val == false) {
+            cubit.getBookOrderInfo(cubit.bookOrder.bookBorrowed[index].id);
+            Modular.link.pushNamed(HomeModule.giveBook, arguments: cubit);
+          } else {
+            cubit.getBookOrderInfo(cubit.bookOrder.bookPaid[index].id);
+            Modular.link.pushNamed(HomeModule.giveBook, arguments: cubit);
+          }
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -258,14 +269,19 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
                 child: Column(
                   children: [
                     Container(
-                      child: Text(_val ?
-                        '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}' : '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}',
-                        style: TextStyle(fontSize: 16, color: Colors.blueAccent),overflow: TextOverflow.ellipsis,
+                      child: Text(
+                        _val
+                            ? '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}'
+                            : '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}',
+                        style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      width: SizeConfig.blockSizeHorizontal*40,
+                      width: SizeConfig.blockSizeHorizontal * 40,
                     ),
-                    Text( _val ?
-                      '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}' : '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}',
+                    Text(
+                      _val
+                          ? '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}'
+                          : '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}',
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
@@ -276,13 +292,18 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'M : ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").year} ',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    ),
                     _val
                         ? Text(
-                            'T : ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").year} ',
+                            'M : ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").year} ',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          )
+                        : Text(
+                            'M : ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookBorrowed[index].borrowDate}").year} ',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          ),
+                    _val
+                        ? Text(
+                            'T : ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").day} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").month} - ${DateTime.parse("${cubit.bookOrder.bookPaid[index].borrowDate}").year}',
                             style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                           )
                         : Text(

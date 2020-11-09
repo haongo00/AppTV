@@ -43,10 +43,10 @@ class UserCheckIn {
 class UserCheckOut {
   int id;
   String name;
-  String genCode;
+  String GenCode;
   bool gender;
 
-  UserCheckOut({this.id, this.name, this.genCode, this.gender});
+  UserCheckOut({this.id, this.name, this.GenCode, this.gender});
   factory UserCheckOut.fromJson(Map<String, dynamic> json) => _$UserCheckOutFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserCheckOutToJson(this);
