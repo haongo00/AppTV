@@ -128,7 +128,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                           height: SizeConfig.blockSizeVertical * 10,
                           margin: EdgeInsets.all(15),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               CircleAvatar(
                                 radius: SizeConfig.blockSizeHorizontal * 3,
@@ -140,20 +140,20 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("ID : ${_cubit.listBook[index].id}",
+                                  Text("${_cubit.listBook[index].idBook}",
                                       style: TextStyle(
-                                          color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
+                                          color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 16)),
                                   SizedBox(height: 10.0),
                                   Container(
                                     width: SizeConfig.blockSizeHorizontal * 65,
                                     child: Text(
-                                        "Name : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
+                                        "${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
                                         style: TextStyle(
                                             color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13),
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   SizedBox(height: 10.0),
-                                  Text("Price : ${_cubit.listBook[index].price}",
+                                  Text("${_cubit.listBook[index].price}",
                                       style: TextStyle(
                                           color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
                                 ],

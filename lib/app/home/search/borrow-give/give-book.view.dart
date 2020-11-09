@@ -1,3 +1,5 @@
+
+import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class GiveBookView extends StatefulWidget {
+  final SearchCubit cubit;
+
+  const GiveBookView({this.cubit}) : super();
   _GiveBookView createState() => _GiveBookView();
 }
 
@@ -79,9 +84,19 @@ class _GiveBookView extends State<GiveBookView> {
     return FormBuilderTextField(
       attribute: 'sach',
       decoration: InputDecoration(labelText: "${_tile} : "),
+      initialValue: (_tile == "Mã sách") ? "${widget.cubit.bookOrderInfo.bookdetail.idBookDetails}" :
+        (_tile == "Mã") ? "${widget.cubit.bookOrderInfo.bookdetail.book.idBook}" :
+        (_tile == "Tên sách") ? "${widget.cubit.bookOrderInfo.bookdetail.book.name}" :
+        (_tile == "Giá sách") ? "${widget.cubit.bookOrderInfo.bookdetail.book.price}" :
+        (_tile == "Ngày mượn") ? "${widget.cubit.bookOrderInfo.borrowDate}" :
+        (_tile == "TV Ghi mượn") ? "${widget.cubit.bookOrderInfo.userCheckIn.name} - ${widget.cubit.bookOrderInfo.userCheckIn.GenCode}" :
+        (_tile == "Ngày trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : (widget.cubit.bookOrderInfo.payDate)}" :
+        (_tile == "Tv Ghi trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : (widget.cubit.bookOrderInfo.userCheckOut.name)}"
+            : null,
       validators: [
         FormBuilderValidators.required(),
       ],
+      readOnly: true,
     );
   }
 }

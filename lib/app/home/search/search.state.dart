@@ -35,6 +35,22 @@ class ItemsSearchLoaded extends SearchState {
   @override
   List<Object> get props => [bookOrder];
 }
+class ItemsBookOrderInfo extends SearchState {
+  final BookOrderInfo bookOrder;
+
+  ItemsBookOrderInfo(this.bookOrder);
+
+  @override
+  List<Object> get props => [bookOrder];
+}
+class ItemsBookDetailLoaded extends SearchState {
+  final dynamic bookOrder;
+
+  ItemsBookDetailLoaded(this.bookOrder);
+
+  @override
+  List<Object> get props => [bookOrder];
+}
 
 class ItemsSearchUploading extends SearchState {
   const ItemsSearchUploading();
