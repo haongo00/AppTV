@@ -6,13 +6,14 @@ import 'package:app_tv/utils/exception.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 part 'search.state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   final SearchRepository _searchRepository;
   SearchCubit(this._searchRepository) : super(SearchInitial()) {
-    getBookOrderInfo(0);
   }
 
   BookOrder bookOrder;
@@ -57,15 +58,26 @@ class SearchCubit extends Cubit<SearchState> {
     try {
       emit(SearchLoading());
       final response = await SearchService.getBookDetail({"id": id});
-      if (response.statusCode == 200) {
+      print(response);
+      if (response.statusCode == 200 && response.data['status'] != 404) {
+
         bookDetail = response.data['result'];
         emit(ItemsBookDetailLoaded(bookDetail));
         emit(ItemsSearchLoaded(bookOrder));
+      } else {
+        Fluttertoast.showToast(
+          msg: "Không tìm thấy",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
     } on NetworkException {
       emit(SearchError("Couldn't fetch data. Is the device online?"));
     }
-    print(bookDetail.toString());
   }
 
   BookOrderInfo bookOrderInfo ;
@@ -73,7 +85,7 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> getBookOrderInfo(int id) async {
     try {
       emit(SearchLoading());
-      final response = await SearchService.getBookOrderInfo({"id": 16});
+      final response = await SearchService.getBookOrderInfo({"id": id});
       print(response);
       if (response.statusCode == 200) {
         bookOrderInfo = BookOrderInfo.fromJson(response.data['result'] as Map<String,dynamic>);
@@ -85,10 +97,29 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
+  Future<void> createBookPay(String idBook,String date) async {
+    Map<String, dynamic> params = {
+      "bookOrder" : {
+        "idBookDetail" : idBook,
+        "payDate" : date
+      }
+    };
+    try {
+      emit(SearchLoading());
+      if (await _searchRepository.createBookOrderPay(params)) {
+        emit((ItemsSearchUploaded()));
+      } else {
+        emit(SearchError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(SearchError("Error submitting data"));
+    }
+    loadData(int.parse(bookOrder.studentInfo.idStudent));
+  }
+
   @override
   void onChange(Change<SearchState> change) {
     super.onChange(change);
     print(change.nextState);
   }
-
 }

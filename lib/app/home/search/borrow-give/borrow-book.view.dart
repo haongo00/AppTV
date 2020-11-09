@@ -1,7 +1,6 @@
 import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

@@ -3,8 +3,11 @@ import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/intl.dart';
+
 
 class GiveBookView extends StatefulWidget {
   final SearchCubit cubit;
@@ -14,6 +17,7 @@ class GiveBookView extends StatefulWidget {
 }
 
 class _GiveBookView extends State<GiveBookView> {
+  String date;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -24,7 +28,18 @@ class _GiveBookView extends State<GiveBookView> {
         backgroundColor: Color(0xff068189),
         title: Text("Thông tin mượn/trả"),
       ),
-      body: _getBody(),
+      body: BlocBuilder<SearchCubit,SearchState> (
+        cubit: widget.cubit,
+        buildWhen: (prev,now) => now is SearchLoading || now is ItemsBookOrderInfo,
+        builder: (context,state) {
+          if (state is ItemsSearchLoaded || state is ItemsBookOrderInfo) {
+            return _getBody();
+          } else if (state is SearchError) {
+            return Center(child: Text(state.message));
+          } else {
+            return Center(child: CupertinoActivityIndicator(radius: 15));
+          }
+        }),
     );
   }
 
@@ -39,9 +54,21 @@ class _GiveBookView extends State<GiveBookView> {
           _textFiled('Giá sách'),
           _textFiled('Ngày mượn'),
           _textFiled('TV Ghi mượn'),
-          _textFiled('Ngày trả'),
+          FormBuilderDateTimePicker(
+            attribute: 'expiry_date',
+            inputType: InputType.date,
+            initialDate: DateTime.now(),
+            initialValue: (widget.cubit.bookOrderInfo.payDate == null) ? null : DateTime.parse(widget.cubit.bookOrderInfo.payDate),
+            decoration: InputDecoration(labelText: "Ngày trả", suffixIcon: Icon(Icons.calendar_today)),
+            format: DateFormat("dd-MM-yyyy"),
+            readOnly: (widget.cubit.bookOrderInfo.payDate == null) ? false : true,
+            onChanged: (value) {
+              date = value.toString();
+            },
+          ),
           _textFiled('Tv Ghi trả'),
           SizedBox(height: SizeConfig.blockSizeVertical * 10),
+          (widget.cubit.bookOrderInfo.payDate != null) ? SizedBox() :
           Row(
             children: [
               SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
@@ -66,6 +93,7 @@ class _GiveBookView extends State<GiveBookView> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       onPressed: () {
+                        widget.cubit.createBookPay(widget.cubit.bookOrderInfo.bookdetail.idBookDetails, date);
                         Modular.navigator.pop();
                       },
                       child: Text(
@@ -91,7 +119,7 @@ class _GiveBookView extends State<GiveBookView> {
         (_tile == "Ngày mượn") ? "${widget.cubit.bookOrderInfo.borrowDate}" :
         (_tile == "TV Ghi mượn") ? "${widget.cubit.bookOrderInfo.userCheckIn.name} - ${widget.cubit.bookOrderInfo.userCheckIn.GenCode}" :
         (_tile == "Ngày trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : (widget.cubit.bookOrderInfo.payDate)}" :
-        (_tile == "Tv Ghi trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : (widget.cubit.bookOrderInfo.userCheckOut.name)}"
+        (_tile == "Tv Ghi trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : "${widget.cubit.bookOrderInfo.userCheckOut.name}${" - ${widget.cubit.bookOrderInfo.userCheckOut.GenCode}"}"} "
             : null,
       validators: [
         FormBuilderValidators.required(),
