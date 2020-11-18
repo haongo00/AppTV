@@ -72,6 +72,7 @@ class _BookInfoViewState extends State<BookInfoView> {
           children: [
             FormBuilderTextField(
               attribute: 'sach',
+              readOnly: !_cubit.edit,
               decoration: InputDecoration(labelText: "Mã Sách : "),
               initialValue: "${widget.book.idBook}",
               validators: [
@@ -83,6 +84,7 @@ class _BookInfoViewState extends State<BookInfoView> {
             ),
             FormBuilderTextField(
               attribute: 'sach',
+              readOnly: !_cubit.edit,
               decoration: InputDecoration(labelText: "Tên Sách : "),
               initialValue: "${widget.book.name}",
               validators: [
@@ -94,6 +96,7 @@ class _BookInfoViewState extends State<BookInfoView> {
             ),
             FormBuilderTextField(
               attribute: 'sach',
+              readOnly: !_cubit.edit,
               decoration: InputDecoration(labelText: "Giá Sách : "),
               initialValue: "${widget.book.price}",
               validators: [
@@ -105,6 +108,7 @@ class _BookInfoViewState extends State<BookInfoView> {
             ),
             FormBuilderTextField(
               attribute: 'sach',
+              readOnly: !_cubit.edit,
               decoration: InputDecoration(labelText: "Số lượng : "),
               initialValue: "${widget.book.amount}",
               validators: [

@@ -23,11 +23,11 @@ class _LibraryState extends State<Library> {
                 Expanded(
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 20,
-                    height: SizeConfig.blockSizeVertical * 15,
+                    height: SizeConfig.blockSizeVertical * 20,
                     padding: EdgeInsets.only(left: 10.0, top: 10.0),
                     decoration: BoxDecoration(
-                      color: Color(0xff068189).withOpacity(0.8),
                       borderRadius: BorderRadius.circular(15.0),
+                      color: Colors.teal
                     ),
                     child: thongKe(),
                   ),
@@ -36,46 +36,73 @@ class _LibraryState extends State<Library> {
                 Expanded(
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 50,
-                    height: SizeConfig.blockSizeVertical * 15,
+                    height: SizeConfig.blockSizeVertical * 20,
                     child: Column(
                       children: [
                         Expanded(
-                            child: FlatButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                Modular.link.pushNamed(HomeModule.inputView);
-                              },
-                              child: Container(
-                                width: SizeConfig.blockSizeHorizontal * 50,
-                                height: SizeConfig.blockSizeVertical * 7,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.7),
+                          child: FlatButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Modular.link.pushNamed(HomeModule.inputView);
+                            },
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal * 50,
+                              height: SizeConfig.blockSizeVertical * 20,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Text("Nhập liệu",
-                                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [Colors.blue, Colors.green])),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 25),
+                                      child: Image.asset(
+                                        'assets/library/nhaplieu.png',
+                                        height: SizeConfig.blockSizeVertical * 4,
+                                      )),
+                                  Text("Nhập liệu",
+                                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                                ],
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         SizedBox(height: 5.0),
                         Expanded(
-                            child: FlatButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                Modular.link.pushNamed(HomeModule.member);
-                              },
-                              child: Container(
-                                width: SizeConfig.blockSizeHorizontal * 50,
-                                height: SizeConfig.blockSizeVertical * 7,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
+                          child: FlatButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Modular.link.pushNamed(HomeModule.member);
+                            },
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal * 50,
+                              height: SizeConfig.blockSizeVertical * 20,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Text("Thành viên",
-                                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [Colors.teal, Colors.blue])),
+                              child: Row(
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      child: Image.asset(
+                                        'assets/library/thanhvien.png',
+                                        height: SizeConfig.blockSizeVertical * 5,
+                                      )),
+                                  Text("Thành viên",
+                                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                                ],
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -100,10 +127,28 @@ class _LibraryState extends State<Library> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Text("Thống Kê", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-        Text("Tuần này : ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-        Text("Mượn : ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-        Text("Trả : ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                  child: Image.asset('assets/library/thongke.png', height: SizeConfig.blockSizeVertical * 10)),
+            ),
+            Text("Thống Kê", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(width: 5.0),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Text("Tuần này  ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 50.0),
+          child: Text("Mượn : 50", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 50.0),
+          child: Text("Trả : 20", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
       ],
     );
   }
@@ -127,14 +172,14 @@ class _LibraryState extends State<Library> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sinh vien  18020916 da muon sach 1581212',style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
-                    Text('12 : 20 PM  -  30/10/2020',style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
+                    Text('Sinh vien  18020916 da muon sach 1581212',
+                        style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
+                    Text('12 : 20 PM  -  30/10/2020',
+                        style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
                   ],
                 ),
               ),
-              onPressed: () {
-
-              },
+              onPressed: () {},
             ),
           );
         })
