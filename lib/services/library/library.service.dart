@@ -34,4 +34,7 @@ class LibraryService {
   static Future<dynamic> createUser(Map<String, dynamic> params) {
     return Application.api.post('/user/create', params);
   }
+  static Future<dynamic> updateUser(Map<String, dynamic> params) {
+    return Application.api.put('/user/update', params);
+  }
 }

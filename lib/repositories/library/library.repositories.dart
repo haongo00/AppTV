@@ -14,6 +14,7 @@ class LibraryRepository {
   }
   Future<ListMember> fetchListMember(Map<String, dynamic> params) async {
     final response = await LibraryService.getListMember(params);
+    print(response);
     return (response.statusCode == 200)
         ? ListMember.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;

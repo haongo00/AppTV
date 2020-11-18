@@ -104,62 +104,66 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
               child: Column(
                 children: [
                   ...List.generate(_cubit.listBook.length, (index) {
-                    return Card(
-                      elevation: 5.0,
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(15.0),
-                      // ),
-                      margin: EdgeInsets.only(top: 8.0, right: 15.0, left: 15.0),
-                      color: (index % 2 == 0) ? Colors.white.withOpacity(0.8) : Color(0xff068189).withOpacity(0.8),
-                      child: FlatButton(
-                        padding: EdgeInsets.zero,
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(15.0),
-                        // ),
-                        onPressed: () {
-                          Modular.link
-                              .pushNamed(HomeModule.bookInfo, arguments: _cubit.listBook.elementAt(index))
-                              .then((value) {
-                            _cubit.loadData();
-                          });
-                        },
-                        onLongPress: () => _showAlert(context, index),
-                        child: Container(
-                          height: SizeConfig.blockSizeVertical * 11,
-                          margin: EdgeInsets.all(15),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: SizeConfig.blockSizeHorizontal * 3,
-                                backgroundImage: NetworkImage(
-                                    'https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
-                                backgroundColor: Colors.transparent,
-                              ),
-                              SizedBox(width: 20.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("${_cubit.listBook[index].idBook}",
+                    return FlatButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        Modular.link
+                            .pushNamed(HomeModule.bookInfo, arguments: _cubit.listBook.elementAt(index))
+                            .then((value) {
+                          _cubit.loadData();
+                        });
+                      },
+                      onLongPress: () => _showAlert(context, index),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        height: SizeConfig.blockSizeVertical * 15,
+                        margin: EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [Colors.teal, Color(0xff068189)])),
+                        child: Row(
+                          children: [
+                            // CircleAvatar(
+                            //   radius: SizeConfig.blockSizeHorizontal * 5,
+                            //   backgroundImage: NetworkImage(
+                            //       'https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
+                            //   backgroundColor: Colors.transparent,
+                            // ),
+                            SizedBox(width: 20.0),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("BookID : ${_cubit.listBook[index].idBook}",
+                                    style:
+                                        TextStyle(color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 20)),
+                                SizedBox(height: 10.0),
+                                Container(
+                                  width: SizeConfig.blockSizeHorizontal * 65,
+                                  child: Text("Book : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
                                       style: TextStyle(
-                                          color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 16)),
-                                  SizedBox(height: 10.0),
-                                  Container(
-                                    width: SizeConfig.blockSizeHorizontal * 65,
-                                    child: Text(
-                                        "${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                        style: TextStyle(
-                                            color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis),
+                                          color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 15),
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                                SizedBox(height: 10.0),
+                                Container(
+                                  margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*50),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    color: Colors.blue
                                   ),
-                                  SizedBox(height: 10.0),
-                                  Text("${_cubit.listBook[index].price}",
+                                  width: SizeConfig.blockSizeHorizontal * 30,
+                                  height: SizeConfig.blockSizeVertical * 4,
+                                  alignment: Alignment.center,
+                                  child: Text("Giá : ${_cubit.listBook[index].price} VNĐ",
                                       style: TextStyle(
-                                          color: (index % 2 == 0) ? Colors.black : Colors.white, fontSize: 13)),
-                                ],
-                              ),
-                            ],
-                          ),
+                                          color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 13)),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -177,33 +181,33 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
     showCupertinoModalPopup(
         context: context,
         builder: (context) => CupertinoActionSheet(
-          message: Text(
-            "Do you want to Delete ?",
-            style: TextStyle(fontWeight: FontWeight.w400),
-          ),
-          actions: <Widget>[
-            CupertinoActionSheetAction(
-              child: Text(
-                "Delete",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              message: Text(
+                "Do you want to Delete ?",
+                style: TextStyle(fontWeight: FontWeight.w400),
               ),
-              isDestructiveAction: true,
-              onPressed: () {
-                _cubit.deleteBook(_cubit.listBook[index].idBook);
-                Navigator.pop(context);
-              },
-            )
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: Text(
-              "Cancel",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ));
+              actions: <Widget>[
+                CupertinoActionSheetAction(
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  ),
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    _cubit.deleteBook(_cubit.listBook[index].idBook);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ));
   }
 
   @override

@@ -194,6 +194,16 @@ class _MemberInfoViewState extends State<MemberInfoView> {
         SizedBox(width: SizeConfig.blockSizeHorizontal * 30),
         FlatButton(
             onPressed: () {
+              widget.cubit.updateUser(
+                name: widget.member.name,
+                date: widget.member.born,
+                gen: widget.member.GenCode,
+                gender: widget.member.gender,
+                user: widget.member.userName,
+                pass: widget.member.userName,
+                departmentId: departmentId,
+                roleId:  roleId
+              );
               Modular.navigator.pop();
             },
             child: Text("Save", style: TextStyle(color: Colors.teal)))

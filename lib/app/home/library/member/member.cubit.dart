@@ -1,11 +1,12 @@
-
 import 'package:app_tv/model/member/list_member.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
 import 'package:app_tv/services/library/library.service.dart';
 import 'package:app_tv/utils/exception.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 part 'member.state.dart';
 
@@ -26,7 +27,6 @@ class MemberCubit extends Cubit<MemberState> {
       emit(MemberLoading());
       ListMember _member = await _libraryRepository.fetchListMember(params);
       member = _member.result;
-      print(member.length);
       emit(ItemsMemberLoaded(member));
     } on NetworkException {
       emit(MemberError("Couldn't fetch data. Is the device online?"));
@@ -45,7 +45,6 @@ class MemberCubit extends Cubit<MemberState> {
     } on NetworkException {
       emit(MemberError("Couldn't fetch data. Is the device online?"));
     }
-    print(roles);
     getDepartment();
   }
 
@@ -60,26 +59,74 @@ class MemberCubit extends Cubit<MemberState> {
     } on NetworkException {
       emit(MemberError("Couldn't fetch data. Is the device online?"));
     }
-    print(departments);
   }
 
-  Future<void> newUser(String name, String date, bool gender, String gen, String user, String pass, int roleId, int departmentId) async {
+  Future<void> newUser(
+      String name, String date, bool gender, String gen, String user, String pass, int roleId, int departmentId) async {
     Map<String, dynamic> params = {
-      "name" : name,
-      "born" : date,
-      "username" : user,
-      "password" : pass,
-      "roleId" : roleId,
-      "departmentId" : departmentId,
-      "avatar" : null
+      "name": name,
+      "born": date,
+      "username": user,
+      "password": pass,
+      "roleId": roleId,
+      "departmentId": departmentId,
+      "avatar": null
     };
-    print(params);
     try {
       emit(MemberLoading());
       if (await _libraryRepository.createUser(params)) {
         emit(ItemsMemberUploaded());
       } else {
         emit(MemberError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(MemberError("Error submitting data"));
+    }
+    loadData();
+  }
+
+  Future<void> updateUser(
+      {String name,
+      String date,
+      bool gender,
+      String gen,
+      String user,
+      String pass,
+      int roleId,
+      int departmentId}) async {
+    Map<String, dynamic> params = {
+      "id" : 13,
+      "name": name,
+      "roleId": roleId,
+      "departmentId": departmentId,
+    };
+    print(params);
+    try {
+      emit(MemberLoading());
+      final response = await LibraryService.updateUser(params);
+      print(response);
+      if (response.statusCode == 200) {
+        emit(ItemsMemberUploaded());
+        Fluttertoast.showToast(
+          msg: "Thành công",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      } else {
+        emit(MemberError("Submit failed"));
+        Fluttertoast.showToast(
+          msg: "Không thành công",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
     } on NetworkException {
       emit(MemberError("Error submitting data"));
