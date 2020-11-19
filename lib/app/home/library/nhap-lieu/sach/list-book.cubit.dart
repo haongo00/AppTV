@@ -13,7 +13,7 @@ class ListBookCubit extends Cubit<ListBookState> {
     loadData();
   }
 
-  List<Book> listBook;
+  List<Book> listBook = [];
 
   Future<void> loadData() async {
     Map<String, dynamic> params = {
@@ -24,7 +24,6 @@ class ListBookCubit extends Cubit<ListBookState> {
       emit(ListBookLoading());
       ListBook _listBook = await _libraryRepository.fetchListBook(params);
       listBook = _listBook.result;
-      print(listBook.length);
       emit(ItemsListBookLoaded(listBook));
     } on NetworkException {
       emit(ListBookError("Couldn't fetch data. Is the device online?"));

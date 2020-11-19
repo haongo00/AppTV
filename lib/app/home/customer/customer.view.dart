@@ -33,8 +33,8 @@ class _CustomerState extends State<Customer> {
                             child: FlatButton(
                               onPressed: () { Modular.link.pushNamed(HomeModule.inforView); },
                               child: Container(
-                                width: SizeConfig.blockSizeHorizontal * 50,
-                                height: SizeConfig.blockSizeVertical * 10,
+                                width: SizeConfig.blockSizeHorizontal * 80,
+                                height: SizeConfig.blockSizeVertical * 8,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: Colors.green.withOpacity(0.7),
@@ -45,15 +45,20 @@ class _CustomerState extends State<Customer> {
                             )),
                         SizedBox(height: 5.0),
                         Expanded(
-                            child: Container(
-                              width: SizeConfig.blockSizeHorizontal * 50,
-                              height: SizeConfig.blockSizeVertical * 10,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Text("Thêm thành viên", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                            child: FlatButton(
+                                onPressed: (){
+                                  Modular.link.pushNamed(HomeModule.passView);
+                                },
+                                child: Container(
+                                  width: SizeConfig.blockSizeHorizontal * 80,
+                                  height: SizeConfig.blockSizeVertical * 8,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: Text("Đổi mật khẩu", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                                )
                             )),
                       ],
                     ),
