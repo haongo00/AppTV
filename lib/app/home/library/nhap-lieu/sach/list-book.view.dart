@@ -29,31 +29,18 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
         },
         child: Icon(Icons.add, color: Colors.white),
       ),
-      body: Stack(
-        children: [
-          // Center(
-          //   child: Opacity(
-          //     opacity: 0.5,
-          //     child: Image.network(
-          //       "https://scontent.fhan2-3.fna.fbcdn.net/v/t31.0-8/11062339_936357076423736_8686865242051210984_o.jpg?_nc_cat=108&ccb=2&_nc_sid=09cbfe&_nc_ohc=KfvB_wquuYoAX_Yu869&_nc_ht=scontent.fhan2-3.fna&oh=906780f218fbf138114378e2ed1b9994&oe=5FBA62D8",
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
-          BlocBuilder<ListBookCubit, ListBookState>(
-              cubit: _cubit,
-              buildWhen: (prev, now) => now is ListBookLoading || now is ItemsListBookLoaded,
-              builder: (context, state) {
-                if (state is ItemsListBookLoaded) {
-                  return _getBody(state);
-                } else if (state is ListBookError) {
-                  return Center(child: Text(state.message));
-                } else {
-                  return Center(child: CupertinoActivityIndicator(radius: 15));
-                }
-              }),
-        ],
-      ),
+      body: BlocBuilder<ListBookCubit, ListBookState>(
+          cubit: _cubit,
+          buildWhen: (prev, now) => now is ListBookLoading || now is ItemsListBookLoaded,
+          builder: (context, state) {
+            if (state is ItemsListBookLoaded) {
+              return _getBody(state);
+            } else if (state is ListBookError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Center(child: CupertinoActivityIndicator(radius: 15));
+            }
+          }),
     );
   }
 
@@ -64,7 +51,6 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
         Container(
           padding: EdgeInsets.only(left: 10.0, right: 5.0),
           width: SizeConfig.blockSizeHorizontal * 80,
-          height: SizeConfig.blockSizeVertical * 5,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.teal, width: 1.0),
@@ -81,16 +67,16 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
           children: [
             Expanded(
               child: Container(
-                color: Colors.green,
+                color: Colors.teal,
                 width: 130,
                 height: 3,
               ),
             ),
-            Text("Tổng số : ${_cubit.listBook.length}",
+            Text("Tổng số : ${_cubit.listBook?.length ?? ""}",
                 style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
             Expanded(
               child: Container(
-                color: Colors.green,
+                color: Colors.teal,
                 width: 135,
                 height: 3,
               ),
@@ -116,52 +102,62 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                       onLongPress: () => _showAlert(context, index),
                       child: Container(
                         padding: EdgeInsets.all(10.0),
-                        height: SizeConfig.blockSizeVertical * 15,
-                        margin: EdgeInsets.all(5.0),
+                        height: SizeConfig.blockSizeVertical * 16,
+                        margin: EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                            border: Border.all(color: Colors.white,width: 2.0),
                             borderRadius: BorderRadius.circular(15.0),
                             gradient: LinearGradient(
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
-                                colors: [Colors.teal, Color(0xff068189)])),
+                                colors: [Colors.teal.withOpacity(0.8), Color(0xff068189).withOpacity(0.8)])),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // CircleAvatar(
-                            //   radius: SizeConfig.blockSizeHorizontal * 5,
-                            //   backgroundImage: NetworkImage(
-                            //       'https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
-                            //   backgroundColor: Colors.transparent,
-                            // ),
-                            SizedBox(width: 20.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("BookID : ${_cubit.listBook[index].idBook}",
-                                    style:
-                                        TextStyle(color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 20)),
-                                SizedBox(height: 10.0),
-                                Container(
-                                  width: SizeConfig.blockSizeHorizontal * 65,
-                                  child: Text("Book : ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                      style: TextStyle(
-                                          color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 15),
-                                      overflow: TextOverflow.ellipsis),
-                                ),
-                                SizedBox(height: 10.0),
-                                Container(
-                                  margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*50),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    color: Colors.blue
+                            Icon(
+                              Icons.menu_book_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            SizedBox(width: 10.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Text("${_cubit.listBook[index].idBook}",
+                                  //     style: TextStyle(color: Colors.white, fontSize: 20)),
+                                  // SizedBox(height: 10.0),
+                                  Expanded(
+                                    child: Container(
+                                      width: SizeConfig.blockSizeHorizontal * 65,
+                                      child: Text(" ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
+                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
                                   ),
-                                  width: SizeConfig.blockSizeHorizontal * 30,
-                                  height: SizeConfig.blockSizeVertical * 4,
-                                  alignment: Alignment.center,
-                                  child: Text("Giá : ${_cubit.listBook[index].price} VNĐ",
-                                      style: TextStyle(
-                                          color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 13)),
-                                ),
-                              ],
+                                  SizedBox(height: 10.0),
+                                  Container(
+                                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 50),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15.0), color: Color(0xff068189)),
+                                    width: SizeConfig.blockSizeHorizontal * 30,
+                                    alignment: Alignment.center,
+                                    child: Text("Giá : ${_cubit.listBook[index].price} VNĐ",
+                                        style: TextStyle(color: Colors.white, fontSize: 13)),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

@@ -19,9 +19,11 @@ class _InputViewState extends State<InputView> {
             leading: BackButton(
               color: Color(0xff068189),
             ),
-            elevation: 0,
-            toolbarHeight: SizeConfig.blockSizeVertical * 12,
+            elevation: 0.0,
+            title: Text("Thư viện",style: TextStyle(color: Colors.teal,fontWeight: FontWeight.bold)),
+            toolbarHeight: SizeConfig.blockSizeVertical * 10,
             backgroundColor: Colors.white,
+            centerTitle: true,
             bottom: TabBar(
               unselectedLabelColor: Colors.grey,
               indicatorSize: TabBarIndicatorSize.label,

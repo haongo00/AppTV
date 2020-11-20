@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class LibraryRepository {
   Future<ListBook> fetchListBook(Map<String, dynamic> params) async {
     final response = await LibraryService.getListBook(params);
+    print(response);
     return (response.statusCode == 200)
         ? ListBook.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;

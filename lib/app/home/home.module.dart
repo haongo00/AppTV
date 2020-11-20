@@ -11,6 +11,7 @@ import 'package:app_tv/app/home/search/borrow-give/borrow-book.view.dart';
 import 'package:app_tv/app/home/search/borrow-give/give-book.view.dart';
 import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/app/information/infor.view.dart';
+import 'package:app_tv/app/information/pass.view.dart';
 import 'package:app_tv/model/library/list_book.dart';
 import 'package:app_tv/model/member/list_member.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -30,6 +31,7 @@ class HomeModule extends ChildModule {
   static String search = "/search";
   static String bookInfo = "/book-info";
   static String postStatus = "/post-status";
+  static String passView = "/pass";
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -40,9 +42,7 @@ class HomeModule extends ChildModule {
   List<ModularRouter> get routers => [
         ModularRouter('/', child: (context, args) => HomeWidget()),
         ModularRouter(inputView, child: (context, args) => InputView()),
-        ModularRouter(newBook,
-            child: (context, args) =>
-                NewBookView(cubit: args.data as ListBookCubit)),
+        ModularRouter(newBook, child: (context, args) => NewBookView(cubit: args.data as ListBookCubit)),
         ModularRouter(inforView, child: (context, args) => InforView()),
         ModularRouter(member, child: (context, args) => MemberView()),
         ModularRouter(postStatus, child: (context, args) => PostView()),
@@ -50,7 +50,7 @@ class HomeModule extends ChildModule {
         ModularRouter(memberInfo, child: (context, args) => MemberInfoView(member: args.data as Member)),
         ModularRouter(borrowBook, child: (context, args) => BorrowBookView(cubit: args.data as SearchCubit)),
         ModularRouter(giveBook, child: (context, args) => GiveBookView(cubit: args.data as SearchCubit)),
-        ModularRouter(bookInfo,
-            child: (context, args) => BookInfoView(book: args.data as Book)),
+        ModularRouter(bookInfo, child: (context, args) => BookInfoView(book: args.data as Book)),
+        ModularRouter(passView, child: (context, args) => PassView()),
       ];
 }

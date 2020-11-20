@@ -17,16 +17,18 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: true,
       child: DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: SizeConfig.blockSizeVertical*10,
+            toolbarHeight: SizeConfig.blockSizeVertical*7,
             backgroundColor: Colors.white,
             bottom: TabBar(
               labelPadding: EdgeInsets.zero,
               isScrollable: true,
               indicatorWeight: 3.0,
+
               unselectedLabelColor: Colors.grey,
               labelColor: Color(0xff068189),
               indicatorColor: Color(0xff068189),
@@ -34,7 +36,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Tab(
                     icon: SizedBox(
                       width: SizeConfig.blockSizeHorizontal*20,
-                      height: SizeConfig.blockSizeVertical*10,
+                      height: SizeConfig.blockSizeVertical*7,
                       child: Icon(
                         Icons.house,
                         size: 30,
@@ -44,7 +46,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Tab(
                     icon: SizedBox(
                       width: SizeConfig.blockSizeHorizontal*20,
-                      height: SizeConfig.blockSizeVertical*10,
+                      height: SizeConfig.blockSizeVertical*7,
                       child: Icon(
                         Icons.library_books,
                         size: 30,
@@ -54,7 +56,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Tab(
                     icon: SizedBox(
                       width: SizeConfig.blockSizeHorizontal*20,
-                      height: SizeConfig.blockSizeVertical*10,
+                      height: SizeConfig.blockSizeVertical*7,
                       child: Icon(
                         Icons.notifications_none_outlined,
                         size: 30,
@@ -64,7 +66,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Tab(
                     icon: SizedBox(
                       width: SizeConfig.blockSizeHorizontal*20,
-                      height: SizeConfig.blockSizeVertical*10,
+                      height: SizeConfig.blockSizeVertical*7,
                       child: Icon(
                         Icons.search,
                         size: 30,
@@ -74,7 +76,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Tab(
                     icon: SizedBox(
                       width: SizeConfig.blockSizeHorizontal*20,
-                      height: SizeConfig.blockSizeVertical*10,
+                      height: SizeConfig.blockSizeVertical*7,
                       child: Icon(
                         Icons.list,
                         size: 30,

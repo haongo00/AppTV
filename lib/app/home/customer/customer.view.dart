@@ -1,6 +1,6 @@
 import 'package:app_tv/app/app.module.dart';
-import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,68 +13,94 @@ class Customer extends StatefulWidget {
 }
 
 class _CustomerState extends State<Customer> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal * 50,
-                    height: SizeConfig.blockSizeVertical * 20,
-                    child: Column(
-                      children: [
-                        Expanded(
-                            child: FlatButton(
-                              onPressed: () { Modular.link.pushNamed(HomeModule.inforView); },
-                              child: Container(
-                                width: SizeConfig.blockSizeHorizontal * 50,
-                                height: SizeConfig.blockSizeVertical * 10,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.7),
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Text("Thông tin cá nhân", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                              ),
-                            )),
-                        SizedBox(height: 5.0),
-                        Expanded(
-                            child: Container(
-                              width: SizeConfig.blockSizeHorizontal * 50,
-                              height: SizeConfig.blockSizeVertical * 10,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Text("Thêm thành viên", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                            )),
-                      ],
-                    ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.brightness_1,
+                    color: Colors.grey,
+                    size: 100,
                   ),
-                )
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Divider(
-              height: 5.0,
-              color: Colors.grey,
-              thickness: 2.0,
-            ),
-            FlatButton(
-                color: Colors.red,
+                  Text("${Application.sharePreference.get("userRole")}")
+                ],
+              ),
+              FlatButton(
                 onPressed: () {
-                  Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+                  Modular.link.pushNamed(HomeModule.inforView);
                 },
-                child: Text("LogOut",style: TextStyle(color: Colors.white))),
-          ],
-        ),
+                child: Container(
+                  width: SizeConfig.blockSizeHorizontal * 80,
+                  height: SizeConfig.blockSizeVertical * 8,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.teal.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Text("Thông tin cá nhân",
+                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+              ),
+              SizedBox(height: 5.0),
+            ],
+          ),
+          Column(
+            children: [
+              FlatButton(
+                color: Colors.teal,
+                  onPressed: () {
+                    Modular.link.pushNamed(HomeModule.passView);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.vpn_key_rounded,
+                        color: Colors.white,
+                        size: 50,
+                      ),
+                      SizedBox(width: 30),
+                      Text("Đổi Mật Khẩu",
+                          style: TextStyle(color: Colors.white)),
+                    ],
+                  )),
+              SizedBox(height: 5.0),
+              // Divider(
+              //   height: 5.0,
+              //   color: Colors.grey,
+              //   thickness: 2.0,
+              // ),
+              FlatButton(
+                  color: Colors.teal,
+                  onPressed: () {
+                    Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        color: Colors.white,
+                        size: 50,
+                      ),
+                      SizedBox(width: 30),
+                      Text("Đăng Xuất", style: TextStyle(color: Colors.white)),
+                    ],
+                  )),
+              SizedBox(height: 5.0),
+              // Divider(
+              //   height: 5.0,
+              //   color: Colors.grey,
+              //   thickness: 2.0,
+              // ),
+            ],
+          )
+        ],
       ),
     );
   }
