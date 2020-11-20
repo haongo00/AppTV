@@ -102,7 +102,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                       onLongPress: () => _showAlert(context, index),
                       child: Container(
                         padding: EdgeInsets.all(10.0),
-                        height: SizeConfig.blockSizeVertical * 15,
+                        height: SizeConfig.blockSizeVertical * 16,
                         margin: EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                             boxShadow: [
@@ -113,6 +113,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                 offset: Offset(0, 3), // changes position of shadow
                               ),
                             ],
+                            border: Border.all(color: Colors.white,width: 2.0),
                             borderRadius: BorderRadius.circular(15.0),
                             gradient: LinearGradient(
                                 begin: Alignment.topRight,
@@ -121,12 +122,6 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // CircleAvatar(
-                            //   radius: SizeConfig.blockSizeHorizontal * 4,
-                            //   backgroundImage: NetworkImage(
-                            //       'https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png'),
-                            //   backgroundColor: Colors.transparent,
-                            // ),
                             Icon(
                               Icons.menu_book_rounded,
                               color: Colors.white,
@@ -136,30 +131,30 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("${_cubit.listBook[index].idBook}",
-                                      style:
-                                          TextStyle(color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 20)),
-                                  SizedBox(height: 10.0),
-                                  Container(
-                                    width: SizeConfig.blockSizeHorizontal * 65,
-                                    child: Text(" ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                        style: TextStyle(
-                                            color: (index % 2 == 0) ? Colors.black : Colors.black, fontSize: 15),maxLines: 3,
-                                        overflow: TextOverflow.ellipsis),
+                                  // Text("${_cubit.listBook[index].idBook}",
+                                  //     style: TextStyle(color: Colors.white, fontSize: 20)),
+                                  // SizedBox(height: 10.0),
+                                  Expanded(
+                                    child: Container(
+                                      width: SizeConfig.blockSizeHorizontal * 65,
+                                      child: Text(" ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
+                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
                                   ),
                                   SizedBox(height: 10.0),
                                   Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*50),
+                                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 50),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      color: Color(0xff068189)
-                                    ),
+                                        borderRadius: BorderRadius.circular(15.0), color: Color(0xff068189)),
                                     width: SizeConfig.blockSizeHorizontal * 30,
                                     alignment: Alignment.center,
                                     child: Text("Giá : ${_cubit.listBook[index].price} VNĐ",
-                                        style: TextStyle(
-                                            color: (index % 2 == 0) ? Colors.white : Colors.white, fontSize: 13)),
+                                        style: TextStyle(color: Colors.white, fontSize: 13)),
                                   ),
                                 ],
                               ),
