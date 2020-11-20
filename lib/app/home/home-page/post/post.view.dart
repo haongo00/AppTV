@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/model/user_infor/user_infor.dart';
+import 'package:app_tv/repositories/post/post.repository.dart';
 import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/api.dart';
 import 'package:app_tv/utils/screen_config.dart';
@@ -15,6 +16,9 @@ import 'package:http_parser/src/media_type.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class PostView extends StatefulWidget {
+  final PostCubit cubit;
+
+  const PostView({this.cubit}) : super();
   @override
   _PostViewState createState() => _PostViewState();
 }
@@ -22,6 +26,7 @@ class PostView extends StatefulWidget {
 class _PostViewState extends State<PostView> {
   String content;
   UserInfor _userInfor = Application.sharePreference.getUserInfor();
+
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +207,7 @@ class _PostViewState extends State<PostView> {
       "photo": multipartFile,
     });
     var response = await Application.api.dio.post("${API.baseUrl}/poster/create", data: formData);
+    widget.cubit.loadData();
     return response.data['status'] == 200 ? true : false;
   }
 }
