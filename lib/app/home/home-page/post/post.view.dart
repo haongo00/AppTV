@@ -126,7 +126,7 @@ class _PostViewState extends State<PostView> {
                         icon: Icon(Icons.cancel_schedule_send),
                         iconSize: 30,
                         onPressed: () async {
-                          false ? Modular.navigator.pop() : {
+                          await uploadStatus() ? Modular.navigator.pop() : {
                             Fluttertoast.showToast(
                               msg: "Thất bại",
                               toastLength: Toast.LENGTH_SHORT,
