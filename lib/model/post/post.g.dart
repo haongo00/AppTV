@@ -6,6 +6,19 @@ part of 'post.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+ListPost _$ListPostFromJson(Map<String, dynamic> json) {
+  return ListPost(
+    result: (json['result'] as List)
+        ?.map(
+            (e) => e == null ? null : Post.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$ListPostToJson(ListPost instance) => <String, dynamic>{
+      'result': instance.result?.map((e) => e?.toJson())?.toList(),
+    };
+
 Post _$PostFromJson(Map<String, dynamic> json) {
   return Post(
     id: json['id'] as int,
@@ -24,7 +37,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'id': instance.id,
       'urlAssets': instance.urlAssets,
-      'userCreate': instance.userCreate?.toJson(),
+      'userCreate': instance.userCreate,
       'content': instance.content,
       'createAt': instance.createAt,
       'likes': instance.likes,

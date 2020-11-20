@@ -3,6 +3,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'post.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
+class ListPost {
+  List<Post> result;
+
+  ListPost({this.result});
+
+  factory ListPost.fromJson(Map<String, dynamic> json) => _$ListPostFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ListPostToJson(this);
+}
+
+@JsonSerializable(nullable: true)
 class Post {
   int id;
   String urlAssets;

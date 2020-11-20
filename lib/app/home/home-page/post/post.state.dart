@@ -27,14 +27,14 @@ class PostUploading extends PostState {
   List<Object> get props => [];
 }
 
-// class ItemsPostLoaded extends PostState {
-//   final List<Post> Post;
-//
-//   ItemsPostLoaded(this.Post);
-//
-//   @override
-//   List<Object> get props => [Post];
-// }
+class ItemsPostLoaded extends PostState {
+  final List<Post> listPost;
+
+  ItemsPostLoaded(this.listPost);
+
+  @override
+  List<Object> get props => [listPost];
+}
 
 class ItemsPostUploading extends PostState {
   const ItemsPostUploading();

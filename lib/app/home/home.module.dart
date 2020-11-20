@@ -1,3 +1,4 @@
+import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/app/home/home.view.dart';
 import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
@@ -45,7 +46,7 @@ class HomeModule extends ChildModule {
         ModularRouter(newBook, child: (context, args) => NewBookView(cubit: args.data as ListBookCubit)),
         ModularRouter(inforView, child: (context, args) => InforView()),
         ModularRouter(member, child: (context, args) => MemberView()),
-        ModularRouter(postStatus, child: (context, args) => PostView()),
+        ModularRouter(postStatus, child: (context, args) => PostView(cubit: args.data as PostCubit)),
         ModularRouter(newMember, child: (context, args) => NewMemberView(cubit: args.data as MemberCubit)),
         ModularRouter(memberInfo, child: (context, args) => MemberInfoView(member: args.data as Member)),
         ModularRouter(borrowBook, child: (context, args) => BorrowBookView(cubit: args.data as SearchCubit)),

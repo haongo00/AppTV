@@ -1,7 +1,11 @@
+import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/app/home/home.module.dart';
+import 'package:app_tv/model/post/post.dart';
+import 'package:app_tv/repositories/post/post.repository.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  PostCubit _cubit = PostCubit(PostRepository());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,26 +23,41 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff068189),
         foregroundColor: Colors.black,
         onPressed: () {
-          Modular.link.pushNamed(HomeModule.postStatus);
+          Modular.link.pushNamed(HomeModule.postStatus,arguments: _cubit);
           // Respond to button press
         },
         child: Icon(Icons.add, color: Colors.white),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _post(),
-          ],
-        ),
-      ),
+      body: BlocBuilder<PostCubit, PostState>(
+          cubit: _cubit,
+          buildWhen: (prev, now) => now is PostLoading || now is ItemsPostLoaded ,
+          builder: (context, state) {
+            if (state is ItemsPostLoaded) {
+              return _body();
+            } else if (state is PostError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Center(child: CupertinoActivityIndicator(radius: 15));
+            }
+          }),
     );
   }
 
-  Widget _post() {
+  Widget _body() {
+    return SingleChildScrollView(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ...List.generate(_cubit.listPost.length, (index) {
+          return _post(_cubit.listPost[index]);
+        })
+      ],
+    ));
+  }
+
+  Widget _post(Post _post) {
     return Container(
         width: double.infinity,
-        height: SizeConfig.blockSizeVertical * 50,
         margin: EdgeInsets.all(10.0),
         child: Card(
           margin: EdgeInsets.zero,
@@ -58,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                       margin: EdgeInsets.all(5.0),
                       child: ClipOval(
                         child: Image.network(
-                          'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg',
+                          '${_post.userCreate.avatar ?? ''}',
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -67,11 +88,11 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Nguyen Van A',
+                          '${_post.userCreate.name ?? ''}',
                           style: TextStyle(fontSize: 18),
                         ),
                         Text(
-                          '28/10/2020',
+                          '${_post.createAt ?? ''}',
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                       ],
@@ -82,24 +103,25 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Text(
-                  'Status ....',
+                  '${_post.content ?? ''}',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(8.0),
-                height: SizeConfig.blockSizeVertical * 30,
-                width: double.infinity,
-                child: Image.network(
-                  'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg',
-                  fit: BoxFit.fill,
-                ),
-              )
+              _post.urlAssets != null
+                  ? Container(
+                      padding: EdgeInsets.all(8.0),
+                      height: SizeConfig.blockSizeVertical * 30,
+                      width: double.infinity,
+                      child: Image.network(
+                        '${_post.urlAssets ?? ''}',
+                        fit: BoxFit.fill,
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18.0),
-            border: Border.all(color: Colors.grey, width: 1.5)));
+            borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)));
   }
 }
