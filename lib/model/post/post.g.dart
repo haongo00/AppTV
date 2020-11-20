@@ -17,6 +17,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
     createAt: json['createAt'] as String,
     likes: json['likes'] as int,
     comments: json['comments'] as int,
+    isLike: json['isLike'] as bool,
   );
 }
 
@@ -28,6 +29,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'createAt': instance.createAt,
       'likes': instance.likes,
       'comments': instance.comments,
+      'isLike': instance.isLike,
     };
 
 UserCreate _$UserCreateFromJson(Map<String, dynamic> json) {

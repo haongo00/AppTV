@@ -13,32 +13,30 @@ part 'search.state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   final SearchRepository _searchRepository;
-  SearchCubit(this._searchRepository) : super(SearchInitial()) {
-  }
+
+  SearchCubit(this._searchRepository) : super(SearchInitial()) {}
 
   BookOrder bookOrder;
 
-  Future<void> loadData(int id ) async {
-    Map<String, dynamic> params = {
-      "id" : id
-    };
+  Future<void> loadData(int id) async {
+    Map<String, dynamic> params = {"id": id};
     try {
       emit(SearchLoading());
-       bookOrder = await _searchRepository.fetchBookOrder(params);
-      emit(ItemsSearchLoaded(bookOrder));
+      var response = await _searchRepository.fetchBookOrder(params);
+      if (response != null) {
+        bookOrder = BookOrder.fromJson(response.data['result'] as Map<String, dynamic>);
+        emit(ItemsSearchLoaded(bookOrder));
+      } else {
+        emit(SearchError("Không tìm thấy !!!"));
+      }
     } on NetworkException {
-      emit(SearchError("Couldn't fetch data. Is the device online?"));
+      emit(SearchError("Không tìm thấy !!!"));
     }
-    print(bookOrder.toJson());
   }
 
-  Future<void> newBook(String idBook,String id,int time) async {
+  Future<void> newBook(String idBook, String id, int time) async {
     Map<String, dynamic> params = {
-      "bookOrder": {
-        "idBookdetail" : idBook,
-        "idStudent" : id,
-        "time" : time
-      }
+      "bookOrder": {"idBookdetail": idBook, "idStudent": id, "time": time}
     };
     try {
       emit(SearchLoading());
@@ -52,6 +50,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
     loadData(int.parse(id));
   }
+
   dynamic bookDetail;
 
   Future<void> getBookDetail(String id) async {
@@ -60,7 +59,6 @@ class SearchCubit extends Cubit<SearchState> {
       final response = await SearchService.getBookDetail({"id": id});
       print(response);
       if (response.statusCode == 200 && response.data['status'] != 404) {
-
         bookDetail = response.data['result'];
         emit(ItemsBookDetailLoaded(bookDetail));
         emit(ItemsSearchLoaded(bookOrder));
@@ -80,7 +78,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  BookOrderInfo bookOrderInfo ;
+  BookOrderInfo bookOrderInfo;
 
   Future<void> getBookOrderInfo(int id) async {
     try {
@@ -88,7 +86,7 @@ class SearchCubit extends Cubit<SearchState> {
       final response = await SearchService.getBookOrderInfo({"id": id});
       print(response);
       if (response.statusCode == 200) {
-        bookOrderInfo = BookOrderInfo.fromJson(response.data['result'] as Map<String,dynamic>);
+        bookOrderInfo = BookOrderInfo.fromJson(response.data['result'] as Map<String, dynamic>);
         emit(ItemsBookOrderInfo(bookOrderInfo));
         emit(ItemsSearchLoaded(bookOrder));
       }
@@ -97,12 +95,9 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  Future<void> createBookPay(int idBook,String date) async {
+  Future<void> createBookPay(int idBook, String date) async {
     Map<String, dynamic> params = {
-      "bookOrder" : {
-        "id" : idBook,
-        "payDate" : date
-      }
+      "bookOrder": {"id": idBook, "payDate": date}
     };
     try {
       emit(SearchLoading());

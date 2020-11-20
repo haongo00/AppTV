@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'post.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
@@ -10,15 +11,9 @@ class Post {
   String createAt;
   int likes;
   int comments;
+  bool isLike;
 
-  Post(
-      {this.id,
-        this.urlAssets,
-        this.userCreate,
-        this.content,
-        this.createAt,
-        this.likes,
-        this.comments});
+  Post({this.id, this.urlAssets, this.userCreate, this.content, this.createAt, this.likes, this.comments, this.isLike});
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 
@@ -34,13 +29,7 @@ class UserCreate {
   String genCode;
   bool gender;
 
-  UserCreate(
-      {this.id,
-        this.name,
-        this.department,
-        this.avatar,
-        this.genCode,
-        this.gender});
+  UserCreate({this.id, this.name, this.department, this.avatar, this.genCode, this.gender});
 
   factory UserCreate.fromJson(Map<String, dynamic> json) => _$UserCreateFromJson(json);
 
