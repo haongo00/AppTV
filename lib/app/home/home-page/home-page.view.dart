@@ -1,6 +1,8 @@
+import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,12 +12,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _post(),
-        ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff068189),
+        foregroundColor: Colors.black,
+        onPressed: () {
+          Modular.link.pushNamed(HomeModule.postStatus);
+          // Respond to button press
+        },
+        child: Icon(Icons.add, color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _post(),
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/services/authentication.service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<bool> {
   /// {@macro cubit}
@@ -26,17 +26,15 @@ class LoginCubit extends Cubit<bool> {
 //      }
 //    };
     Map<String, dynamic> params = {
-      "account" : {
-        "username" : _userName,
-        "password" : _password
-      }
+      "account": {"username": _userName, "password": _password}
     };
     final response = await AuthenticationService.login(params);
     if (response.statusCode == 200) {
       var mapResponse = response.data;
-      if(mapResponse["status"] == 200) {
+      if (mapResponse["status"] == 200) {
         print(mapResponse['token']);
         Application.sharePreference
+          ..putObject('userRole', mapResponse['account']['role'] as Map<String, dynamic>)
           ..putString('token', mapResponse['token'].toString());
       }
     }

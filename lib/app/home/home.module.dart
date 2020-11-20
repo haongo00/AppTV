@@ -15,6 +15,8 @@ import 'package:app_tv/model/library/list_book.dart';
 import 'package:app_tv/model/member/list_member.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'home-page/post/post.view.dart';
+
 class HomeModule extends ChildModule {
   static Inject get to => Inject<HomeModule>.of();
   static String inputView = "/input";
@@ -27,6 +29,7 @@ class HomeModule extends ChildModule {
   static String giveBook = "/give";
   static String search = "/search";
   static String bookInfo = "/book-info";
+  static String postStatus = "/post-status";
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -42,6 +45,7 @@ class HomeModule extends ChildModule {
                 NewBookView(cubit: args.data as ListBookCubit)),
         ModularRouter(inforView, child: (context, args) => InforView()),
         ModularRouter(member, child: (context, args) => MemberView()),
+        ModularRouter(postStatus, child: (context, args) => PostView()),
         ModularRouter(newMember, child: (context, args) => NewMemberView(cubit: args.data as MemberCubit)),
         ModularRouter(memberInfo, child: (context, args) => MemberInfoView(member: args.data as Member)),
         ModularRouter(borrowBook, child: (context, args) => BorrowBookView(cubit: args.data as SearchCubit)),
