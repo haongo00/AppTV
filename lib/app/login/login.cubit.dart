@@ -34,7 +34,7 @@ class LoginCubit extends Cubit<bool> {
       if (mapResponse["status"] == 200) {
         print(mapResponse['token']);
         Application.sharePreference
-          ..putObject('userRole', mapResponse['account']['role'] as Map<String, dynamic>)
+          ..putObject('userInfor', mapResponse['account'] as Map<String, dynamic>)
           ..putString('token', mapResponse['token'].toString());
       }
     }

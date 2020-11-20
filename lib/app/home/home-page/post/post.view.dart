@@ -1,11 +1,16 @@
 import 'dart:io';
 
+import 'package:app_tv/model/user_infor/user_infor.dart';
+import 'package:app_tv/routers/application.dart';
+import 'package:app_tv/utils/api.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/src/media_type.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
@@ -15,6 +20,9 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
+  String content;
+  UserInfor _userInfor = Application.sharePreference.getUserInfor();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +68,8 @@ class _PostViewState extends State<PostView> {
                       margin: EdgeInsets.all(5.0),
                       child: ClipOval(
                         child: Image.network(
-                          'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg',
+                          '${_userInfor.avatar ??=
+                          'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg'}',
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -69,7 +78,7 @@ class _PostViewState extends State<PostView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Nguyen Van A',
+                          '${_userInfor.name}',
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
@@ -94,28 +103,43 @@ class _PostViewState extends State<PostView> {
                   ),
                   keyboardType: TextInputType.text,
                   validators: [FormBuilderValidators.required()],
-                  onChanged: (dynamic val) {},
+                  onChanged: (dynamic val) {
+                    content = val.toString();
+                  },
                 ),
               ),
-              images.isNotEmpty ? Container(
+              images.isNotEmpty
+                  ? Container(
                 padding: EdgeInsets.all(8.0),
                 height: SizeConfig.blockSizeVertical * 30,
                 width: double.infinity,
-                child: AssetThumb(asset: images[0], width: 200,
-                    height: 200),
-              ) : SizedBox(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      iconSize: 30,
-                      onPressed: loadAssets),
-                  IconButton(
-                      icon: Icon(Icons.cancel_schedule_send),
-                      iconSize: 30,
-                      onPressed: () {}),
-                ],
+                child: AssetThumb(asset: images[0], width: 200, height: 200),
+              )
+                  : SizedBox(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(icon: Icon(Icons.camera_alt), iconSize: 30, onPressed: loadAssets),
+                    IconButton(
+                        icon: Icon(Icons.cancel_schedule_send),
+                        iconSize: 30,
+                        onPressed: () async {
+                          false ? Modular.navigator.pop() : {
+                            Fluttertoast.showToast(
+                              msg: "Thất bại",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            )
+                          };
+                        }),
+                  ],
+                ),
               )
             ],
           ),
@@ -164,11 +188,20 @@ class _PostViewState extends State<PostView> {
   Future<void> setFile(Asset asset) async {
     ByteData byteData = await asset.getByteData();
     List<int> imageData = byteData.buffer.asUint8List();
-    MultipartFile multipartFile = MultipartFile.fromBytes(
+    multipartFile = MultipartFile.fromBytes(
       imageData,
-      filename: 'delivery.png',
+      filename: 'status.png',
       contentType: MediaType("image", "png"),
     );
     multipartImageList.add(multipartFile);
+  }
+
+  Future<bool> uploadStatus() async {
+    FormData formData = FormData.fromMap(<String, dynamic>{
+      "content": content,
+      "photo": multipartFile,
+    });
+    var response = await Application.api.dio.post("${API.baseUrl}/poster/create", data: formData);
+    return response.data['status'] == 200 ? true : false;
   }
 }

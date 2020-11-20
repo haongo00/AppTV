@@ -102,9 +102,9 @@ class SpUtil {
     return _spf.setStringList(key, value);
   }
 
-  UserInfor getUserInfor(String key) {
+  UserInfor getUserInfor() {
     Map<String, dynamic> userMap;
-    final String userStr = _spf.getString(key);
+    final String userStr = _spf.getString('userInfor');
     if (userStr != null) {
       userMap = jsonDecode(userStr) as Map<String, dynamic>;
     }

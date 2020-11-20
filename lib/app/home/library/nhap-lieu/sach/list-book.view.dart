@@ -17,8 +17,8 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
   ListBookCubit _cubit = ListBookCubit(LibraryRepository());
 
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff068189),
