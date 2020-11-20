@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:app_tv/resources/shared_preferences_keys.dart';
@@ -98,6 +100,25 @@ class SpUtil {
   Future<bool> putStringList(String key, List<String> value) {
     if (_beforeCheck()) return null;
     return _spf.setStringList(key, value);
+  }
+
+  UserInfor getUserInfor(String key) {
+    Map<String, dynamic> userMap;
+    final String userStr = _spf.getString(key);
+    if (userStr != null) {
+      userMap = jsonDecode(userStr) as Map<String, dynamic>;
+    }
+
+    if (userMap != null) {
+      final UserInfor user = UserInfor.fromJson(userMap);
+      return user;
+    }
+    return null;
+  }
+
+  Future<bool> putObject(String key, Map<String, dynamic> value) {
+    if (_beforeCheck()) return null;
+    return _spf.setString(key, jsonEncode(value));
   }
 
   dynamic getDynamic(String key) {

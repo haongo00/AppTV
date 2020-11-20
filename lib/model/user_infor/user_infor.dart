@@ -1,0 +1,65 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'user_infor.g.dart';
+
+@JsonSerializable(nullable: true, explicitToJson: true)
+class UserInfor {
+  int id;
+  String name;
+  String born;
+  Role role;
+  Department department;
+  String avatar;
+  String genCode;
+  bool gender;
+
+  UserInfor(
+      {this.id,
+        this.name,
+        this.born,
+        this.role,
+        this.department,
+        this.avatar,
+        this.genCode,
+        this.gender});
+
+  factory UserInfor.fromJson(Map<String, dynamic> json) => _$UserInforFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserInforToJson(this);
+}
+@JsonSerializable(nullable: true)
+class Role {
+  int id;
+  String name;
+  String code;
+  bool isSendEmail;
+  bool isCreateOrEditSheet;
+  bool isCreateOrEditBook;
+  bool isCreateOrEditUser;
+  bool isCreateOrEditStudent;
+
+  Role(
+      {this.id,
+        this.name,
+        this.code,
+        this.isSendEmail,
+        this.isCreateOrEditSheet,
+        this.isCreateOrEditBook,
+        this.isCreateOrEditUser,
+        this.isCreateOrEditStudent});
+
+  factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RoleToJson(this);
+}
+@JsonSerializable(nullable: true)
+class Department {
+  int id;
+  String name;
+  String code;
+
+  Department({this.id, this.name, this.code});
+
+  factory Department.fromJson(Map<String, dynamic> json) => _$DepartmentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DepartmentToJson(this);
+}

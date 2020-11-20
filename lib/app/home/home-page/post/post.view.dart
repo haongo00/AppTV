@@ -86,7 +86,7 @@ class _PostViewState extends State<PostView> {
                   style: TextStyle(fontSize: 21),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Status ...",
+                    hintText: "Bạn đang nghĩ gì !!!",
                     hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
@@ -97,13 +97,13 @@ class _PostViewState extends State<PostView> {
                   onChanged: (dynamic val) {},
                 ),
               ),
-              Container(
+              images.isNotEmpty ? Container(
                 padding: EdgeInsets.all(8.0),
                 height: SizeConfig.blockSizeVertical * 30,
                 width: double.infinity,
                 child: AssetThumb(asset: images[0], width: 200,
                     height: 200),
-              ),
+              ) : SizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -151,12 +151,14 @@ class _PostViewState extends State<PostView> {
     } on Exception catch (e) {
       print(e);
     }
-    if (!mounted) return;
-    images = resultList;
-    multipartImageList.clear();
-    for (var i in images) {
-      setFile(i);
-    }
+    setState(() {
+      if (!mounted) return;
+      images = resultList;
+      multipartImageList.clear();
+      for (var i in images) {
+        setFile(i);
+      }
+    });
   }
 
   Future<void> setFile(Asset asset) async {

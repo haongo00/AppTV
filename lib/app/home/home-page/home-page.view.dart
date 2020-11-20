@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff068189),
         foregroundColor: Colors.black,
         onPressed: () {
-          Modular.link.pushNamed(HomeModule.postStatus,);
+          Modular.link.pushNamed(HomeModule.postStatus);
           // Respond to button press
         },
         child: Icon(Icons.add, color: Colors.white),
