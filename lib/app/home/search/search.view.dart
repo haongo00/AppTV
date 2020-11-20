@@ -30,12 +30,18 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
           ),
           BlocBuilder<SearchCubit, SearchState>(
               cubit: cubit,
-              buildWhen: (prev, now) => now is SearchLoading || now is ItemsSearchLoaded,
+              buildWhen: (prev, now) => now is SearchLoading || now is ItemsSearchLoaded || now is SearchError,
               builder: (context, state) {
                 if (state is ItemsSearchLoaded) {
                   return _info(state);
                 } else if (state is SearchError) {
-                  return Center(child: Text(state.message));
+                  return Center(
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 20),
+                          child: Text(
+                            state.message,
+                            style: TextStyle(fontSize: 25, color: Colors.grey),
+                          )));
                 } else if (state is SearchLoading) {
                   return Center(child: CupertinoActivityIndicator(radius: 15));
                 } else {
