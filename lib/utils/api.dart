@@ -6,13 +6,14 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 
 class API {
+  static String baseUrl = "http://api.tvclubuet.com";
   final Dio dio = Dio(
     BaseOptions(
       connectTimeout: 30000,
       sendTimeout: 30000,
       receiveTimeout: 30000,
       contentType: 'application/json; charset=utf-8',
-      baseUrl: "http://api.tvclubuet.com",
+      baseUrl: baseUrl,
       // baseUrl: "http://192.168.31.61:3001/"
     ),
   );
