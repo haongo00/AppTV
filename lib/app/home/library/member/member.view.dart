@@ -39,7 +39,7 @@ class _MemberViewState extends State<MemberView> {
           backgroundColor: Color(0xff068189),
           foregroundColor: Colors.black,
           onPressed: () {
-            Modular.link.pushNamed(HomeModule.newMember,arguments: cubit);
+            Modular.link.pushNamed(HomeModule.newMember, arguments: cubit);
             // Respond to button press
           },
           child: Icon(Icons.add, color: Colors.white),
@@ -84,7 +84,7 @@ class _MemberViewState extends State<MemberView> {
           children: [
             Expanded(
               child: Container(
-                color: Colors.green,
+                color: Colors.teal,
                 width: 130,
                 height: 3,
               ),
@@ -109,36 +109,43 @@ class _MemberViewState extends State<MemberView> {
                 children: [
                   ...List.generate(cubit.member.length, (index) {
                     return Card(
-                      elevation: 2.0,
+                      elevation: 15.0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Colors.white, width: 1.5),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                      color: (index % 2 == 0) ? Colors.white.withOpacity(0.8) : Color(0xff068189).withOpacity(0.8),
+                      color: Color(0xff068189).withOpacity(0.75),
                       child: FlatButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Container(
                           width: SizeConfig.blockSizeHorizontal * 95,
-                          margin: EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          margin: EdgeInsets.only(left:5, top: 20, right: 20, bottom: 20),
+                          child: Row(
                             children: [
-                              Text('${cubit.member.elementAt(index).name}',
-                                  style: TextStyle(
-                                      color: (index % 2 == 0) ? Colors.black : Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              SizedBox(
-                                height: 10.0,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: CircleAvatar(
+                                  radius: SizeConfig.blockSizeHorizontal * 8,
+                                  backgroundImage: NetworkImage(
+                                      'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg'),
+                                  backgroundColor: Colors.transparent,
+                                ),
                               ),
-                              Text('${cubit.member.elementAt(index).department.name}',
-                                  style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
-                              SizedBox(
-                                height: 10.0,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${cubit.member.elementAt(index).name}',
+                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25)),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                      '${cubit.member.elementAt(index).department.name} --- ${cubit.member.elementAt(index).GenCode}',
+                                      style: TextStyle(color: Colors.white)),
+                                ],
                               ),
-                              Text('${cubit.member.elementAt(index).GenCode}',
-                                  style: TextStyle(color: (index % 2 == 0) ? Colors.black : Colors.white)),
                             ],
                           ),
                         ),
@@ -146,7 +153,9 @@ class _MemberViewState extends State<MemberView> {
                           // Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MemberInfoView(member: cubit.member.elementAt(index),cubit: cubit)),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MemberInfoView(member: cubit.member.elementAt(index), cubit: cubit)),
                           );
                         },
                       ),
