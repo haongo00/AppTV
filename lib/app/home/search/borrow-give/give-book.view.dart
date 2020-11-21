@@ -1,4 +1,5 @@
 
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,12 +23,7 @@ class _GiveBookView extends State<GiveBookView> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Color(0xff068189),
-        title: Text("Thông tin mượn/trả"),
-      ),
+      appBar: staticAppbar(title: "Thông Tin Mượn / Trả"),
       body: BlocBuilder<SearchCubit,SearchState> (
         cubit: widget.cubit,
         buildWhen: (prev,now) => now is SearchLoading || now is ItemsBookOrderInfo,

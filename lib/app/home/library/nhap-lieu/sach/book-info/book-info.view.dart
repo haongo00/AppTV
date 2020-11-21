@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/book-info/book-info.cubit.dart';
 import 'package:app_tv/model/library/list_book.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
@@ -40,20 +41,12 @@ class _BookInfoViewState extends State<BookInfoView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Color(0xff068189),
-          title: Text("Edit Book"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                _cubit.changeEdit();
-              },
-            )
-          ],
-        ),
+        appBar: staticAppbar(action: [IconButton(
+          icon: Icon(Icons.edit,color: Colors.teal),
+          onPressed: () {
+            _cubit.changeEdit();
+          },
+        )],title: "Sửa Sách"),
         body: BlocBuilder<BookInfoCubit,BookInfoState>(
           cubit: _cubit,
           builder: (context,state) {

@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -12,12 +13,7 @@ class _PassViewState extends State<PassView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Color(0xff068189),
-          title: Text("Đổi mật khẩu"),
-        ),
+        appBar: staticAppbar(title: "Đổi Mật Khẩu"),
         body: _getBody(),
       ),
     );

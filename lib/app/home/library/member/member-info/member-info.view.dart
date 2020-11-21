@@ -1,3 +1,5 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
+import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
 import 'package:app_tv/model/member/list_member.dart';
 import 'package:app_tv/utils/screen_config.dart';
@@ -10,6 +12,7 @@ import 'package:intl/intl.dart';
 class MemberInfoView extends StatefulWidget {
   final Member member;
   final MemberCubit cubit;
+
   const MemberInfoView({this.member, this.cubit}) : super();
 
   @override
@@ -21,20 +24,14 @@ class _MemberInfoViewState extends State<MemberInfoView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Color(0xff068189),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                showDialog(context: context, builder: (_) => _edit());
-              },
-            )
-          ],
-          title: Text("Thông Tin Thành Viên"),
-        ),
+        appBar: staticAppbar(action: [
+          IconButton(
+            icon: Icon(Icons.edit, color: Colors.teal),
+            onPressed: () {
+              showDialog(context: context, builder: (_) => _edit());
+            },
+          )
+        ], title: "Thông Tin Thành Viên"),
         body: _getBody(),
       ),
     );
@@ -49,7 +46,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           ),
           Center(
             child: CircleAvatar(
-              radius: SizeConfig.blockSizeHorizontal * 20,
+              radius: SizeConfig.blockSizeHorizontal * 18,
               backgroundImage: NetworkImage('${widget.member.avatar}'),
               backgroundColor: Colors.transparent,
             ),
@@ -62,7 +59,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 width: SizeConfig.blockSizeHorizontal * 50,
                 child: FormBuilderTextField(
                   attribute: 'sach',
-                  decoration: InputDecoration(hintText: "Ahn Hani"),
+                  decoration: InputDecoration(hintText: ""),
+                  readOnly: true,
                   initialValue: "${widget.member.name}",
                   textAlign: TextAlign.center,
                   validators: [
@@ -79,83 +77,81 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.home,
-                        size: 25,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: SizeConfig.blockSizeHorizontal * 3),
-                      Text("${widget.member.department.name}")
-                    ],
+                  _info(
+                    "${widget.member.department.name}",
+                    Icon(
+                      Icons.home,
+                      size: 25,
+                      color: Colors.teal,
+                    ),
                   ),
-                  SizedBox(height: SizeConfig.blockSizeVertical * 3),
-                  Row(
-                    children: <Widget>[
+                  SizedBox(height: SizeConfig.blockSizeVertical * 1),
+                  _info(
+                      "${widget.member.GenCode}",
                       Icon(
                         Icons.support_agent_sharp,
                         size: 25,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: SizeConfig.blockSizeHorizontal * 3),
-                      Text("${widget.member.GenCode}")
-                    ],
-                  ),
+                        color: Colors.redAccent,
+                      )),
                 ],
-              ),
-              SizedBox(
-                width: 50.0,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.person_outline,
-                        size: 25,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: SizeConfig.blockSizeHorizontal * 3),
-                      Text("${widget.member.role?.name}")
-                    ],
+                  _info(
+                    "${widget.member.role?.name}",
+                    Icon(
+                      Icons.person_outline,
+                      size: 25,
+                      color: Colors.orange,
+                    ),
                   ),
-                  SizedBox(height: SizeConfig.blockSizeVertical * 3),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.fiber_manual_record_rounded,
-                        size: 25,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: SizeConfig.blockSizeHorizontal * 3),
-                      Text((widget.member.gender) ? "Nam" : "Nữ")
-                    ],
-                  )
+                  SizedBox(height: SizeConfig.blockSizeVertical * 1),
+                  _info(
+                    (widget.member.gender) ? "Nam" : "Nữ",
+                    Icon(
+                      Icons.fiber_manual_record_rounded,
+                      size: 25,
+                      color: Colors.blue,
+                    ),
+                  ),
                 ],
               )
             ],
           ),
-          SizedBox(height: SizeConfig.blockSizeVertical * 3),
-          SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 70,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.today,
-                    size: 25,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(width: SizeConfig.blockSizeHorizontal * 3),
-                  Text('${widget.member.born}')
-                ],
-              )),
+          SizedBox(height: SizeConfig.blockSizeVertical * 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.white, width: 1),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              elevation: 10.0,
+              margin: EdgeInsets.symmetric(horizontal: 13),
+              color: Color(0xFFF1F1F1),
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal * 86,
+                padding: EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+                    Icon(
+                      Icons.today,
+                      size: 25,
+                      color: Colors.pink,
+                    ),                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+                    Text(dateFormat("${widget.member?.born ?? ""}"), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
   int roleId;
   int departmentId;
 
@@ -168,7 +164,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               attribute: "vt",
               decoration: InputDecoration(labelText: "Vai trò"),
               validators: [FormBuilderValidators.required()],
-              items: widget.cubit.roles.map((item) => DropdownMenuItem(value: item, child: Text("${item['name']}"))).toList(),
+              items: widget.cubit.roles
+                  .map((item) => DropdownMenuItem(value: item, child: Text("${item['name']}")))
+                  .toList(),
               onChanged: (value) {
                 roleId = int.parse(value['id'].toString());
               },
@@ -177,7 +175,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               attribute: "vt",
               decoration: InputDecoration(labelText: "Ban"),
               validators: [FormBuilderValidators.required()],
-              items: widget.cubit.departments.map((item) => DropdownMenuItem(value: item, child: Text("${item['name']}"))).toList(),
+              items: widget.cubit.departments
+                  .map((item) => DropdownMenuItem(value: item, child: Text("${item['name']}")))
+                  .toList(),
               onChanged: (value) {
                 departmentId = int.parse(value['id'].toString());
               },
@@ -190,24 +190,50 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             onPressed: () {
               Modular.navigator.pop();
             },
-            child: Text("Close",style: TextStyle(color: Colors.grey))),
+            child: Text("Close", style: TextStyle(color: Colors.grey))),
         SizedBox(width: SizeConfig.blockSizeHorizontal * 30),
         FlatButton(
             onPressed: () {
               widget.cubit.updateUser(
-                name: widget.member.name,
-                date: widget.member.born,
-                gen: widget.member.GenCode,
-                gender: widget.member.gender,
-                user: widget.member.userName,
-                pass: widget.member.userName,
-                departmentId: departmentId,
-                roleId:  roleId
-              );
+                  name: widget.member.name,
+                  date: widget.member.born,
+                  gen: widget.member.GenCode,
+                  gender: widget.member.gender,
+                  user: widget.member.userName,
+                  pass: widget.member.userName,
+                  departmentId: departmentId,
+                  roleId: roleId);
               Modular.navigator.pop();
             },
             child: Text("Save", style: TextStyle(color: Colors.teal)))
       ],
+    );
+  }
+
+  Widget _info(String text, Icon icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        elevation: 10.0,
+        margin: EdgeInsets.symmetric(horizontal: 13),
+        color: Color(0xFFF1F1F1),
+        child: Container(
+          width: SizeConfig.blockSizeHorizontal * 40,
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          child: Column(
+            children: [
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+              icon,
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+              Text("$text", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
