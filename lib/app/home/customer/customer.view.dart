@@ -70,10 +70,8 @@ class _CustomerState extends State<Customer> {
                   children: [
                     _info(_userInfo?.role?.name ?? "", Icon(Icons.workspaces_filled, color: Colors.redAccent, size: 30)),
                     _info(_userInfo?.department?.name ?? "", Icon(Icons.work_outlined, color: Colors.teal, size: 30)),
-                    _info(_userInfo?.genCode ?? "" , Icon(Icons
-                        .view_agenda_sharp, color: Colors.orange, size: 30)),
-                     _info(dateFormat(_userInfo?.born ?? ""), Icon(Icons
-                         .calendar_today_sharp, color: Colors.blue, size: 30)),
+                    _info(_userInfo?.genCode ?? "" , Icon(Icons.view_agenda_sharp, color: Colors.orange, size: 30)),
+                    _info(dateFormat(_userInfo?.born ?? ""), Icon(Icons.calendar_today_sharp, color: Colors.blue, size: 30)),
                   ],
                 ),
               ),

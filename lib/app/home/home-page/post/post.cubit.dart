@@ -13,7 +13,7 @@ class PostCubit extends Cubit<PostState> {
     loadData();
   }
 
-  List<Post> listPost;
+  List<Post> listPost = [];
 
   Future<void> loadData() async {
     Map<String, dynamic> params = {

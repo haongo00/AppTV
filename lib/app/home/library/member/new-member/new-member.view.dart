@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,12 +31,7 @@ class _NewMemberViewState extends State<NewMemberView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Color(0xff068189),
-          title: Text("Thêm Thành Viên"),
-        ),
+        appBar: staticAppbar(title: "Thêm thành viên "),
         body: _getBody(),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
@@ -21,20 +22,7 @@ class _MemberViewState extends State<MemberView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: BackButton(
-            color: Color(0xff068189),
-          ),
-          title: Container(
-              width: SizeConfig.blockSizeHorizontal * 40,
-              height: SizeConfig.blockSizeVertical * 5,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Color(0xff068189)),
-              child: Text("Thành Viên")),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
+        appBar: staticAppbar(title: "Thành viên"),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xff068189),
           foregroundColor: Colors.black,
@@ -93,7 +81,7 @@ class _MemberViewState extends State<MemberView> {
                 style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
             Expanded(
               child: Container(
-                color: Colors.green,
+                color: Colors.teal,
                 width: 135,
                 height: 3,
               ),

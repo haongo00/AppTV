@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,12 +23,7 @@ class _BorrowBookView extends State<BorrowBookView> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Color(0xff068189),
-        title: Text("GHI MƯỢN"),
-      ),
+      appBar: staticAppbar(title: "Ghi Mượn"),
       body: _getBody(),
     );
   }
@@ -90,20 +86,19 @@ class _BorrowBookView extends State<BorrowBookView> {
                         style: TextStyle(color: Colors.white),
                       ))),
               Spacer(),
-              Expanded(
-                  child: FlatButton(
-                      color: Color(0xff068189),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      onPressed: () {
-                        widget.cubit.newBook(idBook,widget.cubit.bookOrder.studentInfo.idStudent,time);
-                        Modular.navigator.pop();
-                      },
-                      child: Text(
-                        "Ghi mượn",
-                        style: TextStyle(color: Colors.white),
-                      ))),
+              FlatButton(
+                  color: Color(0xff068189),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  onPressed: () {
+                    widget.cubit.newBook(idBook,widget.cubit.bookOrder.studentInfo.idStudent,time);
+                    Modular.navigator.pop();
+                  },
+                  child: Text(
+                    "Ghi mượn",
+                    style: TextStyle(color: Colors.white),
+                  )),
               SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
             ],
           )

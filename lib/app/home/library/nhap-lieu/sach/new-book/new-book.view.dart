@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/list-book.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,12 +25,7 @@ class _NewBookViewState extends State<NewBookView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Color(0xff068189),
-          title: Text("New Book"),
-        ),
+        appBar: staticAppbar(title: "Thêm Sách"),
         body: _getBody(),
       ),
     );

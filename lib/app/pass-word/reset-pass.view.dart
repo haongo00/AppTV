@@ -1,3 +1,4 @@
+import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,7 @@ class _ResetPassView extends State<ResetPassView> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Color(0xff068189),
-        title: Text("Đổi mật khẩu"),
-      ),
+      appBar: staticAppbar(title: "Đổi Mật Khẩu"),
       body: _getBody(),
     );
   }
