@@ -40,13 +40,14 @@ class Role {
 
   Role(
       {this.id,
-        this.name,
-        this.code,
-        this.isSendEmail,
-        this.isCreateOrEditSheet,
-        this.isCreateOrEditBook,
-        this.isCreateOrEditUser,
-        this.isCreateOrEditStudent,this.isCreatePost});
+      this.name,
+      this.code,
+      this.isSendEmail,
+      this.isCreateOrEditSheet,
+      this.isCreateOrEditBook,
+      this.isCreateOrEditUser,
+      this.isCreateOrEditStudent,
+      this.isCreatePost});
 
   factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
 

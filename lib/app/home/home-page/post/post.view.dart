@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/model/user_infor/user_infor.dart';
-import 'package:app_tv/repositories/post/post.repository.dart';
 import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/api.dart';
 import 'package:app_tv/utils/screen_config.dart';
@@ -52,101 +51,128 @@ class _PostViewState extends State<PostView> {
         width: double.infinity,
         // height: SizeConfig.blockSizeVertical * 50,
         margin: EdgeInsets.all(10.0),
-        child: Card(
-          color: Colors.grey[300],
-          margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-          ),
-          elevation: 5.5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.all(15.0),
-                alignment: Alignment.topCenter,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.all(5.0),
-                      child: ClipOval(
-                        child: Image.network(
-                          '${_userInfor.avatar ??=
-                          'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg'}',
-                          fit: BoxFit.fill,
+        child: FlatButton(
+          padding: EdgeInsets.zero,
+          onLongPress: (){
+          },
+          child: Card(
+            color: Colors.grey[300],
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+            elevation: 5.5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(15.0),
+                  alignment: Alignment.topCenter,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        margin: EdgeInsets.all(5.0),
+                        child: ClipOval(
+                          child: Image.network(
+                            '${_userInfor.avatar ??=
+                            'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'}',
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${_userInfor.name}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: FormBuilderTextField(
-                  maxLines: null,
-                  attribute: 'status',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 21),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Bạn đang nghĩ gì !!!",
-                    hintStyle: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${_userInfor.name}',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                  keyboardType: TextInputType.text,
-                  validators: [FormBuilderValidators.required()],
-                  onChanged: (dynamic val) {
-                    content = val.toString();
-                  },
                 ),
-              ),
-              images.isNotEmpty
-                  ? Container(
-                padding: EdgeInsets.all(8.0),
-                height: SizeConfig.blockSizeVertical * 30,
-                width: double.infinity,
-                child: AssetThumb(asset: images[0], width: 200, height: 200),
-              )
-                  : SizedBox(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(icon: Icon(Icons.camera_alt), iconSize: 30, onPressed: loadAssets),
-                    IconButton(
-                        icon: Icon(Icons.cancel_schedule_send),
-                        iconSize: 30,
-                        onPressed: () async {
-                          await uploadStatus() ? Modular.navigator.pop() : {
-                            Fluttertoast.showToast(
-                              msg: "Thất bại",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
-                            )
-                          };
-                        }),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FormBuilderTextField(
+                    maxLines: null,
+                    attribute: 'status',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 21),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Bạn đang nghĩ gì !!!",
+                      hintStyle: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    validators: [FormBuilderValidators.required()],
+                    onChanged: (dynamic val) {
+                      content = val.toString();
+                    },
+                  ),
                 ),
-              )
-            ],
+                images.isNotEmpty
+                    ? Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(8.0),
+//                        height: SizeConfig.blockSizeVertical * 30,
+//                        width: double.infinity,
+                  child: Stack(
+                    children: [
+                      AssetThumb(
+                          asset: images[0],
+                          width: 120,
+                          height: 120),
+                      Positioned(
+                          top: -5,
+                          right: -5,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.cancel_outlined,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                images.clear();
+                              });
+                            },
+                          ))
+                    ],
+                  ),
+                )
+                    : SizedBox(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(icon: Icon(Icons.camera_alt), iconSize: 30, onPressed: loadAssets),
+                      IconButton(
+                          icon: Icon(Icons.cancel_schedule_send),
+                          iconSize: 30,
+                          onPressed: () async {
+                            await uploadStatus() ? Modular.navigator.pop() : {
+                              Fluttertoast.showToast(
+                                msg: "Thất bại",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.grey,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              )
+                            };
+                          }),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         decoration: BoxDecoration(

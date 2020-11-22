@@ -18,16 +18,33 @@ class PostCubit extends Cubit<PostState> {
   Future<void> loadData() async {
     Map<String, dynamic> params = {
       "skip" : 0,
-      "take" : 100
+      "take" : 20
     };
     try {
       emit(PostLoading());
       ListPost _listPost = await _postRepository.fetchListPost(params);
-      listPost = _listPost.result;
+      listPost = _listPost.result.isNotEmpty ? _listPost.result : [];
       emit(ItemsPostLoaded(listPost));
     } on NetworkException {
       emit(PostError("Couldn't fetch data. Is the device online?"));
     }
+  }
+
+  Future<void> deletePost(String id) async {
+    Map<String, dynamic> params = {
+      "idPost" : id
+    };
+    try {
+      emit(PostLoading());
+      if (await _postRepository.deletePost(params)) {
+        emit((ItemsPostUploaded()));
+      } else {
+        emit(PostError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(PostError("Error submitting data"));
+    }
+    loadData();
   }
 
   @override

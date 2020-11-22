@@ -1,4 +1,5 @@
 import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
+import 'package:app_tv/app/home/home-page/comment/comment.view.dart';
 import 'package:app_tv/app/home/home.view.dart';
 import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
@@ -33,6 +34,7 @@ class HomeModule extends ChildModule {
   static String bookInfo = "/book-info";
   static String postStatus = "/post-status";
   static String passView = "/pass";
+  static String comment = "/comment/";
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -53,5 +55,6 @@ class HomeModule extends ChildModule {
         ModularRouter(giveBook, child: (context, args) => GiveBookView(cubit: args.data as SearchCubit)),
         ModularRouter(bookInfo, child: (context, args) => BookInfoView(book: args.data as Book)),
         ModularRouter(passView, child: (context, args) => PassView()),
+        ModularRouter(comment, child: (context, args) => CommentView(idPost: args.data as int,)),
       ];
 }
