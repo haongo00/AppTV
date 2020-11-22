@@ -24,23 +24,25 @@ Map<String, dynamic> _$ListNotificationToJson(ListNotification instance) =>
 
 Notifications _$NotificationsFromJson(Map<String, dynamic> json) {
   return Notifications(
-    notificationId: json['notificationId'] as int,
-    notificationContext: json['notificationContext'] as String,
-    notificationCreatAt: json['notificationCreatAt'] as String,
-    notificationPosterId: json['notificationPosterId'] as int,
-    notificationUserCreateId: json['notificationUserCreateId'] as int,
-    userCreateName: json['userCreateName'] as String,
-    isSeen: json['isSeen'] as String,
+    notification_id: json['notification_id'] as int,
+    notification_context: json['notification_context'] as String,
+    notification_creat_at: json['notification_creat_at'] as String,
+    notification_posterId: json['notification_posterId'] as int,
+    notification_userCreateId: json['notification_userCreateId'] as int,
+    userCreate_name: json['userCreate_name'] as String,
+    userCreate_avatar: json['userCreate_avatar'] as String,
+    isSeen: json['isSeen'] as int,
   );
 }
 
 Map<String, dynamic> _$NotificationsToJson(Notifications instance) =>
     <String, dynamic>{
-      'notificationId': instance.notificationId,
-      'notificationContext': instance.notificationContext,
-      'notificationCreatAt': instance.notificationCreatAt,
-      'notificationPosterId': instance.notificationPosterId,
-      'notificationUserCreateId': instance.notificationUserCreateId,
-      'userCreateName': instance.userCreateName,
+      'notification_id': instance.notification_id,
+      'notification_context': instance.notification_context,
+      'notification_creat_at': instance.notification_creat_at,
+      'notification_posterId': instance.notification_posterId,
+      'notification_userCreateId': instance.notification_userCreateId,
+      'userCreate_name': instance.userCreate_name,
+      'userCreate_avatar': instance.userCreate_avatar,
       'isSeen': instance.isSeen,
     };

@@ -1,3 +1,5 @@
+import 'package:app_tv/app/home/customer/information/infor.view.dart';
+import 'package:app_tv/app/home/customer/information/pass.view.dart';
 import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/app/home/home-page/comment/comment.view.dart';
 import 'package:app_tv/app/home/home.view.dart';
@@ -12,8 +14,6 @@ import 'package:app_tv/app/home/library/nhap-lieu/sach/new-book/new-book.view.da
 import 'package:app_tv/app/home/search/borrow-give/borrow-book.view.dart';
 import 'package:app_tv/app/home/search/borrow-give/give-book.view.dart';
 import 'package:app_tv/app/home/search/search.cubit.dart';
-import 'file:///D:/GITHUB/UI/AppTV/lib/app/home/customer/information/infor.view.dart';
-import 'file:///D:/GITHUB/UI/AppTV/lib/app/home/customer/information/pass.view.dart';
 import 'package:app_tv/model/library/list_book.dart';
 import 'package:app_tv/model/member/list_member.dart';
 import 'package:flutter_modular/flutter_modular.dart';

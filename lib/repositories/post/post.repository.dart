@@ -18,7 +18,7 @@ class PostRepository {
     final response = await PostService.getPost(params);
     print(response.data['result'].toString());
     return (response.statusCode == 200)
-        ? Comment.fromJson(response.data['result'] as Map<String, dynamic>)
+        ? Comment.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;
   }
   Future<bool> deletePost(Map<String, dynamic> params) async {
