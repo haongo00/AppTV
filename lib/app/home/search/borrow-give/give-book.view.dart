@@ -1,5 +1,6 @@
 
 import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
+import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/search/search.cubit.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,20 +23,22 @@ class _GiveBookView extends State<GiveBookView> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: staticAppbar(title: "Thông Tin Mượn / Trả"),
-      body: BlocBuilder<SearchCubit,SearchState> (
-        cubit: widget.cubit,
-        buildWhen: (prev,now) => now is SearchLoading || now is ItemsBookOrderInfo,
-        builder: (context,state) {
-          if (state is ItemsSearchLoaded || state is ItemsBookOrderInfo) {
-            return _getBody();
-          } else if (state is SearchError) {
-            return Center(child: Text(state.message));
-          } else {
-            return Center(child: CupertinoActivityIndicator(radius: 15));
-          }
-        }),
+    return SafeArea(
+      child: Scaffold(
+        appBar: staticAppbar(title: "Thông Tin Mượn / Trả"),
+        body: BlocBuilder<SearchCubit,SearchState> (
+          cubit: widget.cubit,
+          buildWhen: (prev,now) => now is SearchLoading || now is ItemsBookOrderInfo,
+          builder: (context,state) {
+            if (state is ItemsSearchLoaded || state is ItemsBookOrderInfo) {
+              return _getBody();
+            } else if (state is SearchError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Center(child: CupertinoActivityIndicator(radius: 15));
+            }
+          }),
+      ),
     );
   }
 
@@ -112,7 +115,7 @@ class _GiveBookView extends State<GiveBookView> {
         (_tile == "Mã") ? "${widget.cubit.bookOrderInfo.bookdetail.book.idBook}" :
         (_tile == "Tên sách") ? "${widget.cubit.bookOrderInfo.bookdetail.book.name}" :
         (_tile == "Giá sách") ? "${widget.cubit.bookOrderInfo.bookdetail.book.price}" :
-        (_tile == "Ngày mượn") ? "${widget.cubit.bookOrderInfo.borrowDate}" :
+        (_tile == "Ngày mượn") ? "${dateFormat(widget.cubit.bookOrderInfo.borrowDate)}" :
         (_tile == "TV Ghi mượn") ? "${widget.cubit.bookOrderInfo.userCheckIn.name} - ${widget.cubit.bookOrderInfo.userCheckIn.GenCode}" :
         (_tile == "Ngày trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : (widget.cubit.bookOrderInfo.payDate)}" :
         (_tile == "Tv Ghi trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : "${widget.cubit.bookOrderInfo.userCheckOut.name}${" - ${widget.cubit.bookOrderInfo.userCheckOut.GenCode}"}"} "

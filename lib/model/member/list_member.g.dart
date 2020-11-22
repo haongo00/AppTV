@@ -25,6 +25,7 @@ Member _$MemberFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     name: json['name'] as String,
     gender: json['gender'] as bool,
+    isBlock: json['isBlock'] as bool,
     userName: json['userName'] as String,
     role: json['role'] == null
         ? null
@@ -32,9 +33,11 @@ Member _$MemberFromJson(Map<String, dynamic> json) {
     department: json['department'] == null
         ? null
         : Department.fromJson(json['department'] as Map<String, dynamic>),
+    email: json['email'] as String,
     born: json['born'] as String,
     avatar: json['avatar'] as String,
     GenCode: json['GenCode'] as String,
+    phoneNumber: json['phoneNumber'] as String,
   );
 }
 
@@ -48,6 +51,9 @@ Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
       'born': instance.born,
       'avatar': instance.avatar,
       'GenCode': instance.GenCode,
+      'email': instance.email,
+      'phoneNumber': instance.phoneNumber,
+      'isBlock': instance.isBlock,
     };
 
 Role _$RoleFromJson(Map<String, dynamic> json) {

@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_tv/app/app.module.dart';
 import 'package:app_tv/routers/application.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class API {
-  static String baseUrl = "http://api.tvclubuet.com";
+  static String baseUrl = "http://192.168.43.89:3001";
   final Dio dio = Dio(
     BaseOptions(
       connectTimeout: 30000,
@@ -41,17 +44,9 @@ class API {
     }, onError: (DioError e) async {
       // Do something with response error
       // Refresh Token
-//      if (e.response?.statusCode == 401) {
-//        Map<String, dynamic> data = <String, dynamic>{
-//          "refreshToken": await Application.sharePreference.getString("refreshToken"),
-//        };
-//        var response = await dio.post("/api/TokenAuth/RefreshToken", data: data);
-//        if (response.statusCode == 200) {
-//          var newAccessToken = response.data["data"]["accessToken"]; // get new access token from response
-//          Application.sharePreference.putString("accessToken", "$newAccessToken");
-//          return dio.request(e.request.baseUrl + e.request.path, options: e.request);
-//        }
-//      }
+     if (e.response?.data['status'] == 401) {
+       Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+     }
       return e.response; //continue
     }));
   }

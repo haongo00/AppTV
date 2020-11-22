@@ -22,9 +22,11 @@ class _BorrowBookView extends State<BorrowBookView> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: staticAppbar(title: "Ghi Mượn"),
-      body: _getBody(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: staticAppbar(title: "Ghi Mượn"),
+        body: _getBody(),
+      ),
     );
   }
 
