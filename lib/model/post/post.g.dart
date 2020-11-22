@@ -27,7 +27,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         ? null
         : UserCreate.fromJson(json['userCreate'] as Map<String, dynamic>),
     content: json['content'] as String,
-    createAt: json['createAt'] as String,
+    create_at: json['create_at'] as String,
     likes: json['likes'] as int,
     comments: json['comments'] as int,
     isLike: json['isLike'] as bool,
@@ -39,7 +39,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'urlAssets': instance.urlAssets,
       'userCreate': instance.userCreate,
       'content': instance.content,
-      'createAt': instance.createAt,
+      'create_at': instance.create_at,
       'likes': instance.likes,
       'comments': instance.comments,
       'isLike': instance.isLike,

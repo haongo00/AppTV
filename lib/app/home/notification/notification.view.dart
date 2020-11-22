@@ -1,3 +1,5 @@
+import 'package:app_tv/app/home/notification/notification.cubit.dart';
+import 'package:app_tv/repositories/notification/notification.repositories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +9,24 @@ class NotificationApp extends StatefulWidget {
 }
 
 class _NotificationAppState extends State<NotificationApp> {
+
+  NotificationCubit cubit = NotificationCubit(NotificationRepositories());
+
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return _getBody();
   }
+
+  Widget _getBody() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+
+        ],
+      ),
+    );
+  }
+
+
 }

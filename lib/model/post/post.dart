@@ -19,12 +19,12 @@ class Post {
   String urlAssets;
   UserCreate userCreate;
   String content;
-  String createAt;
+  String create_at;
   int likes;
   int comments;
   bool isLike;
 
-  Post({this.id, this.urlAssets, this.userCreate, this.content, this.createAt, this.likes, this.comments, this.isLike});
+  Post({this.id, this.urlAssets, this.userCreate, this.content, this.create_at, this.likes, this.comments, this.isLike});
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 

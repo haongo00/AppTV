@@ -74,8 +74,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               attribute: "user_name",
               title: "Tên đăng nhập",
               validators: [
-                FormBuilderValidators.pattern(
-                    r'^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$'),
+
               ],
               onSaved: (String val) {
                 _cubit.userName = val;
