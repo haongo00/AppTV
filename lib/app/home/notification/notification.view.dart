@@ -1,10 +1,12 @@
 import 'package:app_tv/app/components/date/date.component.dart';
+import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/app/home/notification/notification.cubit.dart';
 import 'package:app_tv/repositories/notification/notification.repositories.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class NotificationApp extends StatefulWidget {
   @override
@@ -45,7 +47,10 @@ class _NotificationAppState extends State<NotificationApp> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 3.0),
                 color: (cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white :Color(0xFFF1F1F1),
-                onPressed: () {},
+                onPressed: () {
+                  cubit.seenNotification(cubit.notifications.elementAt(index).notification_id);
+                  Modular.link.pushNamed(HomeModule.comment, arguments: cubit.notifications.elementAt(index).notification_posterId);
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 10.0),
                   width: SizeConfig.blockSizeVertical*100,

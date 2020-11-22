@@ -14,15 +14,36 @@ class PostRepository {
         ? ListPost.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;
   }
-  Future<Comment> fetchPost(Map<String, dynamic> params) async {
-    final response = await PostService.getPost(params);
-    print(response.data['result'].toString());
+  Future<Comment> fetchComment(Map<String, dynamic> params) async {
+    final response = await PostService.getComment(params);
+    print(response.data);
     return (response.statusCode == 200)
         ? Comment.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;
   }
+  Future<Post> fetchPostById(Map<String, dynamic> params) async {
+    final response = await PostService.getPostById(params);
+    return (response.statusCode == 200)
+        ? Post.fromJson(response.data['result'] as Map<String, dynamic>)
+        : throw NetworkException;
+  }
   Future<bool> deletePost(Map<String, dynamic> params) async {
     final response = await PostService.deletePost(params);
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: "Thành công",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+  }
+  Future<bool> deleteComment(Map<String, dynamic> params) async {
+    final response = await PostService.deleteComment(params);
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
         msg: "Thành công",

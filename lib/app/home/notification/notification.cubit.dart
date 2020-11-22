@@ -31,5 +31,16 @@ class NotificationCubit extends Cubit<NotificationState> {
       emit(NotificationError("Couldn't fetch data. Is the device online?"));
     }
   }
+  Future<void> seenNotification(int _idNoti) async {
+    Map<String, dynamic> params = {
+      "id" : _idNoti
+    };
+    try {
+       await _notificationRepositories.seenNotification(params);
+       loadData();
+    } on NetworkException {
+      emit(NotificationError("Couldn't fetch data. Is the device online?"));
+    }
+  }
 
 }

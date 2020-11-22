@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/home-page/comment/comment.cubit.dart';
 import 'package:app_tv/model/comment/comment.dart';
+import 'package:app_tv/model/post/post.dart';
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/repositories/post/post.repository.dart';
 import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/api.dart';
@@ -20,6 +22,7 @@ class CommentView extends StatefulWidget {
   final int idPost;
 
   const CommentView({Key key, this.idPost}) : super(key: key);
+
   @override
   _CommentViewState createState() => _CommentViewState();
 }
@@ -27,6 +30,7 @@ class CommentView extends StatefulWidget {
 class _CommentViewState extends State<CommentView> {
   String content;
   CommentCubit _cubit = CommentCubit(PostRepository());
+  UserInfor _userInfor = Application.sharePreference.getUserInfor();
 
   @override
   void initState() {
@@ -45,15 +49,18 @@ class _CommentViewState extends State<CommentView> {
                     "Xóa",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _cubit.deleteComment(index, widget.idPost);
+                    Navigator.pop(context);
+                  },
                 ),
-                CupertinoActionSheetAction(
-                  child: Text(
-                    "Chỉnh sửa",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                  ),
-                  onPressed: () {},
-                )
+//                CupertinoActionSheetAction(
+//                  child: Text(
+//                    "Chỉnh sửa",
+//                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+//                  ),
+//                  onPressed: () {},
+//                )
               ],
               cancelButton: CupertinoActionSheetAction(
                 child: Text(
@@ -74,13 +81,13 @@ class _CommentViewState extends State<CommentView> {
           elevation: 0,
           centerTitle: true,
           backgroundColor: Color(0xff068189),
-          title: Text("Bình luận"),
+          title: Text("Bài viết"),
         ),
         body: BlocBuilder<CommentCubit, CommentState>(
             cubit: _cubit,
-            buildWhen: (prev, now) => now is CommentLoading || now is ItemsCommentLoaded,
+            buildWhen: (prev, now) => now is PostLoading || now is ItemsPostLoaded,
             builder: (context, state) {
-              if (state is ItemsCommentLoaded) {
+              if (state is ItemsPostLoaded) {
                 return _body();
               } else if (state is CommentError) {
                 return Center(child: Text(state.message));
@@ -96,12 +103,42 @@ class _CommentViewState extends State<CommentView> {
         SingleChildScrollView(
           child: Column(
             children: [
-              _post(_cubit.comment),
-              ...List.generate(_cubit.comment.comments.length, (index) {
-                return _comment(_cubit.comment.comments[index]);
-              }),
-
-              SizedBox(height: SizeConfig.blockSizeVertical * 10),
+              _post(_cubit.post),
+              BlocBuilder<CommentCubit, CommentState>(
+                  cubit: _cubit,
+                  buildWhen: (prev, now) => now is CommentLoading || now is ItemsCommentLoaded,
+                  builder: (context, state) {
+                    if (state is ItemsCommentLoaded || state is ItemsPostLoaded) {
+                      return Column(
+                        children: [
+                          Divider(
+                            height: 1,
+                            thickness: 3,
+                          ),
+                          Container(
+                            child: Text(
+                              '${_cubit.comment.result.length ?? 0} bình luận',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(15),
+                          ),
+                          Divider(
+                            height: 1,
+                            thickness: 3,
+                          ),
+                          ...List.generate(_cubit.comment.result.length, (index) {
+                            return _comment(_cubit.comment.result[index]);
+                          }),
+                        ],
+                      );
+                    } else if (state is CommentError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      return Center(child: CupertinoActivityIndicator(radius: 15));
+                    }
+                  }),
+              SizedBox(height: SizeConfig.blockSizeVertical * 20),
             ],
           ),
         ),
@@ -113,7 +150,7 @@ class _CommentViewState extends State<CommentView> {
     );
   }
 
-  Widget _post(Comment _post) {
+  Widget _post(Post _post) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(10.0),
@@ -135,7 +172,7 @@ class _CommentViewState extends State<CommentView> {
                     child: ClipOval(
                       child: Image.network(
                         '${_post.userCreate.avatar ?? 'https://www.minervastrategies'
-                      '.com/wp-content/uploads/2016/03/default-avatar'
+                            '.com/wp-content/uploads/2016/03/default-avatar'
                             '.jpg'}',
                         fit: BoxFit.fill,
                       ),
@@ -166,14 +203,14 @@ class _CommentViewState extends State<CommentView> {
             ),
             _post.urlAssets != null
                 ? Container(
-              padding: EdgeInsets.all(8.0),
-              height: SizeConfig.blockSizeVertical * 30,
-              width: double.infinity,
-              child: Image.network(
-                '${_post.urlAssets ?? ''}',
-                fit: BoxFit.fill,
-              ),
-            )
+                    padding: EdgeInsets.all(8.0),
+                    height: SizeConfig.blockSizeVertical * 30,
+                    width: double.infinity,
+                    child: Image.network(
+                      '${_post.urlAssets ?? ''}',
+                      fit: BoxFit.fill,
+                    ),
+                  )
                 : SizedBox(),
           ],
         ),
@@ -188,7 +225,9 @@ class _CommentViewState extends State<CommentView> {
         child: FlatButton(
           padding: EdgeInsets.zero,
           onLongPress: () {
-            _showAlert(context, _comment.id);
+            if (_userInfor.id == _comment.user.id) {
+              _showAlert(context, _comment.id);
+            }
           },
           child: Card(
             margin: EdgeInsets.zero,
@@ -231,13 +270,15 @@ class _CommentViewState extends State<CommentView> {
                     ],
                   ),
                 ),
-                _comment.content != null ? Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    '${_comment.content}',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ) : SizedBox(),
+                _comment.content != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          '${_comment.content}',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    : SizedBox(),
                 _comment.asset != null
                     ? Container(
                         padding: EdgeInsets.all(15.0),
@@ -261,92 +302,86 @@ class _CommentViewState extends State<CommentView> {
     return Container(
         width: SizeConfig.safeBlockHorizontal * 95,
         margin: EdgeInsets.all(10.0),
-        child: FlatButton(
-          padding: EdgeInsets.zero,
-          onLongPress: () {
-            _showAlert(context, 1);
-          },
-          child: Card(
-            margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-            elevation: 5.5,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                IconButton(
-                    padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5),
-                    icon: Icon(Icons.camera_alt),
-                    iconSize: 30,
-                    onPressed: loadAssets),
-                Expanded(
-                  child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      child: Column(
-                        children: [
-                          FormBuilderTextField(
-                            maxLines: null,
-                            autofocus: true,
-                            attribute: 'comment',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 21),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Viết bình luận ...",
-                              hintStyle: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                              ),
+        child: Card(
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
+          elevation: 5.5,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              IconButton(
+                  padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5),
+                  icon: Icon(Icons.camera_alt),
+                  iconSize: 30,
+                  onPressed: loadAssets),
+              Expanded(
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    child: Column(
+                      children: [
+                        FormBuilderTextField(
+                          maxLines: null,
+                          autofocus: true,
+                          attribute: 'comment',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 21),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Viết bình luận ...",
+                            hintStyle: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
                             ),
-                            keyboardType: TextInputType.text,
-                            validators: [FormBuilderValidators.required()],
-                            onChanged: (dynamic val) {
-                              content = val.toString();
-                            },
                           ),
-                          images.isNotEmpty
-                              ? Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: EdgeInsets.all(8.0),
+                          keyboardType: TextInputType.text,
+                          validators: [FormBuilderValidators.required()],
+                          onChanged: (dynamic val) {
+                            content = val.toString();
+                          },
+                        ),
+                        images.isNotEmpty
+                            ? Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.all(8.0),
 //                        height: SizeConfig.blockSizeVertical * 30,
 //                        width: double.infinity,
-                                  child: Stack(
-                                    children: [
-                                      AssetThumb(asset: images[0], width: 120, height: 120),
-                                      Positioned(
-                                          top: -5,
-                                          right: -5,
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.cancel_outlined,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                images.clear();
-                                              });
-                                            },
-                                          ))
-                                    ],
-                                  ),
-                                )
-                              : SizedBox(),
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(18.0),
-                      )),
-                ),
-                IconButton(
-                    padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5),
-                    icon: Icon(Icons.cancel_schedule_send),
-                    iconSize: 30,
-                    onPressed: createComment),
-              ],
-            ),
+                                child: Stack(
+                                  children: [
+                                    AssetThumb(asset: images[0], width: 120, height: 120),
+                                    Positioned(
+                                        top: -5,
+                                        right: -5,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.cancel_outlined,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              images.clear();
+                                            });
+                                          },
+                                        ))
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(18.0),
+                    )),
+              ),
+              IconButton(
+                  padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5),
+                  icon: Icon(Icons.cancel_schedule_send),
+                  iconSize: 30,
+                  onPressed: createComment),
+            ],
           ),
         ),
         decoration: BoxDecoration(
@@ -407,7 +442,7 @@ class _CommentViewState extends State<CommentView> {
       "posterId": widget.idPost,
     });
     var response = await Application.api.dio.post("${API.baseUrl}/poster/comment", data: formData);
-    _cubit.loadData(widget.idPost);
+    _cubit.loadComment(widget.idPost);
     return response.data['status'] == 200 ? true : false;
   }
 }
