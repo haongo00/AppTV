@@ -10,4 +10,10 @@ class NotificationRepositories {
         ? ListNotification.fromJson(response.data['result'] as Map<String, dynamic>)
         : throw NetworkException;
   }
+
+  Future<bool> seenNotification(Map<String, dynamic> params) async {
+    final response = await NotificationService.seenNotification(params);
+    print(response);
+    return (response.statusCode == 200) ? true : false;
+  }
 }

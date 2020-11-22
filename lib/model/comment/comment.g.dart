@@ -8,14 +8,8 @@ part of 'comment.dart';
 
 Comment _$CommentFromJson(Map<String, dynamic> json) {
   return Comment(
-    id: json['id'] as int,
-    create_at: json['create_at'] as String,
-    urlAssets: json['urlAssets'] as String,
-    userCreate: json['userCreate'] == null
-        ? null
-        : UserCreate.fromJson(json['userCreate'] as Map<String, dynamic>),
-    content: json['content'] as String,
-    comments: (json['comments'] as List)
+
+    result: (json['result'] as List)
         ?.map((e) =>
             e == null ? null : Comments.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -23,12 +17,8 @@ Comment _$CommentFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
-      'id': instance.id,
-      'urlAssets': instance.urlAssets,
-      'userCreate': instance.userCreate?.toJson(),
-      'content': instance.content,
-      'create_at': instance.create_at,
-      'comments': instance.comments?.map((e) => e?.toJson())?.toList(),
+
+      'result': instance.result?.map((e) => e?.toJson())?.toList(),
     };
 
 UserCreate _$UserCreateFromJson(Map<String, dynamic> json) {

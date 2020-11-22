@@ -20,6 +20,13 @@ class CommentLoading extends CommentState {
   List<Object> get props => [];
 }
 
+class PostLoading extends CommentState {
+  const PostLoading();
+
+  @override
+  List<Object> get props => [];
+}
+
 class CommentUploading extends CommentState {
   const CommentUploading();
 
@@ -34,6 +41,15 @@ class ItemsCommentLoaded extends CommentState {
 
   @override
   List<Object> get props => [comment];
+}
+
+class ItemsPostLoaded extends CommentState {
+  final Post post;
+
+  ItemsPostLoaded(this.post);
+
+  @override
+  List<Object> get props => [post];
 }
 
 class ItemsCommentUploading extends CommentState {

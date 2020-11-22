@@ -4,15 +4,11 @@ part 'comment.g.dart';
 @JsonSerializable(nullable: true, explicitToJson: true)
 
 class Comment {
-  int id;
-  String urlAssets;
-  UserCreate userCreate;
-  String content;
-  String create_at;
-  List<Comments> comments;
+
+  List<Comments> result;
 
   Comment(
-      {this.id, this.create_at,this.urlAssets, this.userCreate, this.content, this.comments});
+      {this.result});
 
   factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
 

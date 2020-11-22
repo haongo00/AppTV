@@ -2,6 +2,7 @@ import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/model/post/post.dart';
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/repositories/post/post.repository.dart';
 import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/screen_config.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PostCubit _cubit = PostCubit(PostRepository());
+  UserInfor _userInfor = Application.sharePreference.getUserInfor();
 
   void _showAlert(BuildContext context, int idPost) {
     showCupertinoModalPopup(
@@ -30,15 +32,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onPressed: () {
                     _cubit.deletePost(idPost.toString());
+                    Navigator.pop(context);
                   },
                 ),
-                CupertinoActionSheetAction(
-                  child: Text(
-                    "Chỉnh sửa",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                  ),
-                  onPressed: () {},
-                )
+//                CupertinoActionSheetAction(
+//                  child: Text(
+//                    "Chỉnh sửa",
+//                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+//                  ),
+//                  onPressed: () {},
+//                )
               ],
               cancelButton: CupertinoActionSheetAction(
                 child: Text(
@@ -55,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Application.sharePreference.getUserInfor().role.isCreatePost
+      floatingActionButton: _userInfor.role.isCreatePost
           ? FloatingActionButton(
               backgroundColor: Color(0xff068189),
               foregroundColor: Colors.black,
@@ -103,8 +106,9 @@ class _HomePageState extends State<HomePage> {
             Modular.link.pushNamed(HomeModule.comment, arguments: _post.id);
           },
           onLongPress: () {
-            _showAlert(context, _post.id);
-            Navigator.pop(context);
+            if (_userInfor.id == _post.userCreate.id) {
+              _showAlert(context, _post.id);
+            }
           },
           child: Card(
             margin: EdgeInsets.zero,
