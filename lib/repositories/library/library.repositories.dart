@@ -84,6 +84,23 @@ class LibraryRepository {
 
   Future<bool> createUser(Map<String, dynamic> params) async {
     final response = await LibraryService.createUser(params);
+    print(response);
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: "Thành công",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+  }
+  Future<bool> blockUser(Map<String, dynamic> params) async {
+    final response = await LibraryService.blockUser(params);
+    print(response);
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
         msg: "Thành công",

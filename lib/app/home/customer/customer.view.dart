@@ -68,63 +68,54 @@ class _CustomerState extends State<Customer> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _info(_userInfo?.role?.name ?? "", Icon(Icons.workspaces_filled, color: Colors.redAccent, size: 30)),
-                    _info(_userInfo?.department?.name ?? "", Icon(Icons.work_outlined, color: Colors.teal, size: 30)),
-                    _info(_userInfo?.genCode ?? "" , Icon(Icons.view_agenda_sharp, color: Colors.orange, size: 30)),
-                    _info(dateFormat(_userInfo?.born ?? ""), Icon(Icons.calendar_today_sharp, color: Colors.blue, size: 30)),
+                    // _info(_userInfo?.role?.name ?? "", Icon(Icons.workspaces_filled, color: Colors.redAccent, size: 30)),
+                    // _info(_userInfo?.department?.name ?? "", Icon(Icons.work_outlined, color: Colors.teal, size: 30)),
+                    // _info(_userInfo?.genCode ?? "" , Icon(Icons.view_agenda_sharp, color: Colors.orange, size: 30)),
+                    // _info(dateFormat(_userInfo?.born ?? ""), Icon(Icons.calendar_today_sharp, color: Colors.blue, size: 30)),
+                    FlatButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          Modular.link.pushNamed(HomeModule.passView);
+                        },
+                        child: _info(
+                            "Thay đổi thông tin cá nhân",
+                            Icon(
+                              Icons.edit,
+                              color: Colors.deepOrange,
+                              size: 50,
+                            ))),
+                    SizedBox(height: 5.0),
+                    FlatButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          Modular.link.pushNamed(HomeModule.passView);
+                        },
+                        child: _info(
+                            "Đổi Mật Khẩu",
+                            Icon(
+                              Icons.vpn_key_rounded,
+                              color: Colors.yellow[700],
+                              size: 50,
+                            ))),
+                    SizedBox(height: 5.0),
+                    FlatButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+                        },
+                        child: _info(
+                            "Đăng Xuất",
+                          Icon(
+                            Icons.logout,
+                            color: Colors.teal,
+                            size: 50,
+                          ))),
+                    SizedBox(height: 5.0),
                   ],
                 ),
               ),
             ),
           ),
-          Column(
-            children: [
-              FlatButton(
-                  color: Colors.teal,
-                  onPressed: () {
-                    Modular.link.pushNamed(HomeModule.passView);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.vpn_key_rounded,
-                        color: Colors.white,
-                        size: 50,
-                      ),
-                      SizedBox(width: 30),
-                      Text("Đổi Mật Khẩu", style: TextStyle(color: Colors.white)),
-                    ],
-                  )),
-              SizedBox(height: 5.0),
-              // Divider(
-              //   height: 5.0,
-              //   color: Colors.grey,
-              //   thickness: 2.0,
-              // ),
-              FlatButton(
-                  color: Colors.teal,
-                  onPressed: () {
-                    Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                        size: 50,
-                      ),
-                      SizedBox(width: 30),
-                      Text("Đăng Xuất", style: TextStyle(color: Colors.white)),
-                    ],
-                  )),
-              SizedBox(height: 5.0),
-              // Divider(
-              //   height: 5.0,
-              //   color: Colors.grey,
-              //   thickness: 2.0,
-              // ),
-            ],
-          )
         ],
       ),
     );
@@ -134,16 +125,17 @@ class _CustomerState extends State<Customer> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Card(
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.white, width: 1),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        elevation: 10.0,
-        margin: EdgeInsets.symmetric(horizontal: 13),
+        // shape: RoundedRectangleBorder(
+        //   side: BorderSide(color: Colors.grey, width: 0.5),
+        //   borderRadius: BorderRadius.circular(5.0),
+        // ),
+        elevation: 3.0,
+        margin: EdgeInsets.zero,
         color: Color(0xFFF1F1F1),
         child: Container(
-          width: double.infinity,
+          width: SizeConfig.blockSizeHorizontal * 100,
           padding: EdgeInsets.symmetric(vertical: 15.0),
+          margin: EdgeInsets.zero,
           child: Column(
             children: [
               SizedBox(height: SizeConfig.blockSizeHorizontal * 3),

@@ -46,31 +46,34 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           ),
           Center(
             child: CircleAvatar(
-              radius: SizeConfig.blockSizeHorizontal * 18,
+              radius: SizeConfig.blockSizeHorizontal * 15,
               backgroundImage: NetworkImage('${widget.member.avatar}'),
               backgroundColor: Colors.transparent,
             ),
           ),
           SizedBox(height: SizeConfig.blockSizeVertical * 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 50,
-                child: FormBuilderTextField(
-                  attribute: 'sach',
-                  decoration: InputDecoration(hintText: ""),
-                  readOnly: true,
-                  initialValue: "${widget.member.name}",
-                  textAlign: TextAlign.center,
-                  validators: [
-                    FormBuilderValidators.required(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.white, width: 1),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              elevation: 5.0,
+              margin: EdgeInsets.symmetric(horizontal: 13),
+              color: Color(0xFFF1F1F1),
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal * 86,
+                padding: EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+                    Text("${widget.member?.name ?? ""}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-          SizedBox(height: SizeConfig.blockSizeVertical * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -78,11 +81,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _info(
-                    "${widget.member.department.name}",
+                    "${widget.member.role?.name}",
                     Icon(
-                      Icons.home,
+                      Icons.person_outline,
                       size: 25,
-                      color: Colors.teal,
+                      color: Colors.orange,
                     ),
                   ),
                   SizedBox(height: SizeConfig.blockSizeVertical * 1),
@@ -99,11 +102,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _info(
-                    "${widget.member.role?.name}",
+                    "${widget.member.department.name}",
                     Icon(
-                      Icons.person_outline,
+                      Icons.home,
                       size: 25,
-                      color: Colors.orange,
+                      color: Colors.teal,
                     ),
                   ),
                   SizedBox(height: SizeConfig.blockSizeVertical * 1),
@@ -127,7 +130,34 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 side: BorderSide(color: Colors.white, width: 1),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              elevation: 10.0,
+              elevation: 5.0,
+              margin: EdgeInsets.symmetric(horizontal: 13),
+              color: Color(0xFFF1F1F1),
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal * 86,
+                padding: EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+                    Icon(
+                      Icons.email,
+                      size: 25,
+                      color: Colors.green,
+                    ),                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+                    Text("${widget.member?.email ?? ""}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.white, width: 1),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              elevation: 5.0,
               margin: EdgeInsets.symmetric(horizontal: 13),
               color: Color(0xFFF1F1F1),
               child: Container(
@@ -218,11 +248,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           side: BorderSide(color: Colors.white, width: 1),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        elevation: 10.0,
-        margin: EdgeInsets.symmetric(horizontal: 13),
+        elevation:5.0,
+        margin: EdgeInsets.symmetric(horizontal: 5.0),
         color: Color(0xFFF1F1F1),
         child: Container(
-          width: SizeConfig.blockSizeHorizontal * 40,
+          width: SizeConfig.blockSizeHorizontal * 42,
           padding: EdgeInsets.symmetric(vertical: 15.0),
           child: Column(
             children: [

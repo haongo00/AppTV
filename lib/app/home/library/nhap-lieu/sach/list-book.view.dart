@@ -31,9 +31,9 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
       ),
       body: BlocBuilder<ListBookCubit, ListBookState>(
           cubit: _cubit,
-          buildWhen: (prev, now) => now is ListBookLoading || now is ItemsListBookLoaded,
+          buildWhen: (prev, now) => now is ListBookLoading || now is ItemsListBookLoaded || now is BookCountLoading || now is BookCountLoaded,
           builder: (context, state) {
-            if (state is ItemsListBookLoaded) {
+            if (state is ItemsListBookLoaded || state is BookCountLoaded) {
               return _getBody(state);
             } else if (state is ListBookError) {
               return Center(child: Text(state.message));
@@ -60,6 +60,9 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
           child: FormBuilderTextField(
             attribute: "search",
             decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
+            onFieldSubmitted: (value) {
+              _cubit.loadData(search: value.toString());
+            },
           ),
         ),
         SizedBox(height: 20),
@@ -72,7 +75,8 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                 height: 3,
               ),
             ),
-            Text("Tổng số : ${_cubit.listBook?.length ?? ""}",
+
+            Text("Tổng số : ${_cubit.bookCount ?? ""}",
                 style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
             Expanded(
               child: Container(
@@ -84,7 +88,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
           ],
         ),
         SizedBox(height: 20),
-        Expanded(
+        (_cubit.listBook.isEmpty) ? Text("Không Tìm Thấy",style: TextStyle(fontSize: 25)): Expanded(
           child: Container(
             child: SingleChildScrollView(
               child: Column(
@@ -106,25 +110,25 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                         margin: EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                             boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: Offset(0, 3), // changes position of shadow
-                              ),
+                              // BoxShadow(
+                              //   color: Colors.grey.withOpacity(0.5),
+                              //   spreadRadius: 2,
+                              //   blurRadius: 3,
+                              //   offset: Offset(0, 3), // changes position of shadow
+                              // ),
                             ],
-                            border: Border.all(color: Colors.white,width: 2.0),
+                            border: Border.all(color: Colors.teal,width: 1.5),
                             borderRadius: BorderRadius.circular(15.0),
                             gradient: LinearGradient(
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
-                                colors: [Colors.teal.withOpacity(0.8), Color(0xff068189).withOpacity(0.8)])),
+                                colors: [Colors.white.withOpacity(0.8), Colors.white.withOpacity(0.8)])),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
                               Icons.menu_book_rounded,
-                              color: Colors.white,
+                              color: Colors.teal,
                               size: 30,
                             ),
                             SizedBox(width: 10.0),
@@ -141,7 +145,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                     child: Container(
                                       width: SizeConfig.blockSizeHorizontal * 65,
                                       child: Text(" ${_cubit.listBook[index].name} - ${_cubit.listBook[index].idBook}",
-                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                          style: TextStyle(color: Colors.black, fontSize: 15),
                                           maxLines: 4,
                                           overflow: TextOverflow.ellipsis),
                                     ),

@@ -23,9 +23,24 @@ class Member {
   Department department;
   String born;
   String avatar;
+  String phoneNumber;
   String GenCode;
+  String email;
+  bool isBlock;
 
-  Member({this.id, this.name,this.gender, this.userName, this.role, this.department, this.born, this.avatar,this.GenCode});
+  Member(
+      {this.id,
+      this.name,
+      this.gender,
+      this.userName,
+      this.role,
+      this.department,
+      this.email,
+      this.born,
+      this.avatar,
+      this.GenCode,
+      this.phoneNumber,
+      this.isBlock});
 
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
 
@@ -37,12 +52,12 @@ class Role {
   int id;
   String name;
   String Code;
-  Role({this.id,this.name,this.Code});
+
+  Role({this.id, this.name, this.Code});
 
   factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
 
   Map<String, dynamic> toJson() => _$RoleToJson(this);
-
 }
 
 @JsonSerializable(nullable: true)
@@ -50,7 +65,8 @@ class Department {
   int id;
   String name;
   String Code;
-  Department({this.id,this.name,this.Code});
+
+  Department({this.id, this.name, this.Code});
 
   factory Department.fromJson(Map<String, dynamic> json) => _$DepartmentFromJson(json);
 

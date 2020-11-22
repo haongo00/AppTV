@@ -35,6 +35,21 @@ class ItemsListBookLoaded extends ListBookState {
   @override
   List<Object> get props => [listBook];
 }
+class BookCountLoading extends ListBookState {
+  const BookCountLoading();
+
+  @override
+  List<Object> get props => [];
+}
+
+class BookCountLoaded extends ListBookState {
+  final int bookCount;
+
+  BookCountLoaded(this.bookCount);
+
+  @override
+  List<Object> get props => [bookCount];
+}
 
 class ItemsListBookUploading extends ListBookState {
   const ItemsListBookUploading();

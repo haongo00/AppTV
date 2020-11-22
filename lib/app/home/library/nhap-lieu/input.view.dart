@@ -21,7 +21,6 @@ class _InputViewState extends State<InputView> {
             ),
             elevation: 0.0,
             title: Text("Thư viện",style: TextStyle(color: Colors.teal,fontWeight: FontWeight.bold)),
-            toolbarHeight: SizeConfig.blockSizeVertical * 10,
             backgroundColor: Colors.white,
             centerTitle: true,
             bottom: TabBar(

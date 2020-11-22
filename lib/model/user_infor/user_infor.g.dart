@@ -44,6 +44,7 @@ Role _$RoleFromJson(Map<String, dynamic> json) {
     isCreateOrEditBook: json['isCreateOrEditBook'] as bool,
     isCreateOrEditUser: json['isCreateOrEditUser'] as bool,
     isCreateOrEditStudent: json['isCreateOrEditStudent'] as bool,
+    isCreatePost: json['isCreatePost'] as bool,
   );
 }
 
@@ -56,6 +57,7 @@ Map<String, dynamic> _$RoleToJson(Role instance) => <String, dynamic>{
       'isCreateOrEditBook': instance.isCreateOrEditBook,
       'isCreateOrEditUser': instance.isCreateOrEditUser,
       'isCreateOrEditStudent': instance.isCreateOrEditStudent,
+      'isCreatePost': instance.isCreatePost,
     };
 
 Department _$DepartmentFromJson(Map<String, dynamic> json) {

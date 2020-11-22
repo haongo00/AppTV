@@ -23,7 +23,8 @@ class _NewMemberViewState extends State<NewMemberView> {
   bool gender = true;
   String gen = "";
   String user = "";
-  String pass = "";
+  String email = "";
+  String sdt = "";
   int roleId = 0;
   int departmentId = 0;
 
@@ -87,6 +88,26 @@ class _NewMemberViewState extends State<NewMemberView> {
               },
             ),
             FormBuilderTextField(
+              attribute: 'email',
+              decoration: InputDecoration(labelText: "Email : "),
+              validators: [
+                FormBuilderValidators.required(),
+              ],
+              onChanged: (value) {
+                email = value.toString();
+              },
+            ),
+            FormBuilderTextField(
+              attribute: 'sdt',
+              decoration: InputDecoration(labelText: "SĐT : "),
+              validators: [
+                FormBuilderValidators.required(),
+              ],
+              onChanged: (value) {
+                sdt = value.toString();
+              },
+            ),
+            FormBuilderTextField(
               attribute: 'sach',
               decoration: InputDecoration(labelText: "User name : "),
               validators: [
@@ -94,16 +115,6 @@ class _NewMemberViewState extends State<NewMemberView> {
               ],
               onChanged: (value) {
                 user = value.toString();
-              },
-            ),
-            FormBuilderTextField(
-              attribute: 'sach',
-              decoration: InputDecoration(labelText: "Mật khẩu : "),
-              validators: [
-                FormBuilderValidators.required(),
-              ],
-              onChanged: (value) {
-                pass = value.toString();
               },
             ),
             FormBuilderDropdown(
@@ -143,7 +154,7 @@ class _NewMemberViewState extends State<NewMemberView> {
                     child: FlatButton(
                         color: Color(0xff068189),
                         onPressed: () {
-                          widget.cubit.newUser(name, date, gender, gen, user, pass, roleId, departmentId);
+                          widget.cubit.newUser(name, date, gender, gen, user, email,sdt, roleId, departmentId);
                           Modular.navigator.pop();
                         },
                         child: Text(

@@ -21,8 +21,8 @@ class MemberCubit extends Cubit<MemberState> {
   List<dynamic> roles;
   List<dynamic> departments;
 
-  Future<void> loadData() async {
-    Map<String, dynamic> params = {"skip": 0, "take": 10};
+  Future<void> loadData({String search = ""}) async {
+    Map<String, dynamic> params = {"skip": 0, "take": 10,"search" : search};
     try {
       emit(MemberLoading());
       ListMember _member = await _libraryRepository.fetchListMember(params);
@@ -61,13 +61,15 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> newUser(
-      String name, String date, bool gender, String gen, String user, String pass, int roleId, int departmentId) async {
+  Future<void> newUser(String name, String date, bool gender, String gen, String user, String email, String sdt,
+      int roleId, int departmentId) async {
     Map<String, dynamic> params = {
       "name": name,
       "born": date,
+      "GenCode" : gen,
       "username": user,
-      "password": pass,
+      "email": email,
+      "phoneNumber" : sdt,
       "roleId": roleId,
       "departmentId": departmentId,
       "avatar": null
@@ -75,6 +77,23 @@ class MemberCubit extends Cubit<MemberState> {
     try {
       emit(MemberLoading());
       if (await _libraryRepository.createUser(params)) {
+        emit(ItemsMemberUploaded());
+      } else {
+        emit(MemberError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(MemberError("Error submitting data"));
+    }
+    loadData();
+  }
+  Future<void> blockUser(int id) async {
+    Map<String, dynamic> params = {
+      "userId" : id
+    };
+    print(params);
+    try {
+      emit(MemberLoading());
+      if (await _libraryRepository.blockUser(params)) {
         emit(ItemsMemberUploaded());
       } else {
         emit(MemberError("Submit failed"));
@@ -95,7 +114,7 @@ class MemberCubit extends Cubit<MemberState> {
       int roleId,
       int departmentId}) async {
     Map<String, dynamic> params = {
-      "id" : 13,
+      "id": 13,
       "name": name,
       "roleId": roleId,
       "departmentId": departmentId,

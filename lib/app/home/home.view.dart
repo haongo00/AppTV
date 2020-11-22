@@ -22,7 +22,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: SizeConfig.blockSizeVertical*7,
+            toolbarHeight: SizeConfig.blockSizeVertical*8,
             backgroundColor: Colors.white,
             bottom: TabBar(
               labelPadding: EdgeInsets.zero,

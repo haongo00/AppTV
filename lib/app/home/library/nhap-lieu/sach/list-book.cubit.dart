@@ -1,5 +1,7 @@
+
 import 'package:app_tv/model/library/list_book.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
+import 'package:app_tv/services/library/library.service.dart';
 import 'package:app_tv/utils/exception.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -11,14 +13,33 @@ class ListBookCubit extends Cubit<ListBookState> {
   final LibraryRepository _libraryRepository;
   ListBookCubit(this._libraryRepository) : super(ListBookInitial()) {
     loadData();
+    getBookCount();
   }
 
   List<Book> listBook = [];
+  int bookCount = 0;
 
-  Future<void> loadData() async {
+  Future<void> getBookCount() async {
+    Map<String, dynamic> params = {};
+    try {
+      emit(BookCountLoading());
+      final response = await LibraryService.getBookCount(params);
+      if (response.statusCode == 200) {
+        print(response);
+        bookCount = int.parse(response.data['result']['count'].toString());
+        emit(BookCountLoaded(bookCount));
+      }
+    } on NetworkException {
+      emit(ListBookError("Couldn't fetch data. Is the device online?"));
+    }
+  }
+
+
+  Future<void> loadData({String search = ""}) async {
     Map<String, dynamic> params = {
       "skip" : 0,
-      "take" : 20
+      "take" : 20,
+      "search" : search
     };
     try {
       emit(ListBookLoading());

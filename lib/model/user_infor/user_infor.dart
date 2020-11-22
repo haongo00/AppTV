@@ -36,6 +36,7 @@ class Role {
   bool isCreateOrEditBook;
   bool isCreateOrEditUser;
   bool isCreateOrEditStudent;
+  bool isCreatePost;
 
   Role(
       {this.id,
@@ -45,7 +46,7 @@ class Role {
         this.isCreateOrEditSheet,
         this.isCreateOrEditBook,
         this.isCreateOrEditUser,
-        this.isCreateOrEditStudent});
+        this.isCreateOrEditStudent,this.isCreatePost});
 
   factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
 

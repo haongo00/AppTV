@@ -65,6 +65,9 @@ class _MemberViewState extends State<MemberView> {
           child: FormBuilderTextField(
             attribute: "search",
             decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
+            onFieldSubmitted: (value) {
+              cubit.loadData(search: value.toString());
+            },
           ),
         ),
         SizedBox(height: SizeConfig.blockSizeVertical * 3),
@@ -89,7 +92,7 @@ class _MemberViewState extends State<MemberView> {
           ],
         ),
         SizedBox(height: SizeConfig.blockSizeVertical * 3),
-        Expanded(
+        (cubit.member.isEmpty) ? Text("Không Tìm Thấy",style: TextStyle(fontSize: 25)) : Expanded(
           child: Container(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(8.0),
@@ -97,12 +100,12 @@ class _MemberViewState extends State<MemberView> {
                 children: [
                   ...List.generate(cubit.member.length, (index) {
                     return Card(
-                      elevation: 15.0,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         side: BorderSide(color: Colors.white, width: 1.5),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
-                      color: Color(0xff068189).withOpacity(0.75),
+                      color: Colors.white.withOpacity(0.75),
                       child: FlatButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -117,7 +120,7 @@ class _MemberViewState extends State<MemberView> {
                                 child: CircleAvatar(
                                   radius: SizeConfig.blockSizeHorizontal * 8,
                                   backgroundImage: NetworkImage(
-                                      'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-7.jpg'),
+                                      '${cubit.member.elementAt(index).avatar}'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
@@ -125,18 +128,21 @@ class _MemberViewState extends State<MemberView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('${cubit.member.elementAt(index).name}',
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25)),
+                                      style: TextStyle(color: (cubit.member.elementAt(index).isBlock) ? Colors.grey :Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
                                   SizedBox(
                                     height: 10.0,
                                   ),
                                   Text(
-                                      '${cubit.member.elementAt(index).department.name} --- ${cubit.member.elementAt(index).GenCode}',
-                                      style: TextStyle(color: Colors.white)),
+                                      '${cubit.member.elementAt(index).department.name} - ${cubit.member.elementAt(index).GenCode} - ${cubit.member.elementAt(index).role.Code}',
+                                      style: TextStyle(color: Colors.black)),
                                 ],
                               ),
                             ],
                           ),
                         ),
+                        onLongPress: () {
+                          _showAlert(context, cubit.member.elementAt(index).id);
+                        },
                         onPressed: () {
                           // Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
                           Navigator.push(
@@ -156,5 +162,38 @@ class _MemberViewState extends State<MemberView> {
         )
       ],
     );
+  }
+
+  void _showAlert(BuildContext context, int index) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          message: Text(
+            "Bạn có muốn Block thành viên ?",
+            style: TextStyle(fontWeight: FontWeight.w400),
+          ),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: Text(
+                "Block",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              ),
+              isDestructiveAction: true,
+              onPressed: () {
+                cubit.blockUser(index);
+                Navigator.pop(context);
+              },
+            )
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: Text(
+              "Cancel",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ));
   }
 }
