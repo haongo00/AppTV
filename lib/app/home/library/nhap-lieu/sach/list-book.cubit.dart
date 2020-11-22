@@ -17,7 +17,10 @@ class ListBookCubit extends Cubit<ListBookState> {
   }
 
   List<Book> listBook = [];
+  List<Book> listBookView = [];
   int bookCount = 0;
+  int tak = 10;
+  String search = "";
 
   Future<void> getBookCount() async {
     Map<String, dynamic> params = {};
@@ -34,11 +37,21 @@ class ListBookCubit extends Cubit<ListBookState> {
     }
   }
 
+  void pull() {
+    tak += 10;
+    loadData(search: search,take: tak);
+  }
 
-  Future<void> loadData({String search = ""}) async {
+  void reset() {
+    tak = 10;
+  }
+
+
+  Future<void> loadData({String search = "",int take = 10}) async {
+    this.search = search;
     Map<String, dynamic> params = {
       "skip" : 0,
-      "take" : 20,
+      "take" : take,
       "search" : search
     };
     try {
