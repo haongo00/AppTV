@@ -21,8 +21,8 @@ class InforCubit extends Cubit<InforState> {
       final response = await InforService.getPost(params);
       if (response.statusCode == 200) {
         ListPost _listPost = ListPost.fromJson(response.data as Map<String, dynamic>);
-        print(_listPost.result.length);
         listPost = _listPost.result.isNotEmpty ? _listPost.result : [];
+        print(listPost[0].toJson());
         emit(InforLoaded(listPost));
       }
     } on NetworkException {

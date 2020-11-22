@@ -1,5 +1,5 @@
 import 'package:app_tv/app/home/customer/information/infor.view.dart';
-import 'package:app_tv/app/home/customer/information/pass.view.dart';
+import 'package:app_tv/app/home/customer/pass/pass.view.dart';
 import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/app/home/home-page/comment/comment.view.dart';
 import 'package:app_tv/app/home/home.view.dart';

@@ -25,7 +25,6 @@ class NotificationCubit extends Cubit<NotificationState> {
       emit(NotificationLoading());
       ListNotification _list = await _notificationRepositories.fetchListMember(params);
       notifications = _list.notifications;
-      print(notifications.length);
       emit(ItemsNotificationLoaded(notifications));
     } on NetworkException {
       emit(NotificationError("Couldn't fetch data. Is the device online?"));
