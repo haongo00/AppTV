@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class API {
-  static String baseUrl = "http://192.168.43.89:3001";
+  static String baseUrl = "http://api.tvclubuet.com";
   final Dio dio = Dio(
     BaseOptions(
       connectTimeout: 30000,

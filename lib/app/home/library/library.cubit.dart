@@ -24,7 +24,6 @@ class LibraryCubit extends Cubit<LibraryState> {
     try {
       emit(LibraryLoading());
       final response = await LibraryService.getHistory(params);
-      print(response);
       if (response.statusCode == 200) {
         listHistory = ListHistory.fromJson(response.data as Map<String, dynamic>);
         emit(ItemsLibraryLoaded(listHistory));
@@ -42,7 +41,6 @@ class LibraryCubit extends Cubit<LibraryState> {
     try {
       emit(ThongKeLoading());
       final response = await LibraryService.getThongKe(params);
-      print(response);
       if (response.statusCode == 200) {
         borrow = int.parse(response.data['result']["borrow"].toString());
         paid = int.parse(response.data['result']["paid"].toString());

@@ -258,7 +258,7 @@ class _InforViewState extends State<InforView> {
                           style: TextStyle(fontSize: 18),
                         ),
                         Text(
-                          '${_post.createAt ?? ''}',
+                          '${_post.create_at ?? ''}',
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                       ],

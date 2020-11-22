@@ -133,7 +133,10 @@ class _MemberViewState extends State<MemberView> {
                                     height: 10.0,
                                   ),
                                   Text(
-                                      '${cubit.member.elementAt(index).department.name} - ${cubit.member.elementAt(index).GenCode} - ${cubit.member.elementAt(index).role.Code}',
+                                      '${cubit.member.elementAt(index).department.name} - ${cubit.member.elementAt(index).GenCode}',
+                                      style: TextStyle(color: Colors.black)),
+                                  Text(
+                                      '${cubit.member.elementAt(index).role.Code}',
                                       style: TextStyle(color: Colors.black)),
                                 ],
                               ),
