@@ -28,9 +28,9 @@ class API {
     };
 //    dio.interceptors
     dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-       Application.sharePreference.hasKey("token")
-           ? options.headers["token"] = "${Application.sharePreference.getString("token")}"
-           : {};
+      Application.sharePreference.hasKey("token")
+          ? options.headers["token"] = "${Application.sharePreference.getString("token")}"
+          : {};
       print(options.uri);
       // Do something before request is sent
       return options; //continue
@@ -39,14 +39,15 @@ class API {
       // If you want to reject the request with a error message,
       // you can return a `DioError` object or return `dio.reject(errMsg)`
     }, onResponse: (Response response) async {
+      if (response?.data['status'] == 401) {
+        Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+      }
       // Do something with response data
       return response; // continue
     }, onError: (DioError e) async {
       // Do something with response error
       // Refresh Token
-     if (e.response?.data['status'] == 401) {
-       Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
-     }
+
       return e.response; //continue
     }));
   }
