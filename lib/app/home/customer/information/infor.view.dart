@@ -39,7 +39,7 @@ class _InforViewState extends State<InforView> {
           ),
           Center(
             child: CircleAvatar(
-              radius: SizeConfig.blockSizeHorizontal * 15,
+              radius: SizeConfig.blockSizeHorizontal * 20,
               backgroundImage: NetworkImage('${_userInfo.avatar}'),
               backgroundColor: Colors.transparent,
             ),
@@ -56,8 +56,8 @@ class _InforViewState extends State<InforView> {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               color: Color(0xFFF1F1F1),
               child: Container(
-                width: SizeConfig.blockSizeHorizontal * 100,
-                padding: EdgeInsets.symmetric(vertical: 5.0),
+                width: SizeConfig.blockSizeHorizontal * 92,
+                padding: EdgeInsets.symmetric(vertical: 15.0),
                 child: Column(
                   children: [
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
@@ -67,11 +67,11 @@ class _InforViewState extends State<InforView> {
               ),
             ),
           ),
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _info(
                     "${_userInfo.role?.name}",
@@ -83,7 +83,7 @@ class _InforViewState extends State<InforView> {
                   ),
                   SizedBox(height: SizeConfig.blockSizeVertical * 1),
                   _info(
-                      "${_userInfo?.GenCode ?? ""}",
+                      "${_userInfo.GenCode ?? ""}",
                       Icon(
                         Icons.support_agent_sharp,
                         size: 25,
@@ -91,8 +91,9 @@ class _InforViewState extends State<InforView> {
                       )),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(height: SizeConfig.blockSizeVertical * 1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _info(
                     "${_userInfo?.department?.name ?? ""}",
@@ -112,63 +113,64 @@ class _InforViewState extends State<InforView> {
                     ),
                   ),
                 ],
-              )
+              ),
+              SizedBox(height: SizeConfig.blockSizeVertical * 1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _info(
+                    dateFormat("${_userInfo?.born ?? ""}"),
+                    Icon(
+                      Icons.today_outlined,
+                      size: 25,
+                      color: Colors.pink,
+                    ),
+                  ),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 1),
+                  _info(
+                    "${_userInfo.phoneNumber ?? ""}",
+                    Icon(
+                      Icons.phone,
+                      size: 25,
+                      color: Colors.deepOrange,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           SizedBox(height: SizeConfig.blockSizeVertical * 1),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 5.0),
-          //   child: Card(
-          //     shape: RoundedRectangleBorder(
-          //       side: BorderSide(color: Colors.white, width: 1),
-          //       borderRadius: BorderRadius.circular(5.0),
-          //     ),
-          //     elevation: 5.0,
-          //     margin: EdgeInsets.symmetric(horizontal: 13),
-          //     color: Color(0xFFF1F1F1),
-          //     child: Container(
-          //       width: SizeConfig.blockSizeHorizontal * 86,
-          //       padding: EdgeInsets.symmetric(vertical: 15.0),
-          //       child: Column(
-          //         children: [
-          //           SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
-          //           Icon(
-          //             Icons.email,
-          //             size: 25,
-          //             color: Colors.green,
-          //           ),                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
-          //           Text("${_userInfo?. ?? ""}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
             child: Card(
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: Colors.white, width: 1),
-                borderRadius: BorderRadius.circular(3.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
               elevation: 5.0,
-              margin: EdgeInsets.symmetric(horizontal: 0),
+              margin: EdgeInsets.symmetric(horizontal: 13),
               color: Color(0xFFF1F1F1),
               child: Container(
-                width: SizeConfig.blockSizeHorizontal * 100,
+                width: SizeConfig.blockSizeHorizontal * 92,
                 padding: EdgeInsets.symmetric(vertical: 5.0),
                 child: Column(
                   children: [
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
                     Icon(
-                      Icons.today,
+                      Icons.email,
                       size: 25,
-                      color: Colors.pink,
+                      color: Colors.green,
                     ),                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
-                    Text(dateFormat("${_userInfo?.born ?? ""}"), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text("${_userInfo?.email ?? ""}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
             ),
+          ),
+          SizedBox(height: SizeConfig.blockSizeVertical * 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Text("Bài viết của bạn ",style: TextStyle(color: Colors.teal,fontSize: 20,fontWeight: FontWeight.bold)),
           ),
           BlocBuilder<InforCubit, InforState>(
               cubit: cubit,
@@ -207,7 +209,7 @@ class _InforViewState extends State<InforView> {
         margin: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 1),
         color: Color(0xFFF1F1F1),
         child: Container(
-          width: SizeConfig.blockSizeHorizontal * 48,
+          width: SizeConfig.blockSizeHorizontal * 45,
           padding: EdgeInsets.symmetric(vertical: 5.0),
           child: Column(
             children: [
@@ -225,6 +227,10 @@ class _InforViewState extends State<InforView> {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        border: Border.all(width: 1.0,color: Colors.grey),
+        borderRadius: BorderRadius.circular(25)
+      ),
       child: FlatButton(
         padding: EdgeInsets.zero,
         onPressed: () {},
@@ -242,7 +248,7 @@ class _InforViewState extends State<InforView> {
                     margin: EdgeInsets.all(5.0),
                     child: ClipOval(
                       child: Image.network(
-                        '${_post.userCreate.avatar ?? 'https://www.minervastrategies'
+                        '${_post.userCreate?.avatar ?? 'https://www.minervastrategies'
                             '.com/wp-content/uploads/2016/03/default-avatar'
                             '.jpg'}',
                         fit: BoxFit.fill,
@@ -253,7 +259,7 @@ class _InforViewState extends State<InforView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${_post.userCreate.name ?? ''}',
+                        '${_post.userCreate?.name ?? ''}',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(

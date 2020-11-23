@@ -41,7 +41,7 @@ class _PassViewState extends State<PassView> {
               validators: [
                 FormBuilderValidators.required(),
               ],
-              onFieldSubmitted: (value) => oldPass = value.toString(),
+              onChanged: (value) => oldPass = value.toString(),
             ),
             FormBuilderTextField(
               attribute: "new",
@@ -49,7 +49,7 @@ class _PassViewState extends State<PassView> {
               validators: [
                 FormBuilderValidators.required(),
               ],
-              onFieldSubmitted: (value) => newPass = value.toString(),
+              onChanged: (value) => newPass = value.toString(),
             ),
             FormBuilderTextField(
               attribute: "ag",
@@ -57,7 +57,7 @@ class _PassViewState extends State<PassView> {
               validators: [
                 FormBuilderValidators.required(),
               ],
-              onFieldSubmitted: (value) => agPass = value.toString(),
+              onChanged: (value) => agPass = value.toString(),
             ),
             SizedBox(
               height: 15,

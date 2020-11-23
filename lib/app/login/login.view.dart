@@ -18,6 +18,7 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   LoginCubit _cubit = LoginCubit();
+  bool forgot = true;
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         height: SizeConfig.safeBlockVertical * 25,
                       ),
                       SizedBox(height: SizeConfig.safeBlockVertical * 4),
-                      buildLoginWidget(),
+                      (forgot) ? buildLoginWidget() : _forgot(),
                       Expanded(
                         flex: 4,
                         child: SizedBox(),
@@ -73,9 +74,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             TextFieldView(
               attribute: "user_name",
               title: "Tên đăng nhập",
-              validators: [
-
-              ],
+              validators: [],
               onSaved: (String val) {
                 _cubit.userName = val;
               },
@@ -85,8 +84,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               attribute: 'password',
               title: 'Mật khẩu',
               validators: [
-                FormBuilderValidators.pattern(
-                    r'^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$'),
+                FormBuilderValidators.pattern(r'^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$'),
               ],
               onSaved: (String val) {
                 _cubit.password = val;
@@ -107,11 +105,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                         borderRadius: BorderRadius.circular(100.0),
                       ),
                       onPressed: () async {
-                        (_fbKey.currentState.saveAndValidate() &&
-                                !_cubit.hasAnyEmptyAttribute)
+                        (_fbKey.currentState.saveAndValidate() && !_cubit.hasAnyEmptyAttribute)
                             ? (await _cubit.login())
-                                ? Modular.to
-                                    .pushReplacementNamed(AppModule.home)
+                                ? Modular.to.pushReplacementNamed(AppModule.home)
                                 : Fluttertoast.showToast(
                                     msg: _cubit.message,
                                     toastLength: Toast.LENGTH_SHORT,
@@ -122,9 +118,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     fontSize: 16.0,
                                   )
                             : Fluttertoast.showToast(
-                                msg: _cubit.hasAnyEmptyAttribute
-                                    ? "Empty Attribute"
-                                    : "Invalid Value",
+                                msg: _cubit.hasAnyEmptyAttribute ? "Empty Attribute" : "Invalid Value",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
@@ -136,15 +130,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                       child: isLoaded
                           ? Text(
                               "Đăng nhập",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.normal),
+                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.normal),
                             )
                           : Theme(
                               data: ThemeData(
-                                cupertinoOverrideTheme: CupertinoThemeData(
-                                    brightness: Brightness.dark),
+                                cupertinoOverrideTheme: CupertinoThemeData(brightness: Brightness.dark),
                               ),
                               child: CupertinoActivityIndicator(),
                             ),
@@ -163,11 +153,62 @@ class _LoginWidgetState extends State<LoginWidget> {
                 fontSize: 20,
                 decoration: TextDecoration.underline,
               ),
-              recognizer: new TapGestureRecognizer()..onTap = () {},
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  setState(() {
+                    forgot = !forgot;
+                  });
+                },
             ))
           ],
         ),
       ),
+    );
+  }
+
+  Widget _forgot() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: TextFieldView(
+            attribute: "email",
+            title: "Email",
+            validators: [],
+            onSaved: (String val) {
+              _cubit.email = val;
+            },
+          ),
+        ),
+        SizedBox(height: SizeConfig.blockSizeVertical*5),
+        RaisedButton(
+          color: Color(0xff068189),
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              side: BorderSide(color: Colors.teal)
+          ),
+          onPressed: () async {
+            if (_cubit.email == null) {
+              Fluttertoast.showToast(
+                msg:  "Nhập Email",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.black45,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            } else {
+              await _cubit.forgotPass();
+              setState(() {
+              forgot = !forgot;
+            });
+            }
+          },
+          child: Text("Gửi đến Email của bạn !",style: TextStyle(color: Colors.white,fontSize: 20)),
+        )
+      ],
     );
   }
 }

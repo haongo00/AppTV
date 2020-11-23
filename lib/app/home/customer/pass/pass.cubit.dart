@@ -1,4 +1,7 @@
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/repositories/infor/infor.repositories.dart';
+import 'package:app_tv/routers/application.dart';
+import 'package:app_tv/services/infor/infor.service.dart';
 import 'package:app_tv/utils/exception.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -8,7 +11,13 @@ part 'pass.state.dart';
 
 class PassCubit extends Cubit<PassState> {
   final InforRepositories _inforRepositories;
-  PassCubit(this._inforRepositories) : super(PassInitial());
+  UserInfor _userInfo = Application.sharePreference.getUserInfor();
+
+  PassCubit(this._inforRepositories) : super(PassInitial()) {
+    loadUserInfo();
+  }
+
+
 
   Future<void> resetPass(String oldPass,String newPass) async {
     Map<String, dynamic> params = {
@@ -26,6 +35,41 @@ class PassCubit extends Cubit<PassState> {
       }
     } on NetworkException {
       emit(PassError("Error submitting data"));
+    }
+  }
+
+  Future<void> userUpdate(String name,String born,String password,String email,String phoneNumber,bool gender,) async {
+    Map<String, dynamic> params = {
+      'name': name,
+      'born' : born,
+      'password' : password,
+      'email' : email,
+      'phoneNumber' : phoneNumber,
+      'gender' : gender
+    };
+    try {
+      emit(PassUploading());
+      if (await _inforRepositories.userUpdate(params)) {
+        emit((ItemsPassUploaded()));
+      } else {
+        emit(PassError("Submit failed"));
+      }
+    } on NetworkException {
+      emit(PassError("Error submitting data"));
+    }
+  }
+
+  Future<void> loadUserInfo() async {
+    Map<String, dynamic> params = {
+      'id' : _userInfo.id
+    };
+    try {
+      emit(PassLoading());
+      final response = await InforService.getUserInfo(params);
+      print(response);
+      if (response.statusCode == 200) {}
+    } on NetworkException {
+      emit(PassError("Couldn't fetch data. Is the device online?"));
     }
   }
 }

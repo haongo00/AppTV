@@ -22,7 +22,7 @@ class MemberCubit extends Cubit<MemberState> {
   List<dynamic> departments;
 
   Future<void> loadData({String search = ""}) async {
-    Map<String, dynamic> params = {"skip": 0, "take": 10,"search" : search};
+    Map<String, dynamic> params = {"skip": 0, "take": 100,"search" : search};
     try {
       emit(MemberLoading());
       ListMember _member = await _libraryRepository.fetchListMember(params);
