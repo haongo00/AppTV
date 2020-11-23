@@ -75,7 +75,7 @@ class _CustomerState extends State<Customer> {
                     FlatButton(
                         padding: EdgeInsets.zero,
                         onPressed: () {
-                          Modular.link.pushNamed(HomeModule.passView);
+                          Modular.link.pushNamed(HomeModule.resetInfo);
                         },
                         child: _info(
                             "Thay đổi thông tin cá nhân",

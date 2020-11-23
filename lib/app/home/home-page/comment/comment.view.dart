@@ -235,7 +235,7 @@ class _CommentViewState extends State<CommentView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             ),
-            elevation: 5.5,
+            elevation: 0.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -245,8 +245,8 @@ class _CommentViewState extends State<CommentView> {
                   child: Row(
                     children: [
                       Container(
-                        width: 50,
-                        height: 50,
+                        width: 40,
+                        height: 40,
                         margin: EdgeInsets.all(5.0),
                         child: ClipOval(
                           child: Image.network(
