@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'user_infor.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
@@ -10,22 +11,27 @@ class UserInfor {
   Department department;
   String avatar;
   String GenCode;
+  String email;
+  String phoneNumber;
   bool gender;
 
   UserInfor(
       {this.id,
-        this.name,
-        this.born,
-        this.role,
-        this.department,
-        this.avatar,
-        this.GenCode,
-        this.gender});
+      this.name,
+      this.born,
+      this.role,
+      this.department,
+      this.avatar,
+      this.GenCode,
+      this.gender,
+      this.phoneNumber,
+      this.email});
 
   factory UserInfor.fromJson(Map<String, dynamic> json) => _$UserInforFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserInforToJson(this);
 }
+
 @JsonSerializable(nullable: true)
 class Role {
   int id;
@@ -53,6 +59,7 @@ class Role {
 
   Map<String, dynamic> toJson() => _$RoleToJson(this);
 }
+
 @JsonSerializable(nullable: true)
 class Department {
   int id;
