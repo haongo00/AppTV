@@ -75,8 +75,8 @@ class _NotificationAppState extends State<NotificationApp> {
                                   width: SizeConfig.blockSizeHorizontal*80,
                                   child: Row(
                                     children: [
-                                      Text("${cubit.notifications.elementAt(index).userCreate_name}  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                      Text("${cubit.notifications.elementAt(index).notification_context}")
+                                      Text("${cubit.notifications.elementAt(index).userCreate_name}  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                                      Expanded(child: Text("${cubit.notifications.elementAt(index).notification_context}"))
                                     ],
                                   ),
                                 ),
