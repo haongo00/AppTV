@@ -68,11 +68,9 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
         attribute: 'msv',
         textAlign: TextAlign.center,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10),
           hintText: "Nhập mã sinh viên",
-          hintStyle: const TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 18,
-          ),
+          hintStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100.0),
             borderSide: BorderSide(color: Color(0xff068189)),
@@ -157,9 +155,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
                           icon: Icon(Icons.add_circle),
                           color: Colors.teal,
                           onPressed: () {
-                            Modular.link
-                                .pushNamed(HomeModule.borrowBook, arguments: cubit)
-                                .then((value) => cubit.bookDetail = null);
+                            Modular.link.pushNamed(HomeModule.borrowBook, arguments: cubit).then((value) => cubit.bookDetail = null);
                           })
                     ],
                   ),
@@ -276,18 +272,14 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
                   children: [
                     Container(
                       child: Text(
-                        _val
-                            ? '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}'
-                            : '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}',
+                        _val ? '${cubit.bookOrder.bookPaid[index].bookdetail.book.name}' : '${cubit.bookOrder.bookBorrowed[index].bookdetail.book.name}',
                         style: TextStyle(fontSize: 16, color: Colors.blueAccent),
                         overflow: TextOverflow.ellipsis,
                       ),
                       width: SizeConfig.blockSizeHorizontal * 40,
                     ),
                     Text(
-                      _val
-                          ? '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}'
-                          : '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}',
+                      _val ? '${cubit.bookOrder.bookPaid[index].bookdetail.idBookDetails}' : '${cubit.bookOrder.bookBorrowed[index].bookdetail.idBookDetails}',
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],

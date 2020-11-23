@@ -32,6 +32,8 @@ class _CommentViewState extends State<CommentView> {
   CommentCubit _cubit = CommentCubit(PostRepository());
   UserInfor _userInfor = Application.sharePreference.getUserInfor();
 
+  GlobalKey<FormBuilderState> _key = GlobalKey<FormBuilderState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -171,9 +173,7 @@ class _CommentViewState extends State<CommentView> {
                     margin: EdgeInsets.all(5.0),
                     child: ClipOval(
                       child: Image.network(
-                        '${_post.userCreate.avatar ?? 'https://www.minervastrategies'
-                            '.com/wp-content/uploads/2016/03/default-avatar'
-                            '.jpg'}',
+                        '${_post.userCreate.avatar ?? 'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'}',
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -229,6 +229,7 @@ class _CommentViewState extends State<CommentView> {
               _showAlert(context, _comment.id);
             }
           },
+          onPressed: () {},
           child: Card(
             margin: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
@@ -294,8 +295,7 @@ class _CommentViewState extends State<CommentView> {
             ),
           ),
         ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)));
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)));
   }
 
   Widget _inputComment() {
@@ -312,35 +312,35 @@ class _CommentViewState extends State<CommentView> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               IconButton(
-                  padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5),
-                  icon: Icon(Icons.camera_alt),
-                  iconSize: 30,
-                  onPressed: loadAssets),
+                  padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5), icon: Icon(Icons.camera_alt), iconSize: 30, onPressed: loadAssets),
               Expanded(
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     margin: EdgeInsets.symmetric(vertical: 10.0),
                     child: Column(
                       children: [
-                        FormBuilderTextField(
-                          maxLines: null,
-                          autofocus: true,
-                          attribute: 'comment',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 21),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Viết bình luận ...",
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                        FormBuilder(
+                          key: _key,
+                          child: FormBuilderTextField(
+                            maxLines: null,
+                            autofocus: true,
+                            attribute: 'comment',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 21),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Viết bình luận ...",
+                              hintStyle: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
                             ),
+                            keyboardType: TextInputType.text,
+                            validators: [FormBuilderValidators.required()],
+                            onChanged: (dynamic val) {
+                              content = val.toString();
+                            },
                           ),
-                          keyboardType: TextInputType.text,
-                          validators: [FormBuilderValidators.required()],
-                          onChanged: (dynamic val) {
-                            content = val.toString();
-                          },
                         ),
                         images.isNotEmpty
                             ? Container(
@@ -380,12 +380,14 @@ class _CommentViewState extends State<CommentView> {
                   padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2.5),
                   icon: Icon(Icons.cancel_schedule_send),
                   iconSize: 30,
-                  onPressed: createComment),
+                  onPressed: () {
+                    _key.currentState.reset();
+                    createComment();
+                  }),
             ],
           ),
         ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0), border: Border.all(color: Colors.grey, width: 1.5)));
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0), border: Border.all(color: Colors.grey, width: 1.5)));
   }
 
   File file;
