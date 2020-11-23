@@ -1,5 +1,6 @@
 import 'package:app_tv/app/home/customer/information/infor.view.dart';
 import 'package:app_tv/app/home/customer/pass/pass.view.dart';
+import 'package:app_tv/app/home/customer/pass/reset-info.view.dart';
 import 'package:app_tv/app/home/home-page/post/post.cubit.dart';
 import 'package:app_tv/app/home/home-page/comment/comment.view.dart';
 import 'package:app_tv/app/home/home.view.dart';
@@ -35,6 +36,7 @@ class HomeModule extends ChildModule {
   static String postStatus = "/post-status";
   static String passView = "/pass";
   static String comment = "/comment/";
+  static String resetInfo = "/reset-info";
 
   // Provide a list of dependencies to inject into your project
   @override
@@ -55,6 +57,7 @@ class HomeModule extends ChildModule {
         ModularRouter(giveBook, child: (context, args) => GiveBookView(cubit: args.data as SearchCubit)),
         ModularRouter(bookInfo, child: (context, args) => BookInfoView(book: args.data as Book)),
         ModularRouter(passView, child: (context, args) => PassView()),
+        ModularRouter(resetInfo, child: (context, args) => ResetInfoView()),
         ModularRouter(comment, child: (context, args) => CommentView(idPost: args.data as int,)),
       ];
 }

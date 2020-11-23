@@ -83,7 +83,7 @@ class _InforViewState extends State<InforView> {
                   ),
                   SizedBox(height: SizeConfig.blockSizeVertical * 1),
                   _info(
-                      "${_userInfo?.genCode ?? ""}",
+                      "${_userInfo?.GenCode ?? ""}",
                       Icon(
                         Icons.support_agent_sharp,
                         size: 25,

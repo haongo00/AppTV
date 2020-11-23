@@ -12,8 +12,10 @@ class PassCubit extends Cubit<PassState> {
 
   Future<void> resetPass(String oldPass,String newPass) async {
     Map<String, dynamic> params = {
-      'password' : oldPass,
-      'newPassword' : newPass
+      'account' : {
+        'password' : oldPass,
+        'newPassword' : newPass
+      }
     };
     try {
       emit(PassUploading());

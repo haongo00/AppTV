@@ -9,7 +9,7 @@ class UserInfor {
   Role role;
   Department department;
   String avatar;
-  String genCode;
+  String GenCode;
   bool gender;
 
   UserInfor(
@@ -19,7 +19,7 @@ class UserInfor {
         this.role,
         this.department,
         this.avatar,
-        this.genCode,
+        this.GenCode,
         this.gender});
 
   factory UserInfor.fromJson(Map<String, dynamic> json) => _$UserInforFromJson(json);
