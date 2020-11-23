@@ -95,7 +95,7 @@ class _MemberViewState extends State<MemberView> {
         (cubit.member.isEmpty) ? Text("Không Tìm Thấy",style: TextStyle(fontSize: 25)) : Expanded(
           child: Container(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
                 children: [
                   ...List.generate(cubit.member.length, (index) {
@@ -110,6 +110,7 @@ class _MemberViewState extends State<MemberView> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
+                        padding: EdgeInsets.zero,
                         child: Container(
                           width: SizeConfig.blockSizeHorizontal * 95,
                           margin: EdgeInsets.only(left:5, top: 20, right: 20, bottom: 20),
@@ -127,8 +128,11 @@ class _MemberViewState extends State<MemberView> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('${cubit.member.elementAt(index).name}',
-                                      style: TextStyle(color: (cubit.member.elementAt(index).isBlock) ? Colors.grey :Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
+                                  Container(
+                                    width: SizeConfig.blockSizeHorizontal*70,
+                                    child: Text('${cubit.member.elementAt(index).name}',
+                                        style: TextStyle(color: (cubit.member.elementAt(index).isBlock) ? Colors.grey :Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
+                                  ),
                                   SizedBox(
                                     height: 10.0,
                                   ),
