@@ -14,11 +14,20 @@ class PostCubit extends Cubit<PostState> {
   }
 
   List<Post> listPost = [];
+  int tak = 10;
+  void pull() {
+    tak += 10;
+    loadData(take: tak);
+  }
 
-  Future<void> loadData() async {
+  void reset() {
+    tak = 10;
+  }
+
+  Future<void> loadData({int take = 10}) async {
     Map<String, dynamic> params = {
       "skip" : 0,
-      "take" : 20
+      "take" : take
     };
     try {
       emit(PostLoading());

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MemberView extends StatefulWidget {
   @override
@@ -17,6 +18,21 @@ class MemberView extends StatefulWidget {
 
 class _MemberViewState extends State<MemberView> {
   MemberCubit cubit = MemberCubit(LibraryRepository());
+
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  // ignore: avoid_void_async
+  void onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  // ignore: avoid_void_async
+  void onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    cubit.pull();
+    _refreshController.loadComplete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +50,7 @@ class _MemberViewState extends State<MemberView> {
         ),
         body: BlocBuilder<MemberCubit, MemberState>(
             cubit: cubit,
-            buildWhen: (prev, now) => now is MemberLoading || now is ItemsMemberLoaded,
+            buildWhen: (prev, now) => now is ItemsMemberLoaded,
             builder: (context, state) {
               if (state is ItemsMemberLoaded) {
                 return _getBody(state);
@@ -94,75 +110,105 @@ class _MemberViewState extends State<MemberView> {
         SizedBox(height: SizeConfig.blockSizeVertical * 3),
         (cubit.member.isEmpty) ? Text("Không Tìm Thấy",style: TextStyle(fontSize: 25)) : Expanded(
           child: Container(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                children: [
-                  ...List.generate(cubit.member.length, (index) {
-                    return Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 1.5),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      color: Colors.white.withOpacity(0.75),
-                      child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        padding: EdgeInsets.zero,
-                        child: Container(
-                          width: SizeConfig.blockSizeHorizontal * 95,
-                          margin: EdgeInsets.only(left:5, top: 20, right: 20, bottom: 20),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: CircleAvatar(
-                                  radius: SizeConfig.blockSizeHorizontal * 8,
-                                  backgroundImage: NetworkImage(
-                                      '${cubit.member.elementAt(index).avatar}'),
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+            child: Scrollbar(
+              child: SmartRefresher(
+                enablePullDown: false,
+                enablePullUp: true,
+                header: WaterDropMaterialHeader(),
+                footer: CustomFooter(
+                  builder: (BuildContext context, LoadStatus status) {
+                    Widget body;
+                    if (status == LoadStatus.idle) {
+                      body = SizedBox();
+                    } else if (status == LoadStatus.loading) {
+                      body = CupertinoActivityIndicator();
+                    } else if (status == LoadStatus.failed) {
+                      body = Text("");
+                    } else if (status == LoadStatus.canLoading) {
+                      body = Text("");
+                    } else {
+                      body = Text("");
+                    }
+                    return Container(
+                      height: 55.0,
+                      child: Center(child: body),
+                    );
+                  },
+                ),
+                onRefresh: onRefresh,
+                onLoading: onLoading,
+                controller: _refreshController,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    children: [
+                      ...List.generate(cubit.member.length, (index) {
+                        return Card(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.white, width: 1.5),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          color: Colors.white.withOpacity(0.75),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.zero,
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal * 95,
+                              margin: EdgeInsets.only(left:5, top: 20, right: 20, bottom: 20),
+                              child: Row(
                                 children: [
-                                  Container(
-                                    width: SizeConfig.blockSizeHorizontal*70,
-                                    child: Text('${cubit.member.elementAt(index).name}',
-                                        style: TextStyle(color: (cubit.member.elementAt(index).isBlock) ? Colors.grey :Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: CircleAvatar(
+                                      radius: SizeConfig.blockSizeHorizontal * 8,
+                                      backgroundImage: NetworkImage(
+                                          '${cubit.member.elementAt(index).avatar}'),
+                                      backgroundColor: Colors.transparent,
+                                    ),
                                   ),
-                                  SizedBox(
-                                    height: 10.0,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: SizeConfig.blockSizeHorizontal*70,
+                                        child: Text('${cubit.member.elementAt(index).name}',
+                                            style: TextStyle(color: (cubit.member.elementAt(index).isBlock) ? Colors.grey :Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Text(
+                                          '${cubit.member.elementAt(index).department.name} - ${cubit.member.elementAt(index).GenCode}',
+                                          style: TextStyle(color: Colors.black)),
+                                      Text(
+                                          '${cubit.member.elementAt(index).role.Code}',
+                                          style: TextStyle(color: Colors.black)),
+                                    ],
                                   ),
-                                  Text(
-                                      '${cubit.member.elementAt(index).department.name} - ${cubit.member.elementAt(index).GenCode}',
-                                      style: TextStyle(color: Colors.black)),
-                                  Text(
-                                      '${cubit.member.elementAt(index).role.Code}',
-                                      style: TextStyle(color: Colors.black)),
                                 ],
                               ),
-                            ],
+                            ),
+                            onLongPress: () {
+                              _showAlert(context, cubit.member.elementAt(index).id);
+                            },
+                            onPressed: () {
+                              // Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MemberInfoView(member: cubit.member.elementAt(index), cubit: cubit)),
+                              );
+                            },
                           ),
-                        ),
-                        onLongPress: () {
-                          _showAlert(context, cubit.member.elementAt(index).id);
-                        },
-                        onPressed: () {
-                          // Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    MemberInfoView(member: cubit.member.elementAt(index), cubit: cubit)),
-                          );
-                        },
-                      ),
-                    );
-                  })
-                ],
+                        );
+                      })
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -176,13 +222,24 @@ class _MemberViewState extends State<MemberView> {
         context: context,
         builder: (context) => CupertinoActionSheet(
           message: Text(
-            "Bạn có muốn Block thành viên ?",
+            "Bạn có muốn Block / Delete thành viên ?",
             style: TextStyle(fontWeight: FontWeight.w400),
           ),
           actions: <Widget>[
             CupertinoActionSheetAction(
               child: Text(
                 "Block",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              ),
+              isDestructiveAction: true,
+              onPressed: () {
+                cubit.blockUser(index);
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: Text(
+                "Delete",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               isDestructiveAction: true,
