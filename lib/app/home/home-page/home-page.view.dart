@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
           : SizedBox(),
       body: BlocBuilder<PostCubit, PostState>(
           cubit: _cubit,
-          buildWhen: (prev, now) => now is PostLoading || now is ItemsPostLoaded,
+          buildWhen: (prev, now) => now is ItemsPostLoaded,
           builder: (context, state) {
             if (state is ItemsPostLoaded) {
               return _body();
@@ -84,16 +85,61 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  // ignore: avoid_void_async
+  void onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  // ignore: avoid_void_async
+  void onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _cubit.pull();
+    _refreshController.loadComplete();
+  }
+
   Widget _body() {
-    return SingleChildScrollView(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ...List.generate(_cubit.listPost.length, (index) {
-          return _post(_cubit.listPost[index]);
-        })
-      ],
-    ));
+    return Scrollbar(
+      child: SmartRefresher(
+        enablePullDown: false,
+        enablePullUp: true,
+        header: WaterDropMaterialHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus status) {
+            Widget body;
+            if (status == LoadStatus.idle) {
+              body = SizedBox();
+            } else if (status == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (status == LoadStatus.failed) {
+              body = Text("");
+            } else if (status == LoadStatus.canLoading) {
+              body = Text("");
+            } else {
+              body = Text("");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        onRefresh: onRefresh,
+        onLoading: onLoading,
+        controller: _refreshController,
+        child: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ...List.generate(_cubit.listPost.length, (index) {
+              return _post(_cubit.listPost[index]);
+            })
+          ],
+        )),
+      ),
+    );
   }
 
   Widget _post(Post _post) {

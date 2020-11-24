@@ -18,9 +18,17 @@ class LibraryCubit extends Cubit<LibraryState> {
   ListHistory listHistory = ListHistory(result: []);
   int borrow = 0;
   int paid = 0;
+  int tak = 10;
+  void pull() {
+    tak += 10;
+    loadData(take: tak);
+  }
 
-  Future<void> loadData() async {
-    Map<String, dynamic> params = {"skip": 0, "take": 10};
+  void reset() {
+    tak = 10;
+  }
+  Future<void> loadData({int take = 10}) async {
+    Map<String, dynamic> params = {"skip": 0, "take": take};
     try {
       emit(LibraryLoading());
       final response = await LibraryService.getHistory(params);

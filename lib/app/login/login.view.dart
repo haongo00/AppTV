@@ -207,6 +207,22 @@ class _LoginWidgetState extends State<LoginWidget> {
             }
           },
           child: Text("Gửi đến Email của bạn !",style: TextStyle(color: Colors.white,fontSize: 20)),
+        ),
+        SizedBox(height: SizeConfig.blockSizeVertical*5),
+        RaisedButton(
+          color: Color(0xff068189),
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              side: BorderSide(color: Colors.teal)
+          ),
+          onPressed: () async {
+              setState(() {
+              forgot = !forgot;
+            });
+
+          },
+          child: Text("Quay lại đăng nhập",style: TextStyle(color: Colors.white,fontSize: 20)),
         )
       ],
     );

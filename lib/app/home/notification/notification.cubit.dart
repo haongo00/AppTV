@@ -12,14 +12,22 @@ class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit(this._notificationRepositories) : super(NotificationInitial()){
     loadData();
   }
-
   List<Notifications> notifications;
+  int tak = 10;
+  void pull() {
+    tak += 10;
+    loadData(take: tak);
+  }
+
+  void reset() {
+    tak = 10;
+  }
 
 
-  Future<void> loadData() async {
+  Future<void> loadData({int take = 10}) async {
     Map<String, dynamic> params = {
       "skip" : 0,
-      "take" : 20
+      "take" : take
     };
     try {
       emit(NotificationLoading());

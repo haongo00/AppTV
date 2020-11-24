@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Library extends StatefulWidget {
   @override
@@ -119,10 +120,10 @@ class _LibraryState extends State<Library> {
           // ),
           BlocBuilder<LibraryCubit, LibraryState>(
             cubit: cubit,
-            buildWhen: (pre, now) => now is LibraryLoading || now is ItemsLibraryLoaded,
+            buildWhen: (pre, now) => now is ItemsLibraryLoaded,
             builder: (context, state) {
               if (state is ItemsLibraryLoaded) {
-                return Expanded(child: Container(child: SingleChildScrollView(child: _getHistory())));
+                return Expanded(child: Container(child: _getHistory()));
               } else if (state is LibraryError) {
                 return Center(child: Text(state.message));
               } else {
@@ -141,7 +142,7 @@ class _LibraryState extends State<Library> {
   Widget thongKe() {
     return BlocBuilder<LibraryCubit, LibraryState>(
       cubit: cubit,
-      buildWhen: (previous, now) => now is ThongKeLoading || now is ThongKeLoaded,
+      buildWhen: (previous, now) => now is ThongKeLoaded,
       builder: (context, state) {
         if (state is ThongKeLoaded) {
           return Column(
@@ -175,68 +176,116 @@ class _LibraryState extends State<Library> {
     );
   }
 
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+
+  // ignore: avoid_void_async
+  void onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  // ignore: avoid_void_async
+  void onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    cubit.pull();
+    _refreshController.loadComplete();
+  }
+
   Widget _getHistory() {
-    return Column(
-      children: [
-        ...List.generate(cubit.listHistory.result.length, (index) {
-          return Column(
+    return Scrollbar(
+      child: SmartRefresher(
+        enablePullDown: false,
+        enablePullUp: true,
+        header: WaterDropMaterialHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus status) {
+            Widget body;
+            if (status == LoadStatus.idle) {
+              body = SizedBox();
+            } else if (status == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (status == LoadStatus.failed) {
+              body = Text("");
+            } else if (status == LoadStatus.canLoading) {
+              body = Text("");
+            } else {
+              body = Text("");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        onRefresh: onRefresh,
+        onLoading: onLoading,
+        controller: _refreshController,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              SizedBox(height: 10),
-              FlatButton(
-                padding: EdgeInsets.symmetric(vertical: 0),
-                child: Container(
-                  padding: EdgeInsets.all(20.0),
-                  width: double.infinity,
-                  color: Color(0xFFF1F1F1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          "${cubit.listHistory.result.elementAt(index).student?.name} - ${cubit.listHistory.result.elementAt(index).student?.idStudent}",
-                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: Colors.black)),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.menu_book_outlined, color: Colors.teal, size: 25),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: Text(
-                                "${cubit.listHistory.result.elementAt(index).bookdetail.book.name} - ${cubit.listHistory.result.elementAt(index).bookdetail.idBookDetails}",
-                                style: TextStyle(fontSize: 15)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      Align(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.teal,
-                          ),
-                          child: Text(
-                              (cubit.listHistory.result.elementAt(index).payDate != null)
-                                  ? "Ngày trả ${dateFormat(cubit.listHistory.result?.elementAt(index)?.update_at ?? "")} "
-                                  : (cubit.listHistory.result.elementAt(index).update_at ==
-                                          cubit.listHistory.result.elementAt(index).borrowDate)
-                                      ? "Ngày mượn ${dateFormat(cubit.listHistory.result.elementAt(index).borrowDate)}"
-                                      : "Ngày cập nhật ${dateFormat(cubit.listHistory.result.elementAt(index).update_at)}",
-                              style: TextStyle(fontSize: 15, color: Colors.white)),
+              ...List.generate(cubit.listHistory.result.length, (index) {
+                return Column(
+                  children: [
+                    SizedBox(height: 10),
+                    FlatButton(
+                      padding: EdgeInsets.symmetric(vertical: 0),
+                      child: Container(
+                        padding: EdgeInsets.all(20.0),
+                        width: double.infinity,
+                        color: Color(0xFFF1F1F1),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "${cubit.listHistory.result.elementAt(index).student?.name} - ${cubit.listHistory.result.elementAt(index).student?.idStudent}",
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: Colors.black)),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.menu_book_outlined, color: Colors.teal, size: 25),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                      "${cubit.listHistory.result.elementAt(index).bookdetail.book.name} - ${cubit.listHistory.result.elementAt(index).bookdetail.idBookDetails}",
+                                      style: TextStyle(fontSize: 15)),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15),
+                            Align(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.teal,
+                                ),
+                                child: Text(
+                                    (cubit.listHistory.result.elementAt(index).payDate != null)
+                                        ? "Ngày trả ${dateFormat(cubit.listHistory.result?.elementAt(index)?.update_at ?? "")} "
+                                        : (cubit.listHistory.result.elementAt(index).update_at ==
+                                                cubit.listHistory.result.elementAt(index).borrowDate)
+                                            ? "Ngày mượn ${dateFormat(cubit.listHistory.result.elementAt(index).borrowDate)}"
+                                            : "Ngày cập nhật ${dateFormat(cubit.listHistory.result.elementAt(index).update_at)}",
+                                    style: TextStyle(fontSize: 15, color: Colors.white)),
+                              ),
+                              alignment: Alignment.centerRight,
+                            )
+                          ],
                         ),
-                        alignment: Alignment.centerRight,
-                      )
-                    ],
-                  ),
-                ),
-                onPressed: () {},
-              ),
-              // Divider(height: 1.0, color: Colors.grey, thickness: 2.0)
+                      ),
+                      onPressed: () {},
+                    ),
+                    // Divider(height: 1.0, color: Colors.grey, thickness: 2.0)
+                  ],
+                );
+              })
             ],
-          );
-        })
-      ],
+          ),
+        ),
+      ),
     );
   }
 }

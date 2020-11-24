@@ -54,6 +54,6 @@ class LibraryService {
   }
 
   static Future<dynamic> updateUser(Map<String, dynamic> params) {
-    return Application.api.put('/user/update', params);
+    return Application.api.put('/update/role', params);
   }
 }

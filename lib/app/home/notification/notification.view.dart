@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationApp extends StatefulWidget {
   @override
@@ -17,12 +18,27 @@ class _NotificationAppState extends State<NotificationApp> {
 
   NotificationCubit cubit = NotificationCubit(NotificationRepositories());
 
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  // ignore: avoid_void_async
+  void onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  // ignore: avoid_void_async
+  void onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    cubit.pull();
+    _refreshController.loadComplete();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationCubit,NotificationState>(
       cubit: cubit,
-      buildWhen: (previous, now) => now is NotificationLoading || now is ItemsNotificationLoaded ,
+      buildWhen: (previous, now) => now is ItemsNotificationLoaded ,
       builder: (context, state) {
         if (state is ItemsNotificationLoaded) {
           return _getBody();
@@ -38,62 +54,92 @@ class _NotificationAppState extends State<NotificationApp> {
     );
   }
   Widget _getBody() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ...List.generate(cubit.notifications.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: FlatButton(
-                padding: EdgeInsets.symmetric(vertical: 3.0),
-                color: (cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white :Color(0xFFF1F1F1),
-                onPressed: () {
-                  cubit.seenNotification(cubit.notifications.elementAt(index).notification_id);
-                  Modular.link.pushNamed(HomeModule.comment, arguments: cubit.notifications.elementAt(index).notification_posterId);
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  width: SizeConfig.blockSizeVertical*100,
-                  child: Column(
-                    children: [
-                      Row(
+    return Scrollbar(
+      child: SmartRefresher(
+        enablePullDown: false,
+        enablePullUp: true,
+        header: WaterDropMaterialHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus status) {
+            Widget body;
+            if (status == LoadStatus.idle) {
+              body = SizedBox();
+            } else if (status == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (status == LoadStatus.failed) {
+              body = Text("");
+            } else if (status == LoadStatus.canLoading) {
+              body = Text("");
+            } else {
+              body = Text("");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        onRefresh: onRefresh,
+        onLoading: onLoading,
+        controller: _refreshController,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ...List.generate(cubit.notifications.length, (index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  child: FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 3.0),
+                    color: (cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white :Color(0xFFF1F1F1),
+                    onPressed: () {
+                      cubit.seenNotification(cubit.notifications.elementAt(index).notification_id);
+                      Modular.link.pushNamed(HomeModule.comment, arguments: cubit.notifications.elementAt(index).notification_posterId);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      width: SizeConfig.blockSizeVertical*100,
+                      child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left : 20 ,right: 10),
-                            child: CircleAvatar(
-                              radius: SizeConfig.blockSizeHorizontal * 6,
-                              backgroundImage: NetworkImage(
-                                  '${cubit.notifications.elementAt(index).userCreate_avatar}'),
-                              backgroundColor: Colors.transparent,
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: SizeConfig.blockSizeHorizontal*80,
-                                  child: Row(
-                                    children: [
-                                      Text("${cubit.notifications.elementAt(index).userCreate_name}  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                                      Expanded(child: Text("${cubit.notifications.elementAt(index).notification_context}"))
-                                    ],
-                                  ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left : 20 ,right: 10),
+                                child: CircleAvatar(
+                                  radius: SizeConfig.blockSizeHorizontal * 6,
+                                  backgroundImage: NetworkImage(
+                                      '${cubit.notifications.elementAt(index).userCreate_avatar}'),
+                                  backgroundColor: Colors.transparent,
                                 ),
-                                Text(timeFormat(cubit.notifications.elementAt(index).notification_creat_at) + "   Ngày   " +  dateFormat(cubit.notifications.elementAt(index)?.notification_creat_at ?? ""))
-                              ],
-                            ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: SizeConfig.blockSizeHorizontal*80,
+                                      child: Row(
+                                        children: [
+                                          Text("${cubit.notifications.elementAt(index).userCreate_name}  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                                          Expanded(child: Text("${cubit.notifications.elementAt(index).notification_context}"))
+                                        ],
+                                      ),
+                                    ),
+                                    Text(timeFormat(cubit.notifications.elementAt(index).notification_creat_at) + "   Ngày   " +  dateFormat(cubit.notifications.elementAt(index)?.notification_creat_at ?? ""))
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                    ],
-                  )
-                  ,
-                ),
-              ),
-            );
-          })
-        ],
+                      )
+                      ,
+                    ),
+                  ),
+                );
+              })
+            ],
+          ),
+        ),
       ),
     );
   }
