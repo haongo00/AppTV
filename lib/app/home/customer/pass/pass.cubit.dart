@@ -19,7 +19,7 @@ class PassCubit extends Cubit<PassState> {
 
 
 
-  Future<void> resetPass(String oldPass,String newPass) async {
+  Future<bool> resetPass(String oldPass,String newPass) async {
     Map<String, dynamic> params = {
       'account' : {
         'password' : oldPass,
@@ -30,15 +30,19 @@ class PassCubit extends Cubit<PassState> {
       emit(PassUploading());
       if (await _inforRepositories.resetPass(params)) {
         emit((ItemsPassUploaded()));
+        return true;
       } else {
         emit(PassError("Submit failed"));
+        return false;
+
       }
     } on NetworkException {
       emit(PassError("Error submitting data"));
+      return false;
     }
   }
 
-  Future<void> userUpdate(String name,String born,String password,String email,String phoneNumber,bool gender,) async {
+  Future<bool> userUpdate(String name,String born,String password,String email,String phoneNumber,bool gender,) async {
     Map<String, dynamic> params = {
       'name': name,
       'born' : born,
@@ -51,11 +55,14 @@ class PassCubit extends Cubit<PassState> {
       emit(PassUploading());
       if (await _inforRepositories.userUpdate(params)) {
         emit((ItemsPassUploaded()));
+        return true;
       } else {
         emit(PassError("Submit failed"));
+        return false;
       }
     } on NetworkException {
       emit(PassError("Error submitting data"));
+      return false;
     }
   }
 

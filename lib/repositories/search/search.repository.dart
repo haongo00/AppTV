@@ -13,9 +13,10 @@ class SearchRepository {
 
   Future<bool> createBookOrder(Map<String, dynamic> params) async {
     final response = await SearchService.newBookOrder(params);
-    if (response.statusCode == 200) {
+    print(response);
+    if (response.statusCode == 200 ) {
       Fluttertoast.showToast(
-        msg: "Thành công",
+        msg: "${response.data["message"]}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -24,7 +25,7 @@ class SearchRepository {
         fontSize: 16.0,
       );
     }
-    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : throw NetworkException;
+    return (response.statusCode == 200 && response.data["message"] == "Thành công" ) ? true : false;
   }
 
   Future<bool> createBookOrderPay(Map<String, dynamic> params) async {

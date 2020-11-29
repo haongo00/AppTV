@@ -18,10 +18,10 @@ UserInfor _$UserInforFromJson(Map<String, dynamic> json) {
         ? null
         : Department.fromJson(json['department'] as Map<String, dynamic>),
     avatar: json['avatar'] as String,
-    phoneNumber: json['phoneNumber'] as String,
-    email: json['email'] as String,
     GenCode: json['GenCode'] as String,
     gender: json['gender'] as bool,
+    phoneNumber: json['phoneNumber'] as String,
+    email: json['email'] as String,
   );
 }
 
@@ -33,8 +33,8 @@ Map<String, dynamic> _$UserInforToJson(UserInfor instance) => <String, dynamic>{
       'department': instance.department?.toJson(),
       'avatar': instance.avatar,
       'GenCode': instance.GenCode,
-      'phoneNumber': instance.phoneNumber,
       'email': instance.email,
+      'phoneNumber': instance.phoneNumber,
       'gender': instance.gender,
     };
 

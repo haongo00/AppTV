@@ -157,13 +157,29 @@ class _ResetInfoViewState extends State<ResetInfoView> {
                         color: Color(0xff068189),
                         onPressed: () async {
                           if (asset == null) {
-                            await cubit.userUpdate(_userInfo.name, _userInfo.born, pass, _userInfo.email,
-                                _userInfo.phoneNumber, _userInfo.gender);
+                            showDialog(context: context,builder: (context) {
+                              return CupertinoActivityIndicator(
+                                radius: 30,
+                                animating: true,
+                              );
+                            },);
+                            if (await cubit.userUpdate(_userInfo.name, _userInfo.born, pass, _userInfo.email,
+                                _userInfo.phoneNumber, _userInfo.gender)) {
+                              Modular.navigator.pop();
+                              Modular.navigator.pop();
+                            }
                           } else {
-                            uploadInfo();
+                            showDialog(context: context,builder: (context) {
+                              return CupertinoActivityIndicator(
+                                radius: 30,
+                                animating: true,
+                              );
+                            },);
+                            if (await uploadInfo()) {
+                              Modular.navigator.pop();
+                              Modular.navigator.pop();
+                            }
                           }
-
-                          Modular.navigator.pop();
                         },
                         child: Text(
                           "Lưu",

@@ -26,7 +26,9 @@ Notifications _$NotificationsFromJson(Map<String, dynamic> json) {
   return Notifications(
     notification_id: json['notification_id'] as int,
     notification_context: json['notification_context'] as String,
-    notification_creat_at: json['notification_creat_at'] as String,
+    notification_creat_at: json['notification_creat_at'] == null
+        ? null
+        : DateTime.parse(json['notification_creat_at'] as String),
     notification_posterId: json['notification_posterId'] as int,
     notification_userCreateId: json['notification_userCreateId'] as int,
     userCreate_name: json['userCreate_name'] as String,
@@ -39,7 +41,8 @@ Map<String, dynamic> _$NotificationsToJson(Notifications instance) =>
     <String, dynamic>{
       'notification_id': instance.notification_id,
       'notification_context': instance.notification_context,
-      'notification_creat_at': instance.notification_creat_at,
+      'notification_creat_at':
+          instance.notification_creat_at?.toIso8601String(),
       'notification_posterId': instance.notification_posterId,
       'notification_userCreateId': instance.notification_userCreateId,
       'userCreate_name': instance.userCreate_name,

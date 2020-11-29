@@ -79,8 +79,27 @@ class _PassViewState extends State<PassView> {
                           fontSize: 16.0,
                         );
                       } else {
-                        await _cubit.resetPass(oldPass, newPass);
-                        Modular.navigator.pop();
+                        showDialog(context: context,builder: (context) {
+                          return CupertinoActivityIndicator(
+                            radius: 30,
+                            animating: true,
+                          );
+                        },);
+                        if (await _cubit.resetPass(oldPass, newPass)) {
+                          Modular.navigator.pop();
+                          Modular.navigator.pop();
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "Không thanh cong",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                          Modular.navigator.pop();
+                        }
                       }
                     },
                     child: Text(
