@@ -159,9 +159,9 @@ class _HomePageState extends State<HomePage> {
           child: Card(
             margin: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            elevation: 5.5,
+            elevation: 3.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -205,15 +205,19 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 _post.urlAssets != null
-                    ? Container(
-                        padding: EdgeInsets.all(8.0),
-                        height: SizeConfig.blockSizeVertical * 30,
-                        width: double.infinity,
-                        child: Image.network(
-                          '${_post.urlAssets ?? ''}',
-                          fit: BoxFit.fill,
-                        ),
-                      )
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      '${_post.urlAssets ?? ''}',
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                )
                     : SizedBox(),
               ],
             ),

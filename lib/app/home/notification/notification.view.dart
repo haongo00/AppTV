@@ -15,7 +15,6 @@ class NotificationApp extends StatefulWidget {
 }
 
 class _NotificationAppState extends State<NotificationApp> {
-
   NotificationCubit cubit = NotificationCubit(NotificationRepositories());
 
   RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -33,12 +32,11 @@ class _NotificationAppState extends State<NotificationApp> {
     _refreshController.loadComplete();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NotificationCubit,NotificationState>(
+    return BlocBuilder<NotificationCubit, NotificationState>(
       cubit: cubit,
-      buildWhen: (previous, now) => now is ItemsNotificationLoaded ,
+      buildWhen: (previous, now) => now is ItemsNotificationLoaded,
       builder: (context, state) {
         if (state is ItemsNotificationLoaded) {
           return _getBody();
@@ -53,6 +51,7 @@ class _NotificationAppState extends State<NotificationApp> {
       },
     );
   }
+
   Widget _getBody() {
     return Scrollbar(
       child: SmartRefresher(
@@ -90,24 +89,25 @@ class _NotificationAppState extends State<NotificationApp> {
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
                   child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 3.0),
-                    color: (cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white :Color(0xFFF1F1F1),
+                    color: (cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white : Color(0xFFF1F1F1),
                     onPressed: () {
                       cubit.seenNotification(cubit.notifications.elementAt(index).notification_id);
-                      Modular.link.pushNamed(HomeModule.comment, arguments: cubit.notifications.elementAt(index).notification_posterId);
+                      Modular.link.pushNamed(HomeModule.comment,
+                          arguments: cubit.notifications.elementAt(index).notification_posterId);
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
-                      width: SizeConfig.blockSizeVertical*100,
+                      width: SizeConfig.blockSizeVertical * 100,
                       child: Column(
                         children: [
                           Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left : 20 ,right: 10),
+                                padding: const EdgeInsets.only(left: 20, right: 10),
                                 child: CircleAvatar(
                                   radius: SizeConfig.blockSizeHorizontal * 6,
-                                  backgroundImage: NetworkImage(
-                                      '${cubit.notifications.elementAt(index).userCreate_avatar}'),
+                                  backgroundImage:
+                                      NetworkImage('${cubit.notifications.elementAt(index).userCreate_avatar}'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
@@ -116,23 +116,42 @@ class _NotificationAppState extends State<NotificationApp> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      width: SizeConfig.blockSizeHorizontal*80,
+                                      width: SizeConfig.blockSizeHorizontal * 80,
                                       child: Row(
                                         children: [
-                                          Text("${cubit.notifications.elementAt(index).userCreate_name}  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                                          Expanded(child: Text("${cubit.notifications.elementAt(index).notification_context}"))
+                                          Text(
+                                            "${cubit.notifications.elementAt(index).userCreate_name}  ",
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                          ),
+                                          Expanded(
+                                              child:
+                                                  Text("${cubit.notifications.elementAt(index).notification_context}"))
                                         ],
                                       ),
                                     ),
-                                    Text(timeFormat(cubit.notifications.elementAt(index).notification_creat_at) + "   Ngày   " +  dateFormat(cubit.notifications.elementAt(index)?.notification_creat_at ?? ""))
+                                    Text((cubit.notifications
+                                                .elementAt(index)
+                                                .notification_creat_at
+                                                .difference(DateTime.now())
+                                                .inDays !=
+                                            0)
+                                        ? "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inDays * -1} ngày trước"
+                                        : (cubit.notifications
+                                                    .elementAt(index)
+                                                    .notification_creat_at
+                                                    .difference(DateTime.now())
+                                                    .inHours !=
+                                                0)
+                                            ? "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inHours * -1} giờ trước"
+                                            : "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inMinutes * -1} phút trước"),
+                                    Text("${cubit.notifications.elementAt(index).notification_creat_at}")
                                   ],
                                 ),
                               ),
                             ],
                           ),
                         ],
-                      )
-                      ,
+                      ),
                     ),
                   ),
                 );
@@ -143,6 +162,4 @@ class _NotificationAppState extends State<NotificationApp> {
       ),
     );
   }
-
-
 }

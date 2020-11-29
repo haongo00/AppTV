@@ -17,7 +17,7 @@ class ListNotification {
 class Notifications {
   int notification_id;
   String notification_context;
-  String notification_creat_at;
+  DateTime notification_creat_at;
   int notification_posterId;
   int notification_userCreateId;
   String userCreate_name;

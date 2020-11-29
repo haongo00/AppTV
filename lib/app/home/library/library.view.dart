@@ -32,6 +32,7 @@ class _LibraryState extends State<Library> {
                   elevation: 5,
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 20,
+                    height: SizeConfig.blockSizeVertical * 19,
                     padding: EdgeInsets.only(left: 10.0, top: 15.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Color(0xFFF1F1F1)),
                     child: thongKe(),
@@ -153,16 +154,19 @@ class _LibraryState extends State<Library> {
                 child: Row(
                   children: [
                     Expanded(child: Icon(Icons.insert_chart_rounded, color: Colors.teal, size: 55)),
-                    // Text("Thống Kê", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(width: 5.0),
                   ],
                 ),
               ),
               Text("Tháng này ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-              Text("     Mượn : ${cubit.borrow}",
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-              Text("     Trả : ${cubit.paid}",
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  Text("     Mượn : ${cubit.borrow}",
+                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text("     Trả : ${cubit.paid}",
+                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                ],
+              ),
               Text("     Tổng : ${cubit.paid + cubit.borrow}",
                   style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
             ],
@@ -170,6 +174,7 @@ class _LibraryState extends State<Library> {
         } else {
           return Container(
             height: SizeConfig.blockSizeVertical * 18,
+            child: CupertinoActivityIndicator(),
           );
         }
       },
@@ -255,24 +260,46 @@ class _LibraryState extends State<Library> {
                               ],
                             ),
                             SizedBox(height: 15),
-                            Align(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Colors.teal,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: (cubit.listHistory.result.elementAt(index).payDate != null)
+                                        ? Colors.green
+                                        : (dateFormat(cubit.listHistory.result.elementAt(index).borrowDate)==
+                                        dateFormat(cubit.listHistory.result.elementAt(index).update_at))
+                                        ?  Colors.blueAccent
+                                        :  Colors.blueAccent,
+                                  ),
+                                  child: Text(
+                                      (cubit.listHistory.result.elementAt(index).payDate != null)
+                                          ? "Ghi trả"
+                                          : (dateFormat(cubit.listHistory.result.elementAt(index).borrowDate) ==
+                                          dateFormat(cubit.listHistory.result.elementAt(index).update_at))
+                                          ? "Ghi mượn"
+                                          : "Ngày cập nhật",
+                                      style: TextStyle(fontSize: 15, color: Colors.white)),
                                 ),
-                                child: Text(
-                                    (cubit.listHistory.result.elementAt(index).payDate != null)
-                                        ? "Ngày trả ${dateFormat(cubit.listHistory.result?.elementAt(index)?.update_at ?? "")} "
-                                        : (cubit.listHistory.result.elementAt(index).update_at ==
-                                                cubit.listHistory.result.elementAt(index).borrowDate)
-                                            ? "Ngày mượn ${dateFormat(cubit.listHistory.result.elementAt(index).borrowDate)}"
-                                            : "Ngày cập nhật ${dateFormat(cubit.listHistory.result.elementAt(index).update_at)}",
-                                    style: TextStyle(fontSize: 15, color: Colors.white)),
-                              ),
-                              alignment: Alignment.centerRight,
-                            )
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey,
+                                  ),
+                                  child: Text(
+                                      (cubit.listHistory.result.elementAt(index).payDate != null)
+                                          ? "${dateFormat(cubit.listHistory.result?.elementAt(index)?.update_at ?? "")} "
+                                          : (cubit.listHistory.result.elementAt(index).update_at ==
+                                          cubit.listHistory.result.elementAt(index).borrowDate)
+                                          ? "${dateFormat(cubit.listHistory.result.elementAt(index).borrowDate)}"
+                                          : "${dateFormat(cubit.listHistory.result.elementAt(index).update_at)}",
+                                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                                )
+                              ],
+                            ),
                           ],
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:app_tv/app/app.module.dart';
 import 'package:app_tv/app/components/date/date.component.dart';
+import 'package:app_tv/app/home/customer/information/infor.view.dart';
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/routers/application.dart';
@@ -68,14 +69,12 @@ class _CustomerState extends State<Customer> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // _info(_userInfo?.role?.name ?? "", Icon(Icons.workspaces_filled, color: Colors.redAccent, size: 30)),
-                    // _info(_userInfo?.department?.name ?? "", Icon(Icons.work_outlined, color: Colors.teal, size: 30)),
-                    // _info(_userInfo?.genCode ?? "" , Icon(Icons.view_agenda_sharp, color: Colors.orange, size: 30)),
-                    // _info(dateFormat(_userInfo?.born ?? ""), Icon(Icons.calendar_today_sharp, color: Colors.blue, size: 30)),
                     FlatButton(
                         padding: EdgeInsets.zero,
                         onPressed: () {
-                          Modular.link.pushNamed(HomeModule.resetInfo);
+                          Modular.link.pushNamed(HomeModule.resetInfo).then((value) {
+                            setState(() {_userInfo = Application.sharePreference.getUserInfor();});
+                          });
                         },
                         child: _info(
                             "Thay đổi thông tin cá nhân",
@@ -105,11 +104,11 @@ class _CustomerState extends State<Customer> {
                         },
                         child: _info(
                             "Đăng Xuất",
-                          Icon(
-                            Icons.logout,
-                            color: Colors.teal,
-                            size: 50,
-                          ))),
+                            Icon(
+                              Icons.logout,
+                              color: Colors.teal,
+                              size: 50,
+                            ))),
                     SizedBox(height: 5.0),
                   ],
                 ),
