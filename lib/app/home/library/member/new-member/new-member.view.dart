@@ -153,9 +153,17 @@ class _NewMemberViewState extends State<NewMemberView> {
                 Expanded(
                     child: FlatButton(
                         color: Color(0xff068189),
-                        onPressed: () {
-                          widget.cubit.newUser(name, date, gender, gen, user, email,sdt, roleId, departmentId);
-                          Modular.navigator.pop();
+                        onPressed: () async {
+                          showDialog(context: context,builder: (context) {
+                            return CupertinoActivityIndicator(
+                              radius: 30,
+                              animating: true,
+                            );
+                          },);
+                          if (await widget.cubit.newUser(name, date, gender, gen, user, email,sdt, roleId, departmentId)) {
+                            Modular.navigator.pop();
+                            Modular.navigator.pop();
+                          }
                         },
                         child: Text(
                           "Lưu",

@@ -2,11 +2,14 @@ import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart
 import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
 import 'package:app_tv/model/member/list_member.dart';
+import 'package:app_tv/model/user_infor/user_infor.dart';
+import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class MemberInfoView extends StatefulWidget {
@@ -20,6 +23,9 @@ class MemberInfoView extends StatefulWidget {
 }
 
 class _MemberInfoViewState extends State<MemberInfoView> {
+
+  UserInfor _userInfo = Application.sharePreference.getUserInfor();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,7 +34,19 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           IconButton(
             icon: Icon(Icons.edit, color: Colors.teal),
             onPressed: () {
-              showDialog(context: context, builder: (_) => _edit());
+              if (_userInfo.role.isCreateOrEditUser) {
+                showDialog(context: context, builder: (_) => _edit());
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Bạn không thể làm điều này !!!",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.redAccent,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              }
             },
           )
         ], title: "Thông Tin Thành Viên"),

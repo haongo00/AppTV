@@ -34,21 +34,32 @@ class _NotificationAppState extends State<NotificationApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NotificationCubit, NotificationState>(
-      cubit: cubit,
-      buildWhen: (previous, now) => now is ItemsNotificationLoaded,
-      builder: (context, state) {
-        if (state is ItemsNotificationLoaded) {
-          return _getBody();
-        } else if (state is NotificationError) {
-          return Center(child: Text(state.message));
-        } else {
-          return Container(
-              height: SizeConfig.blockSizeVertical * 50,
-              alignment: Alignment.center,
-              child: CupertinoActivityIndicator(radius: 20));
-        }
-      },
+    return Stack(
+      children: [
+        Container(
+          height: SizeConfig.blockSizeVertical * 100,
+          child: Image.asset(
+            'assets/login.jpg',
+            fit: BoxFit.cover,
+          ),
+        ),
+        BlocBuilder<NotificationCubit, NotificationState>(
+          cubit: cubit,
+          buildWhen: (previous, now) => now is ItemsNotificationLoaded,
+          builder: (context, state) {
+            if (state is ItemsNotificationLoaded) {
+              return _getBody();
+            } else if (state is NotificationError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Container(
+                  height: SizeConfig.blockSizeVertical * 50,
+                  alignment: Alignment.center,
+                  child: CupertinoActivityIndicator(radius: 20));
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -144,7 +155,7 @@ class _NotificationAppState extends State<NotificationApp> {
                                                 0)
                                             ? "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inHours * -1} giờ trước"
                                             : "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inMinutes * -1} phút trước"),
-                                    Text("${cubit.notifications.elementAt(index).notification_creat_at}")
+                                    // Text("${cubit.notifications.elementAt(index).notification_creat_at}")
                                   ],
                                 ),
                               ),

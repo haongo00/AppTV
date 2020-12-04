@@ -9,6 +9,7 @@ import 'package:app_tv/utils/api.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -72,14 +73,16 @@ class _ResetInfoViewState extends State<ResetInfoView> {
             FormBuilderTextField(
               attribute: 'sac',
               decoration: InputDecoration(labelText: "Họ tên : "),
+              readOnly: true,
               initialValue: "${_userInfo?.name ?? ""}",
               validators: [
                 FormBuilderValidators.required(),
               ],
-              onChanged: (value) {
-                _userInfo.name = value.toString();
-              },
+              // onChanged: (value) {
+              //   _userInfo.name = value.toString();
+              // },
             ),
+            SizedBox(height: 10,),
             FormBuilderDateTimePicker(
               attribute: 'expiry_date',
               inputType: InputType.date,
@@ -127,16 +130,16 @@ class _ResetInfoViewState extends State<ResetInfoView> {
                 _userInfo.phoneNumber = value.toString();
               },
             ),
-            FormBuilderTextField(
-              attribute: 'mk',
-              decoration: InputDecoration(labelText: "Mật khẩu: "),
-              validators: [
-                FormBuilderValidators.required(),
-              ],
-              onChanged: (value) {
-                pass = value.toString();
-              },
-            ),
+            // FormBuilderTextField(
+            //   attribute: 'mk',
+            //   decoration: InputDecoration(labelText: "Mật khẩu: "),
+            //   validators: [
+            //     FormBuilderValidators.required(),
+            //   ],
+            //   onChanged: (value) {
+            //     pass = value.toString();
+            //   },
+            // ),
             SizedBox(height: SizeConfig.blockSizeVertical * 10),
             Row(
               children: [

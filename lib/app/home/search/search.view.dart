@@ -18,38 +18,49 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _textField(),
-          _searchButton(),
-          Divider(
-            height: 5.0,
-            color: Colors.grey,
-            thickness: 2.0,
+    return Stack(
+      children: [
+        Container(
+          height: SizeConfig.blockSizeVertical * 100,
+          child: Image.asset(
+            'assets/login.jpg',
+            fit: BoxFit.cover,
           ),
-          BlocBuilder<SearchCubit, SearchState>(
-              cubit: cubit,
-              buildWhen: (prev, now) => now is SearchLoading || now is ItemsSearchLoaded || now is SearchError,
-              builder: (context, state) {
-                if (state is ItemsSearchLoaded) {
-                  return _info(state);
-                } else if (state is SearchError) {
-                  return Center(
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 20),
-                          child: Text(
-                            state.message,
-                            style: TextStyle(fontSize: 25, color: Colors.grey),
-                          )));
-                } else if (state is SearchLoading) {
-                  return Center(child: CupertinoActivityIndicator(radius: 15));
-                } else {
-                  return SizedBox();
-                }
-              }),
-        ],
-      ),
+        ),
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              _textField(),
+              _searchButton(),
+              Divider(
+                height: 5.0,
+                color: Colors.grey,
+                thickness: 2.0,
+              ),
+              BlocBuilder<SearchCubit, SearchState>(
+                  cubit: cubit,
+                  buildWhen: (prev, now) => now is SearchLoading || now is ItemsSearchLoaded || now is SearchError,
+                  builder: (context, state) {
+                    if (state is ItemsSearchLoaded) {
+                      return _info(state);
+                    } else if (state is SearchError) {
+                      return Center(
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 20),
+                              child: Text(
+                                state.message,
+                                style: TextStyle(fontSize: 25, color: Colors.grey),
+                              )));
+                    } else if (state is SearchLoading) {
+                      return Center(child: CupertinoActivityIndicator(radius: 15));
+                    } else {
+                      return SizedBox();
+                    }
+                  }),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

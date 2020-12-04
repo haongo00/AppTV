@@ -1,13 +1,16 @@
 import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart';
 import 'package:app_tv/app/home/library/nhap-lieu/sach/book-info/book-info.cubit.dart';
 import 'package:app_tv/model/library/list_book.dart';
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
+import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BookInfoView extends StatefulWidget {
   final Book book;
@@ -24,6 +27,8 @@ class _BookInfoViewState extends State<BookInfoView> {
   int price;
   String id;
   int amount;
+  UserInfor _userInfo = Application.sharePreference.getUserInfor();
+
 
 
 
@@ -44,7 +49,19 @@ class _BookInfoViewState extends State<BookInfoView> {
         appBar: staticAppbar(action: [IconButton(
           icon: Icon(Icons.edit,color: Colors.teal),
           onPressed: () {
-            _cubit.changeEdit();
+            if (_userInfo.role.isCreateOrEditUser) {
+              _cubit.changeEdit();
+            } else {
+              Fluttertoast.showToast(
+                msg: "Bạn không thể làm điều này !!!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            }
           },
         )],title: "Sửa Sách"),
         body: BlocBuilder<BookInfoCubit,BookInfoState>(
@@ -130,9 +147,17 @@ class _BookInfoViewState extends State<BookInfoView> {
                 Expanded(
                     child: FlatButton(
                         color: Color(0xff068189),
-                        onPressed: () {
-                          _cubit.editBook(name, price, id, amount);
-                          Modular.navigator.pop();
+                        onPressed: () async {
+                          showDialog(context: context,builder: (context) {
+                            return CupertinoActivityIndicator(
+                              radius: 30,
+                              animating: true,
+                            );
+                          },);
+                          if (await _cubit.editBook(name, price, id, amount)) {
+                            Modular.navigator.pop();
+                            Modular.navigator.pop();
+                          }
                         },
                         child: Text(
                           "Lưu",

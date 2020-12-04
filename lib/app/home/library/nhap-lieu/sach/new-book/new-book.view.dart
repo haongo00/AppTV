@@ -10,12 +10,12 @@ class NewBookView extends StatefulWidget {
   final ListBookCubit cubit;
 
   const NewBookView({this.cubit}) : super();
+
   @override
   _NewBookViewState createState() => _NewBookViewState();
 }
 
 class _NewBookViewState extends State<NewBookView> {
-
   String name = '';
   int price = 0;
   String id = "";
@@ -89,22 +89,42 @@ class _NewBookViewState extends State<NewBookView> {
                     amount = int.parse(value.toString());
                   },
                 ),
-
-                SizedBox(height: SizeConfig.blockSizeVertical*10),
+                SizedBox(height: SizeConfig.blockSizeVertical * 10),
                 Row(
                   children: [
-                    SizedBox(width: SizeConfig.blockSizeHorizontal*15),
-                    Expanded(child: FlatButton( color : Colors.red,onPressed: () {
-                      Modular.navigator.pop();
-                    }, child: Text("Hủy",style: TextStyle(color: Colors.white),))),
-                    SizedBox(width: SizeConfig.blockSizeHorizontal*15),
-                    Expanded(child: FlatButton( color : Color(0xff068189),onPressed: () {
-                      widget.cubit.newBook(name, price, id, amount);
-                      Modular.navigator.pop();
-                    }, child: Text("Lưu",style: TextStyle(color: Colors.white),))),
-                    SizedBox(width: SizeConfig.blockSizeHorizontal*15),
+                    SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
+                    Expanded(
+                        child: FlatButton(
+                            color: Colors.red,
+                            onPressed: () {
+                              Modular.navigator.pop();
+                            },
+                            child: Text(
+                              "Hủy",
+                              style: TextStyle(color: Colors.white),
+                            ))),
+                    SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
+                    Expanded(
+                        child: FlatButton(
+                            color: Color(0xff068189),
+                            onPressed: () async {
+                              showDialog(context: context,builder: (context) {
+                                return CupertinoActivityIndicator(
+                                  radius: 30,
+                                  animating: true,
+                                );
+                              },);
+                              if (await widget.cubit.newBook(name, price, id, amount)) {
+                                Modular.navigator.pop();
+                                Modular.navigator.pop();
+                              }
+                            },
+                            child: Text(
+                              "Lưu",
+                              style: TextStyle(color: Colors.white),
+                            ))),
+                    SizedBox(width: SizeConfig.blockSizeHorizontal * 15),
                   ],
-
                 )
               ],
             ),

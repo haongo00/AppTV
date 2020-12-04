@@ -19,7 +19,7 @@ class _InputViewState extends State<InputView> {
             leading: BackButton(
               color: Color(0xff068189),
             ),
-            elevation: 0.0,
+            elevation: 15.0,
             title: Text("Thư viện",style: TextStyle(color: Colors.teal,fontWeight: FontWeight.bold)),
             backgroundColor: Colors.white,
             centerTitle: true,

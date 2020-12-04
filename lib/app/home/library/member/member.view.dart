@@ -2,13 +2,16 @@ import 'package:app_tv/app/components/custom-appbar/static-appbar.component.dart
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/app/home/library/member/member-info/member-info.view.dart';
 import 'package:app_tv/app/home/library/member/member.cubit.dart';
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
+import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MemberView extends StatefulWidget {
@@ -18,6 +21,8 @@ class MemberView extends StatefulWidget {
 
 class _MemberViewState extends State<MemberView> {
   MemberCubit cubit = MemberCubit(LibraryRepository());
+  UserInfor _userInfo = Application.sharePreference.getUserInfor();
+
 
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
@@ -43,7 +48,19 @@ class _MemberViewState extends State<MemberView> {
           backgroundColor: Color(0xff068189),
           foregroundColor: Colors.black,
           onPressed: () {
-            Modular.link.pushNamed(HomeModule.newMember, arguments: cubit);
+            if (_userInfo.role.isCreateOrEditUser) {
+              Modular.link.pushNamed(HomeModule.newMember, arguments: cubit);
+            } else {
+              Fluttertoast.showToast(
+                msg: "Bạn không thể làm điều này !!!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            }
             // Respond to button press
           },
           child: Icon(Icons.add, color: Colors.white),
@@ -192,7 +209,19 @@ class _MemberViewState extends State<MemberView> {
                               ),
                             ),
                             onLongPress: () {
-                              _showAlert(context, cubit.member.elementAt(index).id);
+                              if (_userInfo.role.isCreateOrEditUser) {
+                                _showAlert(context, cubit.member.elementAt(index).id);
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: "Bạn không thể làm điều này !!!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.redAccent,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              }
                             },
                             onPressed: () {
                               // Modular.link.pushNamed(HomeModule.memberInfo,arguments: cubit.member.elementAt(index));
@@ -232,9 +261,17 @@ class _MemberViewState extends State<MemberView> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               isDestructiveAction: true,
-              onPressed: () {
-                cubit.blockUser(index);
+              onPressed: () async {
+                showDialog(context: context,builder: (context) {
+                  return CupertinoActivityIndicator(
+                    radius: 30,
+                    animating: true,
+                  );
+                },);
+                if (await cubit.blockUser(index)) {
                 Navigator.pop(context);
+                Navigator.pop(context);
+                }
               },
             ),
             CupertinoActionSheetAction(
@@ -243,9 +280,17 @@ class _MemberViewState extends State<MemberView> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               isDestructiveAction: true,
-              onPressed: () {
-                cubit.blockUser(index);
-                Navigator.pop(context);
+              onPressed: () async {
+                showDialog(context: context,builder: (context) {
+                  return CupertinoActivityIndicator(
+                    radius: 30,
+                    animating: true,
+                  );
+                },);
+                if (await cubit.blockUser(index)) {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                }
               },
             )
           ],

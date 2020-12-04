@@ -25,16 +25,16 @@ class MemberCubit extends Cubit<MemberState> {
 
   void pull() {
     tak += 10;
-    loadData(search: search,take: tak);
+    loadData(search: search, take: tak);
   }
 
   void reset() {
     tak = 10;
   }
 
-  Future<void> loadData({String search = "",int take = 10}) async {
+  Future<void> loadData({String search = "", int take = 10}) async {
     this.search = search;
-    Map<String, dynamic> params = {"skip": 0, "take": take,"search" : search};
+    Map<String, dynamic> params = {"skip": 0, "take": take, "search": search};
     try {
       emit(MemberLoading());
       ListMember _member = await _libraryRepository.fetchListMember(params);
@@ -73,15 +73,15 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> newUser(String name, String date, bool gender, String gen, String user, String email, String sdt,
+  Future<bool> newUser(String name, String date, bool gender, String gen, String user, String email, String sdt,
       int roleId, int departmentId) async {
     Map<String, dynamic> params = {
       "name": name,
       "born": date,
-      "GenCode" : gen,
+      "GenCode": gen,
       "username": user,
       "email": email,
-      "phoneNumber" : sdt,
+      "phoneNumber": sdt,
       "roleId": roleId,
       "departmentId": departmentId,
       "avatar": null
@@ -90,30 +90,36 @@ class MemberCubit extends Cubit<MemberState> {
       emit(MemberLoading());
       if (await _libraryRepository.createUser(params)) {
         emit(ItemsMemberUploaded());
+        loadData();
+        return true;
       } else {
         emit(MemberError("Submit failed"));
+        return false;
       }
     } on NetworkException {
       emit(MemberError("Error submitting data"));
+      return false;
+
     }
-    loadData();
   }
-  Future<void> blockUser(int id) async {
-    Map<String, dynamic> params = {
-      "userId" : id
-    };
+
+  Future<bool> blockUser(int id) async {
+    Map<String, dynamic> params = {"userId": id};
     print(params);
     try {
       emit(MemberLoading());
       if (await _libraryRepository.blockUser(params)) {
         emit(ItemsMemberUploaded());
+        await loadData();
+        return true;
       } else {
         emit(MemberError("Submit failed"));
+        return false;
       }
     } on NetworkException {
       emit(MemberError("Error submitting data"));
+      return false;
     }
-    loadData();
   }
 
   Future<void> updateUser(

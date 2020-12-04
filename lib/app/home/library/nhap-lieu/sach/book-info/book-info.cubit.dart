@@ -16,7 +16,7 @@ class BookInfoCubit extends Cubit<BookInfoState> {
     emit(ChangeEdit(edit = !edit));
   }
 
-  Future<void> editBook(String name,int price,String id,int amount) async {
+  Future<bool> editBook(String name,int price,String id,int amount) async {
     Map<String, dynamic> params = {
       "book" : {
         "name" : name,
@@ -30,11 +30,16 @@ class BookInfoCubit extends Cubit<BookInfoState> {
       emit(ItemsBookInfoUploading());
       if (await _libraryRepository.editBookInfo(params)) {
         emit((ItemsBookInfoUploaded()));
+        return true;
       } else {
         emit(BookInfoError("Submit failed"));
+        return false;
+
       }
     } on NetworkException {
       emit(BookInfoError("Error submitting data"));
+      return false;
+
     }
   }
 }
