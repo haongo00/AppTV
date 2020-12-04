@@ -27,37 +27,41 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          resizeToAvoidBottomPadding: true,
-          body: SingleChildScrollView(
-            child: Container(
-                height: SizeConfig.screenHeight,
-                alignment: Alignment.center,
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: SizedBox(),
-                      ),
-                      Image.asset(
-                        'assets/logo_tv.png',
-                        height: SizeConfig.safeBlockVertical * 25,
-                      ),
-                      SizedBox(height: SizeConfig.safeBlockVertical * 4),
-                      (forgot) ? buildLoginWidget() : _forgot(),
-                      Expanded(
-                        flex: 4,
-                        child: SizedBox(),
-                      )
-                    ],
-                  ),
-                )),
+    return Scaffold(
+      resizeToAvoidBottomPadding: true,
+      body: Stack(
+        children: [
+          Container(
+            height: SizeConfig.blockSizeVertical * 100,
+            child: Image.asset(
+              'assets/login.jpg',
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-      ],
+          Container(
+              width: SizeConfig.blockSizeHorizontal * 100,
+              height: SizeConfig.blockSizeVertical * 100,
+              alignment: Alignment.center,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  Image.asset(
+                    'assets/logo_tv.png',
+                    height: SizeConfig.safeBlockVertical * 25,
+                  ),
+                  SizedBox(height: SizeConfig.safeBlockVertical * 4),
+                  (forgot) ? buildLoginWidget() : _forgot(),
+                  Expanded(
+                    flex: 4,
+                    child: SizedBox(),
+                  )
+                ],
+              )),
+        ],
+      ),
     );
   }
 
@@ -71,24 +75,30 @@ class _LoginWidgetState extends State<LoginWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextFieldView(
-              attribute: "user_name",
-              title: "Tên đăng nhập",
-              validators: [],
-              onSaved: (String val) {
-                _cubit.userName = val;
-              },
+            Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.white),
+              child: TextFieldView(
+                attribute: "user_name",
+                title: "Tên đăng nhập",
+                validators: [],
+                onSaved: (String val) {
+                  _cubit.userName = val;
+                },
+              ),
             ),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
-            TextFieldView(
-              attribute: 'password',
-              title: 'Mật khẩu',
-              validators: [
-                FormBuilderValidators.pattern(r'^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$'),
-              ],
-              onSaved: (String val) {
-                _cubit.password = val;
-              },
+            Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.white),
+              child: TextFieldView(
+                attribute: 'password',
+                title: 'Mật khẩu',
+                validators: [
+                  FormBuilderValidators.pattern(r'^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$'),
+                ],
+                onSaved: (String val) {
+                  _cubit.password = val;
+                },
+              ),
             ),
             SizedBox(height: SizeConfig.safeBlockVertical * 5),
             ButtonTheme(
@@ -171,27 +181,28 @@ class _LoginWidgetState extends State<LoginWidget> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: TextFieldView(
-            attribute: "email",
-            title: "Email",
-            validators: [],
-            onSaved: (String val) {
-              _cubit.email = val;
-            },
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.white),
+            child: TextFieldView(
+              attribute: "email",
+              title: "Email",
+              validators: [],
+              onSaved: (String val) {
+                _cubit.email = val;
+              },
+            ),
           ),
         ),
-        SizedBox(height: SizeConfig.blockSizeVertical*5),
+        SizedBox(height: SizeConfig.blockSizeVertical * 5),
         RaisedButton(
           color: Color(0xff068189),
           padding: EdgeInsets.all(15),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50.0),
-              side: BorderSide(color: Colors.teal)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0), side: BorderSide(color: Colors.teal)),
           onPressed: () async {
             if (_cubit.email == null) {
               Fluttertoast.showToast(
-                msg:  "Nhập Email",
+                msg: "Nhập Email",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
@@ -202,27 +213,24 @@ class _LoginWidgetState extends State<LoginWidget> {
             } else {
               await _cubit.forgotPass();
               setState(() {
-              forgot = !forgot;
-            });
+                forgot = !forgot;
+              });
             }
           },
-          child: Text("Gửi đến Email của bạn !",style: TextStyle(color: Colors.white,fontSize: 20)),
+          child: Text("Gửi đến Email của bạn !", style: TextStyle(color: Colors.white, fontSize: 20)),
         ),
-        SizedBox(height: SizeConfig.blockSizeVertical*5),
+        SizedBox(height: SizeConfig.blockSizeVertical * 5),
         RaisedButton(
           color: Color(0xff068189),
           padding: EdgeInsets.all(15),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50.0),
-              side: BorderSide(color: Colors.teal)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0), side: BorderSide(color: Colors.teal)),
           onPressed: () async {
-              setState(() {
+            setState(() {
               forgot = !forgot;
             });
-
           },
-          child: Text("Quay lại đăng nhập",style: TextStyle(color: Colors.white,fontSize: 20)),
+          child: Text("Quay lại đăng nhập", style: TextStyle(color: Colors.white, fontSize: 20)),
         )
       ],
     );

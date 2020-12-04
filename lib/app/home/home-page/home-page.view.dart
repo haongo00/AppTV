@@ -70,18 +70,29 @@ class _HomePageState extends State<HomePage> {
               child: Icon(Icons.add, color: Colors.white),
             )
           : SizedBox(),
-      body: BlocBuilder<PostCubit, PostState>(
-          cubit: _cubit,
-          buildWhen: (prev, now) => now is ItemsPostLoaded,
-          builder: (context, state) {
-            if (state is ItemsPostLoaded) {
-              return _body();
-            } else if (state is PostError) {
-              return Center(child: Text(state.message));
-            } else {
-              return Center(child: CupertinoActivityIndicator(radius: 15));
-            }
-          }),
+      body: Stack(
+        children: [
+          Container(
+            height: SizeConfig.blockSizeVertical * 100,
+            child: Image.asset(
+              'assets/login.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          BlocBuilder<PostCubit, PostState>(
+              cubit: _cubit,
+              buildWhen: (prev, now) => now is ItemsPostLoaded,
+              builder: (context, state) {
+                if (state is ItemsPostLoaded) {
+                  return _body();
+                } else if (state is PostError) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return Center(child: CupertinoActivityIndicator(radius: 15));
+                }
+              }),
+        ],
+      ),
     );
   }
 

@@ -21,99 +21,110 @@ class _CustomerState extends State<Customer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Stack(
         children: [
+          Container(
+            height: SizeConfig.blockSizeVertical * 100,
+            child: Image.asset(
+              'assets/login.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FlatButton(
-                onPressed: () {
-                  Modular.link.pushNamed(HomeModule.inforView);
-                },
-                child: Column(
-                  children: [
-                    SizedBox(height: 10.0),
-                    Row(
+              Column(
+                children: [
+                  FlatButton(
+                    onPressed: () {
+                      Modular.link.pushNamed(HomeModule.inforView);
+                    },
+                    child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: SizeConfig.blockSizeHorizontal * 10,
-                          backgroundImage: NetworkImage('${_userInfo?.avatar ?? ""}'),
-                          backgroundColor: Colors.transparent,
-                        ),
-                        SizedBox(width: SizeConfig.blockSizeHorizontal * 5),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(height: 10.0),
+                        Row(
                           children: [
-                            Text("${_userInfo?.name ?? ""}",
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.teal)),
-                            Text("Xem trang cá nhân của bạn")
+                            CircleAvatar(
+                              radius: SizeConfig.blockSizeHorizontal * 10,
+                              backgroundImage: NetworkImage('${_userInfo?.avatar ?? ""}'),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            SizedBox(width: SizeConfig.blockSizeHorizontal * 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("${_userInfo?.name ?? ""}",
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.teal)),
+                                Text("Xem trang cá nhân của bạn")
+                              ],
+                            ),
                           ],
+                        ),
+                        SizedBox(height: 10.0),
+                        Container(
+                          width: SizeConfig.blockSizeHorizontal * 100,
+                          height: 1.0,
+                          color: Colors.grey,
                         ),
                       ],
                     ),
-                    SizedBox(height: 10.0),
-                    Container(
-                      width: SizeConfig.blockSizeHorizontal * 100,
-                      height: 1.0,
-                      color: Colors.grey,
+                  ),
+                  SizedBox(height: 5.0),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        FlatButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Modular.link.pushNamed(HomeModule.resetInfo).then((value) {
+                                setState(() {_userInfo = Application.sharePreference.getUserInfor();});
+                              });
+                            },
+                            child: _info(
+                                "Thay đổi thông tin cá nhân",
+                                Icon(
+                                  Icons.edit,
+                                  color: Colors.deepOrange,
+                                  size: 50,
+                                ))),
+                        SizedBox(height: 5.0),
+                        FlatButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Modular.link.pushNamed(HomeModule.passView);
+                            },
+                            child: _info(
+                                "Đổi Mật Khẩu",
+                                Icon(
+                                  Icons.vpn_key_rounded,
+                                  color: Colors.yellow[700],
+                                  size: 50,
+                                ))),
+                        SizedBox(height: 5.0),
+                        FlatButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+                            },
+                            child: _info(
+                                "Đăng Xuất",
+                                Icon(
+                                  Icons.logout,
+                                  color: Colors.teal,
+                                  size: 50,
+                                ))),
+                        SizedBox(height: 5.0),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-              SizedBox(height: 5.0),
             ],
-          ),
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    FlatButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Modular.link.pushNamed(HomeModule.resetInfo).then((value) {
-                            setState(() {_userInfo = Application.sharePreference.getUserInfor();});
-                          });
-                        },
-                        child: _info(
-                            "Thay đổi thông tin cá nhân",
-                            Icon(
-                              Icons.edit,
-                              color: Colors.deepOrange,
-                              size: 50,
-                            ))),
-                    SizedBox(height: 5.0),
-                    FlatButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Modular.link.pushNamed(HomeModule.passView);
-                        },
-                        child: _info(
-                            "Đổi Mật Khẩu",
-                            Icon(
-                              Icons.vpn_key_rounded,
-                              color: Colors.yellow[700],
-                              size: 50,
-                            ))),
-                    SizedBox(height: 5.0),
-                    FlatButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
-                        },
-                        child: _info(
-                            "Đăng Xuất",
-                            Icon(
-                              Icons.logout,
-                              color: Colors.teal,
-                              size: 50,
-                            ))),
-                    SizedBox(height: 5.0),
-                  ],
-                ),
-              ),
-            ),
           ),
         ],
       ),

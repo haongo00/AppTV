@@ -1,7 +1,9 @@
 import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/app/home/library/library.cubit.dart';
+import 'package:app_tv/model/user_infor/user_infor.dart';
 import 'package:app_tv/repositories/library/library.repositories.dart';
+import 'package:app_tv/routers/application.dart';
 import 'package:app_tv/services/library/library.service.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,122 +20,135 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   LibraryCubit cubit = LibraryCubit(LibraryRepository());
+  UserInfor _userInfo = Application.sharePreference.getUserInfor();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          SizedBox(height: 15),
-          Row(
-            children: [
-              Expanded(
-                child: Card(
-                  elevation: 5,
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal * 20,
-                    height: SizeConfig.blockSizeVertical * 19,
-                    padding: EdgeInsets.only(left: 10.0, top: 15.0),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Color(0xFFF1F1F1)),
-                    child: thongKe(),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: Container(
-                  width: SizeConfig.blockSizeHorizontal * 50,
-                  height: SizeConfig.blockSizeVertical * 20,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          elevation: 5.0,
-                          child: FlatButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              Modular.link.pushNamed(HomeModule.inputView);
-                            },
-                            child: Container(
-                              width: SizeConfig.blockSizeHorizontal * 50,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Color(0xFFF1F1F1),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: SizeConfig.blockSizeVertical * 1),
-                                  Icon(Icons.input, color: Colors.teal, size: 30),
-                                  Expanded(
-                                    child: Text("Nhập liệu",
-                                        style:
-                                            TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5.0),
-                      Expanded(
-                        child: Card(
-                          elevation: 5.0,
-                          child: FlatButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              Modular.link.pushNamed(HomeModule.member);
-                            },
-                            child: Container(
-                              width: SizeConfig.blockSizeHorizontal * 50,
-                              alignment: Alignment.center,
-                              decoration:
-                                  BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Color(0xFFF1F1F1)),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: SizeConfig.blockSizeVertical * 1),
-                                  Icon(Icons.person_outline, color: Colors.teal, size: 30),
-                                  Expanded(
-                                    child: Text("Thành viên",
-                                        style:
-                                            TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
+          Container(
+            height: SizeConfig.blockSizeVertical * 100,
+            child: Image.asset(
+              'assets/login.jpg',
+              fit: BoxFit.cover,
+            ),
           ),
-          SizedBox(height: 20.0),
-          // Text("Nhật ký mượn trả",style: TextStyle(fontSize: 20)),
-          // Divider(
-          //   height: 5.0,
-          //   color: Colors.grey,
-          //   thickness: 2.0,
-          // ),
-          BlocBuilder<LibraryCubit, LibraryState>(
-            cubit: cubit,
-            buildWhen: (pre, now) => now is ItemsLibraryLoaded,
-            builder: (context, state) {
-              if (state is ItemsLibraryLoaded) {
-                return Expanded(child: Container(child: _getHistory()));
-              } else if (state is LibraryError) {
-                return Center(child: Text(state.message));
-              } else {
-                return Container(
-                    height: SizeConfig.blockSizeVertical * 50,
-                    alignment: Alignment.center,
-                    child: CupertinoActivityIndicator(radius: 20));
-              }
-            },
+          Column(
+            children: [
+              SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      elevation: 5,
+                      child: Container(
+                        width: SizeConfig.blockSizeHorizontal * 20,
+                        height: SizeConfig.blockSizeVertical * 19,
+                        padding: EdgeInsets.only(left: 10.0, top: 15.0),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Color(0xFFF1F1F1)),
+                        child: thongKe(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: Container(
+                      width: SizeConfig.blockSizeHorizontal * 50,
+                      height: SizeConfig.blockSizeVertical * 20,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Card(
+                              elevation: 5.0,
+                              child: FlatButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  Modular.link.pushNamed(HomeModule.inputView);
+                                },
+                                child: Container(
+                                  width: SizeConfig.blockSizeHorizontal * 50,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    color: Color(0xFFF1F1F1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(height: SizeConfig.blockSizeVertical * 1),
+                                      Icon(Icons.input, color: Colors.teal, size: 30),
+                                      Expanded(
+                                        child: Text("Nhập liệu",
+                                            style:
+                                                TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5.0),
+                          Expanded(
+                            child: Card(
+                              elevation: 5.0,
+                              child: FlatButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  Modular.link.pushNamed(HomeModule.member);
+                                },
+                                child: Container(
+                                  width: SizeConfig.blockSizeHorizontal * 50,
+                                  alignment: Alignment.center,
+                                  decoration:
+                                      BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Color(0xFFF1F1F1)),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: SizeConfig.blockSizeVertical * 1),
+                                      Icon(Icons.person_outline, color: Colors.teal, size: 30),
+                                      Expanded(
+                                        child: Text("Thành viên",
+                                            style:
+                                                TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 20.0),
+              // Text("Nhật ký mượn trả",style: TextStyle(fontSize: 20)),
+              // Divider(
+              //   height: 5.0,
+              //   color: Colors.grey,
+              //   thickness: 2.0,
+              // ),
+              BlocBuilder<LibraryCubit, LibraryState>(
+                cubit: cubit,
+                buildWhen: (pre, now) => now is ItemsLibraryLoaded,
+                builder: (context, state) {
+                  if (state is ItemsLibraryLoaded) {
+                    return Expanded(child: Container(child: _getHistory()));
+                  } else if (state is LibraryError) {
+                    return Center(child: Text(state.message));
+                  } else {
+                    return Container(
+                        height: SizeConfig.blockSizeVertical * 50,
+                        alignment: Alignment.center,
+                        child: CupertinoActivityIndicator(radius: 20));
+                  }
+                },
+              ),
+            ],
           ),
         ],
       ),

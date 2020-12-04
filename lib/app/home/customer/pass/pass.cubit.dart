@@ -44,9 +44,7 @@ class PassCubit extends Cubit<PassState> {
 
   Future<bool> userUpdate(String name,String born,String password,String email,String phoneNumber,bool gender,) async {
     Map<String, dynamic> params = {
-      'name': name,
       'born' : born,
-      'password' : password,
       'email' : email,
       'phoneNumber' : phoneNumber,
       'gender' : gender
