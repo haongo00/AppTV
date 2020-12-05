@@ -1,11 +1,16 @@
 import 'package:app_tv/app/home/customer/customer.view.dart';
 import 'package:app_tv/app/home/home-page/home-page.view.dart';
 import 'package:app_tv/app/home/library/library.view.dart';
+import 'package:app_tv/app/home/notification/notification.cubit.dart';
 import 'package:app_tv/app/home/notification/notification.view.dart';
 import 'package:app_tv/app/home/search/search.view.dart';
+import 'package:app_tv/repositories/notification/notification.repositories.dart';
+import 'package:app_tv/utils/api.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -13,6 +18,25 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  NotificationCubit cubit = NotificationCubit(NotificationRepositories());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+//    cubit.createSocketConnection();
+//    cubit.setUpSocket();
+    IO.Socket socket = IO.io(
+        API.baseUrl,
+        IO.OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
+            .build());
+    print(socket.connected);
+    socket.on('connect', (_) {
+      print('connect');
+    });
+    socket.on('disconnect', (_) => print('disconnected + ${socket.disconnected}'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,19 +81,33 @@ class _HomeWidgetState extends State<HomeWidget> {
                     children: [
                       Icon(Icons.notifications_none_outlined, size: 30),
                       // Todo: Implement notification
-                      4 > 0
-                          ? Positioned(
-                              right: SizeConfig.safeBlockHorizontal * 6,
-                              top: SizeConfig.safeBlockVertical * 1.5,
-                              child: Container(
-                                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
-                                constraints: BoxConstraints(maxWidth: 14, maxHeight: 14),
-                                child: Center(
-                                  child: Text("4", style: TextStyle(color: Colors.white, fontSize: 11)),
-                                ),
-                              ),
-                            )
-                          : SizedBox()
+                      BlocBuilder<NotificationCubit, NotificationState>(
+                        cubit: cubit,
+                        buildWhen: (previous, now) => now is CountLoaded,
+                        builder: (context, state) {
+                          if (state is CountLoaded) {
+                            return cubit.count > 0
+                                ? Positioned(
+                                    right: SizeConfig.safeBlockHorizontal * 6,
+                                    top: SizeConfig.safeBlockVertical * 1.5,
+                                    child: Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
+                                      constraints: BoxConstraints(maxWidth: 14, maxHeight: 14),
+                                      child: Center(
+                                        child:
+                                            Text("${cubit.count}", style: TextStyle(color: Colors.white, fontSize: 11)),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox();
+                          } else if (state is NotificationError) {
+                            return SizedBox();
+                          } else {
+                            return SizedBox();
+                          }
+                        },
+                      ),
                     ],
                   ),
                 )),

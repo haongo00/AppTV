@@ -7,4 +7,7 @@ class NotificationService {
   static Future<dynamic> seenNotification(Map<String, dynamic> params) {
     return Application.api.post('/poster/seenNotification',params);
   }
+  static Future<dynamic> getNews() {
+    return Application.api.get('/poster/notifications/getNews');
+  }
 }

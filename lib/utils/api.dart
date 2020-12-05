@@ -17,7 +17,7 @@ class API {
       receiveTimeout: 30000,
       contentType: 'application/json; charset=utf-8',
       baseUrl: baseUrl,
-      // baseUrl: "http://192.168.31.61:3001/"
+      // baseUrl: "http://api.tvclubuet.com"
     ),
   );
 

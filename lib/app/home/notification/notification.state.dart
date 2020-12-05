@@ -50,6 +50,22 @@ class ItemsNotificationUploaded extends NotificationState {
   List<Object> get props => [];
 }
 
+class CountLoading extends NotificationState {
+  const CountLoading();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CountLoaded extends NotificationState {
+  final int countNotification;
+
+  CountLoaded(this.countNotification);
+
+  @override
+  List<Object> get props => [countNotification];
+}
+
 class NotificationError extends NotificationState {
   final String message;
 

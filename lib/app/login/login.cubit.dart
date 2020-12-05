@@ -26,7 +26,7 @@ class LoginCubit extends Cubit<bool> {
       "account": {"username": _userName, "password": _password}
     };
     final response = await AuthenticationService.login(params);
-    print(response);
+//    print(response);
     if (response.statusCode == 200) {
       var mapResponse = response.data;
       if (mapResponse["status"] == 200) {
