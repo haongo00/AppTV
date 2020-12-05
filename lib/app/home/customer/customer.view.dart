@@ -23,13 +23,13 @@ class _CustomerState extends State<Customer> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            height: SizeConfig.blockSizeVertical * 100,
-            child: Image.asset(
-              'assets/login.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Container(
+          //   height: SizeConfig.blockSizeVertical * 100,
+          //   child: Image.asset(
+          //     'assets/login.jpg',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

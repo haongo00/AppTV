@@ -33,7 +33,7 @@ class _PostViewState extends State<PostView> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Color(0xff068189),
+        backgroundColor: Colors.teal,
         title: Text("Bài viết"),
       ),
       body: SingleChildScrollView(

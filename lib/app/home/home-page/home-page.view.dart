@@ -59,9 +59,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF1F1F1),
       floatingActionButton: _userInfor.role.isCreatePost
           ? FloatingActionButton(
-              backgroundColor: Color(0xff068189),
+              backgroundColor: Colors.teal,
               foregroundColor: Colors.black,
               onPressed: () {
                 Modular.link.pushNamed(HomeModule.postStatus, arguments: _cubit);
@@ -72,13 +73,13 @@ class _HomePageState extends State<HomePage> {
           : SizedBox(),
       body: Stack(
         children: [
-          Container(
-            height: SizeConfig.blockSizeVertical * 100,
-            child: Image.asset(
-              'assets/login.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Container(
+          //   height: SizeConfig.blockSizeVertical * 100,
+          //   child: Image.asset(
+          //     'assets/login.jpg',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           BlocBuilder<PostCubit, PostState>(
               cubit: _cubit,
               buildWhen: (prev, now) => now is ItemsPostLoaded,
@@ -156,7 +157,7 @@ class _HomePageState extends State<HomePage> {
   Widget _post(Post _post) {
     return Container(
         width: double.infinity,
-        margin: EdgeInsets.all(10.0),
+        margin: EdgeInsets.symmetric(vertical: 10.0),
         child: FlatButton(
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -169,9 +170,9 @@ class _HomePageState extends State<HomePage> {
           },
           child: Card(
             margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(15.0),
+            // ),
             elevation: 3.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                         child: ClipOval(
                           child: Image.network(
                             '${_post.userCreate.avatar ?? 'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'}',
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -223,9 +224,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      '${_post.urlAssets ?? ''}',
-                      fit: BoxFit.fill,
+                    child: SizedBox(
+                      width: SizeConfig.blockSizeHorizontal*100,
+                      height: SizeConfig.blockSizeVertical*50,
+                      child: Image.network(
+                        '${_post.urlAssets ?? ''}',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   )
                 )
@@ -234,7 +239,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)));
+        // decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)),
+    );
   }
 }

@@ -103,7 +103,7 @@ class _MemberViewState extends State<MemberView> {
             },
           ),
         ),
-        SizedBox(height: SizeConfig.blockSizeVertical * 3),
+        SizedBox(height: SizeConfig.blockSizeVertical * 1),
         Row(
           children: [
             Expanded(

@@ -17,9 +17,9 @@ class _InputViewState extends State<InputView> {
         child: Scaffold(
           appBar: AppBar(
             leading: BackButton(
-              color: Color(0xff068189),
+              color: Colors.teal,
             ),
-            elevation: 15.0,
+            elevation: 0.0,
             title: Text("Thư viện",style: TextStyle(color: Colors.teal,fontWeight: FontWeight.bold)),
             backgroundColor: Colors.white,
             centerTitle: true,
@@ -28,7 +28,7 @@ class _InputViewState extends State<InputView> {
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Color(0xff068189)),
+                  color: Colors.teal),
               labelPadding: EdgeInsets.zero,
               isScrollable: true,
               indicatorWeight: 0.0,
