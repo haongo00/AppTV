@@ -27,7 +27,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
     super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff068189),
+        backgroundColor: Colors.teal,
         foregroundColor: Colors.black,
         onPressed: () {
           if (_userInfo.role.isCreateOrEditUser) {
@@ -49,14 +49,14 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
       ),
       body: Stack(
         children: [
-          Container(
-            width: SizeConfig.blockSizeHorizontal*100,
-            height: SizeConfig.blockSizeVertical * 100,
-            child: Image.asset(
-              'assets/login.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Container(
+          //   width: SizeConfig.blockSizeHorizontal*100,
+          //   height: SizeConfig.blockSizeVertical * 100,
+          //   child: Image.asset(
+          //     'assets/login.jpg',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           BlocBuilder<ListBookCubit, ListBookState>(
               cubit: _cubit,
               buildWhen: (prev, now) => now is ItemsListBookLoaded || now is BookCountLoading || now is BookCountLoaded,
@@ -93,25 +93,25 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
     return Column(
       children: [
         SizedBox(height: SizeConfig.blockSizeVertical * 1),
-        // Container(
-        //   padding: EdgeInsets.only(left: 10.0, right: 5.0),
-        //   width: SizeConfig.blockSizeHorizontal * 80,
-        //   alignment: Alignment.center,
-        //   decoration: BoxDecoration(
-        //     border: Border.all(color: Colors.teal, width: 1.0),
-        //     borderRadius: BorderRadius.circular(20.0),
-        //     color: Colors.white,
-        //   ),
-        //   child: FormBuilderTextField(
-        //     attribute: "search",
-        //     decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
-        //     onFieldSubmitted: (value) {
-        //       _cubit.reset();
-        //       _cubit.loadData(search: value.toString());
-        //     },
-        //   ),
-        // ),
-        SizedBox(height: 20),
+        Container(
+          padding: EdgeInsets.only(left: 10.0, right: 5.0),
+          width: SizeConfig.blockSizeHorizontal * 80,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.teal, width: 1.0),
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.white,
+          ),
+          child: FormBuilderTextField(
+            attribute: "search",
+            decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
+            onFieldSubmitted: (value) {
+              _cubit.reset();
+              _cubit.loadData(search: value.toString());
+            },
+          ),
+        ),
+        SizedBox(height: 10),
         Row(
           children: [
             Expanded(
@@ -131,7 +131,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
             ),
           ],
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         if (_cubit.listBook.isEmpty)
           Text("Không Tìm Thấy", style: TextStyle(fontSize: 25))
         else
@@ -214,7 +214,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                                         SizedBox(height: 10.0),
                                         Container(
                                           margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 50),
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: Color(0xff068189)),
+                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: Colors.teal),
                                           width: SizeConfig.blockSizeHorizontal * 30,
                                           alignment: Alignment.center,
                                           child: Text("Giá : ${_cubit.listBook[index].price} VNĐ", style: TextStyle(color: Colors.white, fontSize: 13)),

@@ -25,6 +25,7 @@ class _InforViewState extends State<InforView> {
     // TODO: implement build
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFF1F1F1),
         appBar: staticAppbar(title: "Trang Cá Nhân"),
         body: _getBody(),
       ),
@@ -39,7 +40,7 @@ class _InforViewState extends State<InforView> {
           ),
           Center(
             child: CircleAvatar(
-              radius: SizeConfig.blockSizeHorizontal * 20,
+              radius: SizeConfig.blockSizeHorizontal * 35,
               backgroundImage: NetworkImage('${_userInfo.avatar}'),
               backgroundColor: Colors.transparent,
             ),
@@ -54,7 +55,7 @@ class _InforViewState extends State<InforView> {
               ),
               elevation: 5.0,
               margin: EdgeInsets.symmetric(horizontal: 4.0),
-              color: Color(0xFFF1F1F1),
+              color: Colors.white,
               child: Container(
                 width: SizeConfig.blockSizeHorizontal * 92,
                 padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -149,7 +150,7 @@ class _InforViewState extends State<InforView> {
               ),
               elevation: 5.0,
               margin: EdgeInsets.symmetric(horizontal: 13),
-              color: Color(0xFFF1F1F1),
+              color: Colors.white,
               child: Container(
                 width: SizeConfig.blockSizeHorizontal * 92,
                 padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -207,7 +208,7 @@ class _InforViewState extends State<InforView> {
         ),
         elevation: 3.0,
         margin: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 1),
-        color: Color(0xFFF1F1F1),
+        color: Colors.white,
         child: Container(
           width: SizeConfig.blockSizeHorizontal * 45,
           padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -226,70 +227,73 @@ class _InforViewState extends State<InforView> {
   Widget _post(Post _post) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        border: Border.all(width: 1.0,color: Colors.grey),
-        borderRadius: BorderRadius.circular(25)
-      ),
-      child: FlatButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {},
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.all(15.0),
-              alignment: Alignment.topCenter,
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    margin: EdgeInsets.all(5.0),
-                    child: ClipOval(
-                      child: Image.network(
-                        '${_post.userCreate?.avatar ?? 'https://www.minervastrategies'
-                            '.com/wp-content/uploads/2016/03/default-avatar'
-                            '.jpg'}',
-                        fit: BoxFit.fill,
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      // decoration: BoxDecoration(
+      //   border: Border.all(width: 1.0,color: Colors.grey),
+      //   borderRadius: BorderRadius.circular(25)
+      // ),
+      child: Card(
+        elevation: 5.0,
+        child: FlatButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {},
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.all(15.0),
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      margin: EdgeInsets.all(5.0),
+                      child: ClipOval(
+                        child: Image.network(
+                          '${_post.userCreate?.avatar ?? 'https://www.minervastrategies'
+                              '.com/wp-content/uploads/2016/03/default-avatar'
+                              '.jpg'}',
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${_post.userCreate?.name ?? ''}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        '${dateFormat(_post.create_at ?? '')}',
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ],
-                  )
-                ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${_post.userCreate?.name ?? ''}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          '${dateFormat(_post.create_at ?? '')}',
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                '${_post.content ?? ''}',
-                style: TextStyle(fontSize: 20),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  '${_post.content ?? ''}',
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
-            ),
-            _post.urlAssets != null
-                ? Container(
-              padding: EdgeInsets.all(8.0),
-              height: SizeConfig.blockSizeVertical * 30,
-              width: double.infinity,
-              child: Image.network(
-                '${_post.urlAssets ?? ''}',
-                fit: BoxFit.fill,
-              ),
-            )
-                : SizedBox(),
-          ],
+              _post.urlAssets != null
+                  ? Container(
+                padding: EdgeInsets.all(8.0),
+                height: SizeConfig.blockSizeVertical * 40,
+                width: double.infinity,
+                child: Image.network(
+                  '${_post.urlAssets ?? ''}',
+                  fit: BoxFit.cover,
+                ),
+              )
+                  : SizedBox(),
+            ],
+          ),
         ),
       ),
     );

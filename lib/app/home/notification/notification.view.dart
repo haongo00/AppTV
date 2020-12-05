@@ -36,13 +36,13 @@ class _NotificationAppState extends State<NotificationApp> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          height: SizeConfig.blockSizeVertical * 100,
-          child: Image.asset(
-            'assets/login.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
+        // Container(
+        //   height: SizeConfig.blockSizeVertical * 100,
+        //   child: Image.asset(
+        //     'assets/login.jpg',
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
         BlocBuilder<NotificationCubit, NotificationState>(
           cubit: cubit,
           buildWhen: (previous, now) => now is ItemsNotificationLoaded,

@@ -17,16 +17,17 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
   SearchCubit cubit = SearchCubit(SearchRepository());
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          height: SizeConfig.blockSizeVertical * 100,
-          child: Image.asset(
-            'assets/login.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
+        // Container(
+        //   height: SizeConfig.blockSizeVertical * 100,
+        //   child: Image.asset(
+        //     'assets/login.jpg',
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
         SingleChildScrollView(
           child: Column(
             children: [
@@ -84,7 +85,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
           hintStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100.0),
-            borderSide: BorderSide(color: Color(0xff068189)),
+            borderSide: BorderSide(color: Colors.teal),
           ),
         ),
         keyboardType: TextInputType.number,
@@ -106,7 +107,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
         child: AbsorbPointer(
           absorbing: !isLoaded,
           child: FlatButton(
-            color: Color(0xff068189),
+            color: Colors.teal,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100.0),
             ),

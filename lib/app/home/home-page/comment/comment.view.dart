@@ -79,10 +79,11 @@ class _CommentViewState extends State<CommentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF1F1F1),
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          backgroundColor: Color(0xff068189),
+          backgroundColor: Colors.teal,
           title: Text("Bài viết"),
         ),
         body: BlocBuilder<CommentCubit, CommentState>(
@@ -204,11 +205,10 @@ class _CommentViewState extends State<CommentView> {
             _post.urlAssets != null
                 ? Container(
                     padding: EdgeInsets.all(8.0),
-                    height: SizeConfig.blockSizeVertical * 30,
                     width: double.infinity,
                     child: Image.network(
                       '${_post.urlAssets ?? ''}',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   )
                 : SizedBox(),
@@ -221,7 +221,7 @@ class _CommentViewState extends State<CommentView> {
   Widget _comment(Comments _comment) {
     return Container(
         width: double.infinity,
-        margin: EdgeInsets.all(10.0),
+        margin: EdgeInsets.symmetric(vertical: 10.0),
         child: FlatButton(
           padding: EdgeInsets.zero,
           onLongPress: () {
@@ -232,10 +232,10 @@ class _CommentViewState extends State<CommentView> {
           onPressed: () {},
           child: Card(
             margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-            elevation: 0.0,
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(18.0),
+            // ),
+            elevation: 3.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -295,7 +295,8 @@ class _CommentViewState extends State<CommentView> {
             ),
           ),
         ),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)));
+        // decoration: BoxDecoration(borderRadius: BorderRadius.circular(18.0), border: Border.all(color: Colors.grey, width: 1.5)),
+    );
   }
 
   Widget _inputComment() {

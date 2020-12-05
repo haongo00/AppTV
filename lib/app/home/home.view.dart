@@ -16,20 +16,19 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: true,
       child: DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: SizeConfig.blockSizeVertical * 8,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.teal,
             bottom: TabBar(
               labelPadding: EdgeInsets.zero,
               isScrollable: true,
               indicatorWeight: 3.0,
-              unselectedLabelColor: Colors.grey,
-              labelColor: Color(0xff068189),
-              indicatorColor: Color(0xff068189),
+              unselectedLabelColor: Color(0xFFF1F1F1),
+              labelColor: Colors.white,
+              indicatorColor: Colors.white,
               tabs: [
                 Tab(
                     icon: SizedBox(

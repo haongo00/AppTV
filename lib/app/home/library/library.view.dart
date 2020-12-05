@@ -28,13 +28,13 @@ class _LibraryState extends State<Library> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            height: SizeConfig.blockSizeVertical * 100,
-            child: Image.asset(
-              'assets/login.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Container(
+          //   height: SizeConfig.blockSizeVertical * 100,
+          //   child: Image.asset(
+          //     'assets/login.jpg',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           Column(
             children: [
               SizedBox(height: 15),
@@ -126,12 +126,17 @@ class _LibraryState extends State<Library> {
                 ],
               ),
               SizedBox(height: 20.0),
-              // Text("Nhật ký mượn trả",style: TextStyle(fontSize: 20)),
-              // Divider(
-              //   height: 5.0,
-              //   color: Colors.grey,
-              //   thickness: 2.0,
-              // ),
+              Row(
+                children: [
+                  Expanded(child: Container(height: 2.0,color: Colors.teal,)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Text("Lịch Sử",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold)),
+                  ),
+                  Expanded(child: Container(height: 2.0,color: Colors.teal,)),
+                ],
+              ),
+              SizedBox(height: 20.0),
               BlocBuilder<LibraryCubit, LibraryState>(
                 cubit: cubit,
                 buildWhen: (pre, now) => now is ItemsLibraryLoaded,
@@ -165,20 +170,13 @@ class _LibraryState extends State<Library> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Center(
-                child: Row(
-                  children: [
-                    Expanded(child: Icon(Icons.insert_chart_rounded, color: Colors.teal, size: 55)),
-                    SizedBox(width: 5.0),
-                  ],
-                ),
-              ),
+              Expanded(child: Icon(Icons.insert_chart_rounded, color: Colors.teal, size: 55)),
               Text("Tháng này ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
               Row(
                 children: [
-                  Text("     Mượn : ${cubit.borrow}",
+                  Text("   Mượn : ${cubit.borrow}",
                       style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                  Text("     Trả : ${cubit.paid}",
+                  Text("   Trả : ${cubit.paid}",
                       style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                 ],
               ),
@@ -283,11 +281,11 @@ class _LibraryState extends State<Library> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     color: (cubit.listHistory.result.elementAt(index).payDate != null)
-                                        ? Colors.green
+                                        ? Colors.teal
                                         : (dateFormat(cubit.listHistory.result.elementAt(index).borrowDate)==
                                         dateFormat(cubit.listHistory.result.elementAt(index).update_at))
-                                        ?  Colors.blueAccent
-                                        :  Colors.blueAccent,
+                                        ?  Colors.teal
+                                        :  Colors.teal,
                                   ),
                                   child: Text(
                                       (cubit.listHistory.result.elementAt(index).payDate != null)
