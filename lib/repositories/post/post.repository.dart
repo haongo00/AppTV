@@ -16,7 +16,6 @@ class PostRepository {
   }
   Future<Comment> fetchComment(Map<String, dynamic> params) async {
     final response = await PostService.getComment(params);
-    print(response.data);
     return (response.statusCode == 200)
         ? Comment.fromJson(response.data as Map<String, dynamic>)
         : throw NetworkException;

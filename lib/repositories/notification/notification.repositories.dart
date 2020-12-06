@@ -12,6 +12,12 @@ class NotificationRepositories {
 
   Future<bool> seenNotification(Map<String, dynamic> params) async {
     final response = await NotificationService.seenNotification(params);
+//    print(response.statusCode);
     return (response.statusCode == 200) ? true : false;
+  }
+  Future<int> newNotificationCount() async {
+    final response = await NotificationService.getNews();
+    print(response.data);
+    return (response.statusCode == 200) ? response.data['result']['count'] as int : 0;
   }
 }
