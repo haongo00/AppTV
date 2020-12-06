@@ -1,7 +1,5 @@
-import 'package:app_tv/app/components/date/date.component.dart';
 import 'package:app_tv/app/home/home.module.dart';
 import 'package:app_tv/app/home/notification/notification.cubit.dart';
-import 'package:app_tv/repositories/notification/notification.repositories.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +8,15 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationApp extends StatefulWidget {
+  final NotificationCubit cubit;
+
+  const NotificationApp({this.cubit}) : super();
+
   @override
   _NotificationAppState createState() => _NotificationAppState();
 }
 
 class _NotificationAppState extends State<NotificationApp> {
-  NotificationCubit cubit = NotificationCubit(NotificationRepositories());
-
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   // ignore: avoid_void_async
@@ -28,8 +28,15 @@ class _NotificationAppState extends State<NotificationApp> {
   // ignore: avoid_void_async
   void onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    cubit.pull();
+    widget.cubit.pull();
     _refreshController.loadComplete();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.cubit.loadData();
   }
 
   @override
@@ -44,7 +51,7 @@ class _NotificationAppState extends State<NotificationApp> {
         //   ),
         // ),
         BlocBuilder<NotificationCubit, NotificationState>(
-          cubit: cubit,
+          cubit: widget.cubit,
           buildWhen: (previous, now) => now is ItemsNotificationLoaded,
           builder: (context, state) {
             if (state is ItemsNotificationLoaded) {
@@ -95,16 +102,19 @@ class _NotificationAppState extends State<NotificationApp> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ...List.generate(cubit.notifications.length, (index) {
+              ...List.generate(widget.cubit.notifications.length, (index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
                   child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 3.0),
-                    color: (cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white : Color(0xFFF1F1F1),
+                    color: (widget.cubit.notifications.elementAt(index).isSeen == 1) ? Colors.white : Color(0xFFF1F1F1),
                     onPressed: () {
-                      cubit.seenNotification(cubit.notifications.elementAt(index).notification_id);
-                      Modular.link.pushNamed(HomeModule.comment,
-                          arguments: cubit.notifications.elementAt(index).notification_posterId);
+                      widget.cubit.seenNotification(widget.cubit.notifications.elementAt(index).notification_id);
+
+                      Modular.link
+                          .pushNamed(HomeModule.comment,
+                              arguments: widget.cubit.notifications.elementAt(index).notification_posterId)
+                          .then((value) => widget.cubit.loadData());
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
@@ -118,7 +128,7 @@ class _NotificationAppState extends State<NotificationApp> {
                                 child: CircleAvatar(
                                   radius: SizeConfig.blockSizeHorizontal * 6,
                                   backgroundImage:
-                                      NetworkImage('${cubit.notifications.elementAt(index).userCreate_avatar}'),
+                                      NetworkImage('${widget.cubit.notifications.elementAt(index).userCreate_avatar}'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
@@ -131,30 +141,30 @@ class _NotificationAppState extends State<NotificationApp> {
                                       child: Row(
                                         children: [
                                           Text(
-                                            "${cubit.notifications.elementAt(index).userCreate_name}  ",
+                                            "${widget.cubit.notifications.elementAt(index).userCreate_name}  ",
                                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                                           ),
                                           Expanded(
-                                              child:
-                                                  Text("${cubit.notifications.elementAt(index).notification_context}"))
+                                              child: Text(
+                                                  "${widget.cubit.notifications.elementAt(index).notification_context}"))
                                         ],
                                       ),
                                     ),
-                                    Text((cubit.notifications
+                                    Text((widget.cubit.notifications
                                                 .elementAt(index)
                                                 .notification_creat_at
                                                 .difference(DateTime.now())
                                                 .inDays !=
                                             0)
-                                        ? "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inDays * -1} ngày trước"
-                                        : (cubit.notifications
+                                        ? "${widget.cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inDays * -1} ngày trước"
+                                        : (widget.cubit.notifications
                                                     .elementAt(index)
                                                     .notification_creat_at
                                                     .difference(DateTime.now())
                                                     .inHours !=
                                                 0)
-                                            ? "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inHours * -1} giờ trước"
-                                            : "${cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inMinutes * -1} phút trước"),
+                                            ? "${widget.cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inHours * -1} giờ trước"
+                                            : "${widget.cubit.notifications.elementAt(index).notification_creat_at.difference(DateTime.now()).inMinutes * -1} phút trước"),
                                     // Text("${cubit.notifications.elementAt(index).notification_creat_at}")
                                   ],
                                 ),

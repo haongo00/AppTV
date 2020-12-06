@@ -5,12 +5,10 @@ import 'package:app_tv/app/home/notification/notification.cubit.dart';
 import 'package:app_tv/app/home/notification/notification.view.dart';
 import 'package:app_tv/app/home/search/search.view.dart';
 import 'package:app_tv/repositories/notification/notification.repositories.dart';
-import 'package:app_tv/utils/api.dart';
 import 'package:app_tv/utils/screen_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -26,15 +24,16 @@ class _HomeWidgetState extends State<HomeWidget> {
     super.initState();
 //    cubit.createSocketConnection();
 //    cubit.setUpSocket();
-    IO.Socket socket = IO.io(
-        API.baseUrl,
-        IO.OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
-            .build());
-    print(socket.connected);
-    socket.on('connect', (_) {
-      print('connect');
-    });
-    socket.on('disconnect', (_) => print('disconnected + ${socket.disconnected}'));
+//    IO.Socket socket = IO.io(
+//        API.baseUrl,
+//        IO.OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
+//            .build());
+//    socket.on('connect', (_) {
+//      print(socket.connected);
+//      print('connect');
+//    });
+//    socket.on('disconnect', (_) => print('disconnected + ${socket.disconnected}'));
+    cubit.newNotificationCount();
   }
 
   @override
@@ -137,9 +136,8 @@ class _HomeWidgetState extends State<HomeWidget> {
             children: [
               HomePage(),
               Library(),
-              NotificationApp(),
+              NotificationApp(cubit: cubit,),
               Search(),
-//            GiveBookView(),
               Customer(),
             ],
           ),
