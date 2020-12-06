@@ -283,7 +283,7 @@ class _MemberViewState extends State<MemberView> {
                     animating: true,
                   );
                 },);
-                if (await cubit.blockUser(index)) {
+                if (await cubit.deleteUser(index)) {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }

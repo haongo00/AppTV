@@ -121,6 +121,24 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
+  Future<bool> deleteUser(int id) async {
+    Map<String, dynamic> params = {"id": id};
+    try {
+      emit(MemberLoading());
+      if (await _libraryRepository.deleteUser(params)) {
+        emit(ItemsMemberUploaded());
+        await loadData();
+        return true;
+      } else {
+        emit(MemberError("Submit failed"));
+        return false;
+      }
+    } on NetworkException {
+      emit(MemberError("Error submitting data"));
+      return false;
+    }
+  }
+
   Future<bool> updateUser({int user, int roleId, int departmentId}) async {
     Map<String, dynamic> params = {
       "user": {

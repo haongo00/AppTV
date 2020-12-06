@@ -53,7 +53,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
           //   width: SizeConfig.blockSizeHorizontal*100,
           //   height: SizeConfig.blockSizeVertical * 100,
           //   child: Image.asset(
-          //     'assets/login.jpg',
+          //     'assets/book.jpg',
           //     fit: BoxFit.cover,
           //   ),
           // ),
@@ -185,10 +185,8 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.teal, width: 1.5),
                                   borderRadius: BorderRadius.circular(15.0),
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [Colors.white.withOpacity(0.8), Colors.white.withOpacity(0.8)])),
+                                  color: Colors.white
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

@@ -52,6 +52,9 @@ class LibraryService {
   static Future<dynamic> blockUser(Map<String, dynamic> params) {
     return Application.api.put('/user/block', params);
   }
+  static Future<dynamic> deleteUser(Map<String, dynamic> params) {
+    return Application.api.delete('/user/${params['id']}');
+  }
 
   static Future<dynamic> updateUser(Map<String, dynamic> params) {
     return Application.api.put('/user/updateRole', params);

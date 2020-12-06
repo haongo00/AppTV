@@ -175,7 +175,7 @@ class _CommentViewState extends State<CommentView> {
                     child: ClipOval(
                       child: Image.network(
                         '${_post.userCreate.avatar ?? 'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'}',
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -251,7 +251,7 @@ class _CommentViewState extends State<CommentView> {
                         child: ClipOval(
                           child: Image.network(
                             '${_comment.user.avatar ?? 'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'}',
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
