@@ -61,13 +61,15 @@ class _ResetInfoViewState extends State<ResetInfoView> {
                     onTap: () {
                       loadAssets();
                     },
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+                    child: ClipOval(
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: AssetThumb(asset: asset, width: 120, height: 120),
                       ),
-                      child: AssetThumb(asset: asset, width: 120, height: 120),
                     ),
                   ),
             FormBuilderTextField(
@@ -97,7 +99,7 @@ class _ResetInfoViewState extends State<ResetInfoView> {
             FormBuilderDropdown(
               attribute: "gender",
               decoration: InputDecoration(labelText: "Giới Tính"),
-              initialValue: (_userInfo.gender) ? listGender[0] : listGender[1],
+              initialValue: (_userInfo.gender == "1") ? listGender[0] : listGender[1],
               validators: [FormBuilderValidators.required()],
               items: listGender.map((item) => DropdownMenuItem(value: item, child: Text("$item"))).toList(),
               onChanged: (value) {
@@ -178,8 +180,11 @@ class _ResetInfoViewState extends State<ResetInfoView> {
                                 animating: true,
                               );
                             },);
+                            print("hehe");
                             if (await uploadInfo()) {
                               Modular.navigator.pop();
+                              Modular.navigator.pop();
+                            } else  {
                               Modular.navigator.pop();
                             }
                           }
@@ -207,7 +212,7 @@ class _ResetInfoViewState extends State<ResetInfoView> {
         maxImages: 1,
         enableCamera: true,
         selectedAssets: images,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat", backgroundColor: "E3161D"),
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
             actionBarColor: "#ff068189",
             allViewTitle: "All Photos",
@@ -241,15 +246,14 @@ class _ResetInfoViewState extends State<ResetInfoView> {
 
   Future<bool> uploadInfo() async {
     FormData formData = FormData.fromMap(<String, dynamic>{
-      'name': _userInfo.name,
       'born' : _userInfo.born,
-      'password' : pass,
       'email' : _userInfo.email,
       'phoneNumber' : _userInfo.phoneNumber,
       'gender' : _userInfo.gender,
+      'name' : _userInfo.name,
       'avatar' : multipartFile,
     });
-    var response = await Application.api.dio.post("${API.baseUrl}/user/update", data: formData);
+    var response = await Application.api.dio.put("${API.baseUrl}/user/update", data: formData);
     if (response.statusCode == 200 && response.data["message"] == "Thành công") {
       Application.sharePreference
         ..putObject('userInfor', response.data['result'] as Map<String, dynamic>);
@@ -262,7 +266,8 @@ class _ResetInfoViewState extends State<ResetInfoView> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      return true;
     }
-    return response.data['status'] == 200 ? true : false;
+    return false;
   }
 }

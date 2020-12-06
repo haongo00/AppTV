@@ -47,7 +47,8 @@ class PassCubit extends Cubit<PassState> {
       'born' : born,
       'email' : email,
       'phoneNumber' : phoneNumber,
-      'gender' : gender
+      'gender' : gender,
+      'name' : name
     };
     try {
       emit(PassUploading());

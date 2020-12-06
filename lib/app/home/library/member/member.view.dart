@@ -250,10 +250,6 @@ class _MemberViewState extends State<MemberView> {
     showCupertinoModalPopup(
         context: context,
         builder: (context) => CupertinoActionSheet(
-          message: Text(
-            "Bạn có muốn Block / Delete thành viên ?",
-            style: TextStyle(fontWeight: FontWeight.w400),
-          ),
           actions: <Widget>[
             CupertinoActionSheetAction(
               child: Text(
@@ -276,7 +272,7 @@ class _MemberViewState extends State<MemberView> {
             ),
             CupertinoActionSheetAction(
               child: Text(
-                "Delete",
+                "Xoá",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               isDestructiveAction: true,
@@ -296,7 +292,7 @@ class _MemberViewState extends State<MemberView> {
           ],
           cancelButton: CupertinoActionSheetAction(
             child: Text(
-              "Cancel",
+              "Trở lại",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
             ),
             onPressed: () {

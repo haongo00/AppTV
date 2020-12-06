@@ -52,6 +52,12 @@ dev_dependencies:
   json_serializable: ^3.3.0
   build_runner: ^1.10.0
   intl: any
+  flutter_launcher_icons: ^0.8.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo_tv.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
