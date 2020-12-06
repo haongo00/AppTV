@@ -99,7 +99,6 @@ class MemberCubit extends Cubit<MemberState> {
     } on NetworkException {
       emit(MemberError("Error submitting data"));
       return false;
-
     }
   }
 
@@ -122,19 +121,13 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> updateUser(
-      {String name,
-      String date,
-      bool gender,
-      String gen,
-      String user,
-      String pass,
-      int roleId,
-      int departmentId}) async {
+  Future<bool> updateUser({int user, int roleId, int departmentId}) async {
     Map<String, dynamic> params = {
-      "id": 13,
-      "roleId": roleId,
-      "departmentId": departmentId,
+      "user": {
+        "id": user,
+        "roleId": roleId,
+        "departmentId": departmentId,
+      }
     };
     print(params);
     try {
@@ -143,6 +136,7 @@ class MemberCubit extends Cubit<MemberState> {
       print(response);
       if (response.statusCode == 200) {
         emit(ItemsMemberUploaded());
+        await loadData();
         Fluttertoast.showToast(
           msg: "Thành công",
           toastLength: Toast.LENGTH_SHORT,
@@ -152,6 +146,7 @@ class MemberCubit extends Cubit<MemberState> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
+        return true;
       } else {
         emit(MemberError("Submit failed"));
         Fluttertoast.showToast(
@@ -163,9 +158,11 @@ class MemberCubit extends Cubit<MemberState> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
+        return false;
       }
     } on NetworkException {
       emit(MemberError("Error submitting data"));
+      return false;
     }
     loadData();
   }

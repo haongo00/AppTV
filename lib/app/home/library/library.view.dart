@@ -20,7 +20,6 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   LibraryCubit cubit = LibraryCubit(LibraryRepository());
-  UserInfor _userInfo = Application.sharePreference.getUserInfor();
 
 
   @override
@@ -171,17 +170,25 @@ class _LibraryState extends State<Library> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(child: Icon(Icons.insert_chart_rounded, color: Colors.teal, size: 55)),
-              Text("Tháng này ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-              Row(
-                children: [
-                  Text("   Mượn : ${cubit.borrow}",
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                  Text("   Trả : ${cubit.paid}",
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              Text("     Tổng : ${cubit.paid + cubit.borrow}",
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Tháng này ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                    Row(
+                      children: [
+                        Text("   Mượn : ${cubit.borrow}",
+                            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text("   Trả : ${cubit.paid}",
+                            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    Text("     Tổng : ${cubit.paid + cubit.borrow}",
+                        style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              )
             ],
           );
         } else {

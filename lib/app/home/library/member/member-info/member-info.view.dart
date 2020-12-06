@@ -23,7 +23,6 @@ class MemberInfoView extends StatefulWidget {
 }
 
 class _MemberInfoViewState extends State<MemberInfoView> {
-
   UserInfor _userInfo = Application.sharePreference.getUserInfor();
 
   @override
@@ -32,7 +31,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
       child: Scaffold(
         appBar: staticAppbar(action: [
           IconButton(
-            icon: Icon(Icons.edit, color: Colors.teal),
+            icon: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               if (_userInfo.role.isCreateOrEditUser) {
                 showDialog(context: context, builder: (_) => _edit());
@@ -153,7 +152,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ),
                   SizedBox(height: SizeConfig.blockSizeVertical * 1),
                   _info(
-                   "${widget.member.phoneNumber}",
+                    "${widget.member.phoneNumber}",
                     Icon(
                       Icons.call,
                       size: 25,
@@ -185,7 +184,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       Icons.email,
                       size: 25,
                       color: Colors.green,
-                    ),                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+                    ),
+                    SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
                     Text("${widget.member?.email ?? ""}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ],
                 ),
@@ -238,17 +238,18 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             child: Text("Close", style: TextStyle(color: Colors.grey))),
         SizedBox(width: SizeConfig.blockSizeHorizontal * 30),
         FlatButton(
-            onPressed: () {
-              widget.cubit.updateUser(
-                  name: widget.member.name,
-                  date: widget.member.born,
-                  gen: widget.member.GenCode,
-                  gender: widget.member.gender,
-                  user: widget.member.userName,
-                  pass: widget.member.userName,
-                  departmentId: departmentId,
-                  roleId: roleId);
-              Modular.navigator.pop();
+            onPressed: () async {
+              showDialog(context: context,builder: (context) {
+                return CupertinoActivityIndicator(
+                  radius: 30,
+                  animating: true,
+                );
+              },);
+              if (await widget.cubit.updateUser(user: widget.member.id, departmentId: departmentId, roleId: roleId)) {
+                Modular.navigator.pop();
+                Modular.navigator.pop();
+                Modular.navigator.pop();
+              }
             },
             child: Text("Save", style: TextStyle(color: Colors.teal)))
       ],
@@ -263,7 +264,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           side: BorderSide(color: Colors.white, width: 1),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        elevation:5.0,
+        elevation: 5.0,
         margin: EdgeInsets.symmetric(horizontal: 5.0),
         color: Color(0xFFF1F1F1),
         child: Container(

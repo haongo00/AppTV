@@ -47,7 +47,7 @@ class _BookInfoViewState extends State<BookInfoView> {
     return SafeArea(
       child: Scaffold(
         appBar: staticAppbar(action: [IconButton(
-          icon: Icon(Icons.edit,color: Colors.teal),
+          icon: Icon(Icons.edit,color: Colors.white),
           onPressed: () {
             if (_userInfo.role.isCreateOrEditUser) {
               _cubit.changeEdit();

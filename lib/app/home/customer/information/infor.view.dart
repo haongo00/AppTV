@@ -106,7 +106,7 @@ class _InforViewState extends State<InforView> {
                   ),
                   SizedBox(height: SizeConfig.blockSizeVertical * 1),
                   _info(
-                    (_userInfo?.gender ?? true) ? "Nam" : "Nữ",
+                    (_userInfo?.gender == "1") ? "Nam" : "Nữ",
                     Icon(
                       Icons.fiber_manual_record_rounded,
                       size: 25,
