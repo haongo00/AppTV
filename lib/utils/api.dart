@@ -40,7 +40,7 @@ class API {
       // you can return a `DioError` object or return `dio.reject(errMsg)`
     }, onResponse: (Response response) async {
       if (response?.data['status'] == 401) {
-        Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+        Application.sharePreference.clear().whenComplete(() => Modular.to.pushNamedAndRemoveUntil("/login", ModalRoute.withName(Modular.initialRoute)));
       }
       // Do something with response data
       return response; // continue
