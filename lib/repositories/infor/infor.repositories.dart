@@ -22,6 +22,7 @@ class InforRepositories {
   }
   Future<bool> userUpdate(Map<String, dynamic> params) async {
     final response = await InforService.userUpdate(params);
+    print(response);
     if (response.statusCode == 200 && response.data["message"] == "Thành công") {
       Application.sharePreference
         ..putObject('userInfor', response.data['result'] as Map<String, dynamic>);

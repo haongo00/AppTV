@@ -38,7 +38,15 @@ class _LandingState extends State<Landing> {
       alignment: Alignment.center,
       color: Colors.white,
       child: Stack(
+        alignment: Alignment.center,
         children: <Widget>[
+          Container(
+            height: SizeConfig.blockSizeVertical * 100,
+            child: Image.asset(
+              'assets/login.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
           Column(
             children: <Widget>[
               Spacer(),
