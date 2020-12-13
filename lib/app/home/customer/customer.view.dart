@@ -109,7 +109,7 @@ class _CustomerState extends State<Customer> {
                         FlatButton(
                             padding: EdgeInsets.zero,
                             onPressed: () {
-                              Modular.to.pushNamedAndRemoveUntil(AppModule.login, ModalRoute.withName('/'));
+                              Application.sharePreference.clear().whenComplete(() => Modular.to.pushNamedAndRemoveUntil("/login", ModalRoute.withName(Modular.initialRoute)));
                             },
                             child: _info(
                                 "Đăng Xuất",

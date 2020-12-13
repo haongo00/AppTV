@@ -99,7 +99,7 @@ class _ResetInfoViewState extends State<ResetInfoView> {
             FormBuilderDropdown(
               attribute: "gender",
               decoration: InputDecoration(labelText: "Giới Tính"),
-              initialValue: (_userInfo.gender == "1") ? listGender[0] : listGender[1],
+              initialValue: (_userInfo.gender) ? listGender[0] : listGender[1],
               validators: [FormBuilderValidators.required()],
               items: listGender.map((item) => DropdownMenuItem(value: item, child: Text("$item"))).toList(),
               onChanged: (value) {
@@ -255,6 +255,11 @@ class _ResetInfoViewState extends State<ResetInfoView> {
     });
     var response = await Application.api.dio.put("${API.baseUrl}/user/update", data: formData);
     if (response.statusCode == 200 && response.data["message"] == "Thành công") {
+      if (response.data['result']['gender'].toString() == "true") {
+        response.data['result']['gender'] = true;
+      } else {
+        response.data['result']['gender'] = false;
+      }
       Application.sharePreference
         ..putObject('userInfor', response.data['result'] as Map<String, dynamic>);
       Fluttertoast.showToast(
