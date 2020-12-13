@@ -37,6 +37,7 @@ class _PassViewState extends State<PassView> {
           children: [
             FormBuilderTextField(
               attribute: "old",
+              obscureText: true,
               decoration: InputDecoration(labelText: "Mật khẩu cũ : "),
               validators: [
                 FormBuilderValidators.required(),
@@ -45,6 +46,7 @@ class _PassViewState extends State<PassView> {
             ),
             FormBuilderTextField(
               attribute: "new",
+              obscureText: true,
               decoration: InputDecoration(labelText: "Mật khẩu mới : "),
               validators: [
                 FormBuilderValidators.required(),
@@ -53,6 +55,7 @@ class _PassViewState extends State<PassView> {
             ),
             FormBuilderTextField(
               attribute: "ag",
+              obscureText: true,
               decoration: InputDecoration(labelText: "Nhập lại mật khẩu : "),
               validators: [
                 FormBuilderValidators.required(),

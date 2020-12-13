@@ -76,6 +76,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
       width: SizeConfig.blockSizeHorizontal * 70,
       height: SizeConfig.blockSizeVertical * 6,
       child: FormBuilderTextField(
+        // textInputAction: TextInputAction.done,
         maxLines: 1,
         attribute: 'msv',
         textAlign: TextAlign.center,
@@ -88,8 +89,8 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
             borderSide: BorderSide(color: Colors.teal),
           ),
         ),
-        keyboardType: TextInputType.number,
-        validators: [FormBuilderValidators.required()],
+          keyboardType: TextInputType.numberWithOptions(signed: true),
+          validators: [FormBuilderValidators.required()],
         onChanged: (dynamic val) {
           id = int.parse(val.toString());
         },
@@ -205,7 +206,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
           ),
           Text(
             '${cubit.bookOrder.studentInfo.name}',
-            style: TextStyle(fontSize: 22),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           Text(
             '${cubit.bookOrder.studentInfo.idStudent}',
@@ -229,10 +230,10 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Text(
-        '${_title}  ${_infor}',
+        '$_title  $_infor',
         style: TextStyle(fontSize: 20),
       ),
-      decoration: BoxDecoration(color: Colors.grey[500], borderRadius: BorderRadius.circular(15.0)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15.0)),
     );
   }
 
@@ -245,7 +246,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
         'Lớp : ${_infor}',
         style: TextStyle(fontSize: 20),
       ),
-      decoration: BoxDecoration(color: Colors.grey[500], borderRadius: BorderRadius.circular(15.0)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15.0)),
     );
   }
 
@@ -272,7 +273,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
                 alignment: Alignment.center,
                 width: 30,
                 height: 30,
-                margin: EdgeInsets.zero,
+                margin: EdgeInsets.symmetric(vertical: 5),
                 child: Text(
                   '${index + 1}',
                   style: TextStyle(fontSize: 20),

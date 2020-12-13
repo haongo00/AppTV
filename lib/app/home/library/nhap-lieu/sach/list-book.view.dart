@@ -26,11 +26,11 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _userInfo.role.isCreateOrEditBook ? FloatingActionButton(
         backgroundColor: Colors.teal,
         foregroundColor: Colors.black,
         onPressed: () {
-          if (_userInfo.role.isCreateOrEditUser) {
+          if (_userInfo.role.isCreateOrEditBook) {
             Modular.link.pushNamed(HomeModule.newBook, arguments: _cubit);
           } else {
             Fluttertoast.showToast(
@@ -46,7 +46,7 @@ class _ListBookViewState extends State<ListBookView> with AutomaticKeepAliveClie
           // Respond to button press
         },
         child: Icon(Icons.add, color: Colors.white),
-      ),
+      ) : SizedBox(),
       body: Stack(
         children: [
           // Container(

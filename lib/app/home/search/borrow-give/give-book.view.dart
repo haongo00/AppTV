@@ -113,12 +113,12 @@ class _GiveBookView extends State<GiveBookView> {
       decoration: InputDecoration(labelText: "${_tile} : "),
       initialValue: (_tile == "Mã sách") ? "${widget.cubit.bookOrderInfo.bookdetail.idBookDetails}" :
         (_tile == "Mã") ? "${widget.cubit.bookOrderInfo.bookdetail.book.idBook}" :
-        (_tile == "Tên sách") ? "${widget.cubit.bookOrderInfo.bookdetail.book.name}" :
+        (_tile == "Tên sách") ? "${widget.cubit.bookOrderInfo?.bookdetail?.book?.name}" :
         (_tile == "Giá sách") ? "${widget.cubit.bookOrderInfo.bookdetail.book.price}" :
         (_tile == "Ngày mượn") ? "${dateFormat(widget.cubit.bookOrderInfo.borrowDate)}" :
-        (_tile == "TV Ghi mượn") ? "${widget.cubit.bookOrderInfo.userCheckIn.name} - ${widget.cubit.bookOrderInfo.userCheckIn.GenCode}" :
+        (_tile == "TV Ghi mượn") ? "${widget.cubit.bookOrderInfo?.userCheckIn?.name??""} - ${widget.cubit.bookOrderInfo?.userCheckIn?.GenCode}" :
         (_tile == "Ngày trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : (widget.cubit.bookOrderInfo.payDate)}" :
-        (_tile == "Tv Ghi trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : "${widget.cubit.bookOrderInfo.userCheckOut.name}${" - ${widget.cubit.bookOrderInfo.userCheckOut.GenCode}"}"} "
+        (_tile == "Tv Ghi trả") ? "${(widget.cubit.bookOrderInfo.payDate == null) ? "" : "${widget.cubit.bookOrderInfo?.userCheckOut?.name}${" - ${widget.cubit.bookOrderInfo?.userCheckOut?.GenCode}"}"} "
             : null,
       validators: [
         FormBuilderValidators.required(),
