@@ -44,7 +44,7 @@ class _MemberViewState extends State<MemberView> {
     return SafeArea(
       child: Scaffold(
         appBar: staticAppbar(title: "Thành viên"),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton:_userInfo.role.isCreateOrEditUser ? FloatingActionButton(
           backgroundColor: Color(0xff068189),
           foregroundColor: Colors.black,
           onPressed: () {
@@ -64,7 +64,7 @@ class _MemberViewState extends State<MemberView> {
             // Respond to button press
           },
           child: Icon(Icons.add, color: Colors.white),
-        ),
+        ) : SizedBox(),
         body: BlocBuilder<MemberCubit, MemberState>(
             cubit: cubit,
             buildWhen: (prev, now) => now is ItemsMemberLoaded,
@@ -211,16 +211,6 @@ class _MemberViewState extends State<MemberView> {
                             onLongPress: () {
                               if (_userInfo.role.isCreateOrEditUser) {
                                 _showAlert(context, cubit.member.elementAt(index).id);
-                              } else {
-                                Fluttertoast.showToast(
-                                  msg: "Bạn không thể làm điều này !!!",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.redAccent,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0,
-                                );
                               }
                             },
                             onPressed: () {

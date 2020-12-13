@@ -30,7 +30,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
     return SafeArea(
       child: Scaffold(
         appBar: staticAppbar(action: [
-          IconButton(
+          _userInfo.role.isCreateOrEditUser ? IconButton(
             icon: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               if (_userInfo.role.isCreateOrEditUser) {
@@ -47,7 +47,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 );
               }
             },
-          )
+          ) : SizedBox(),
         ], title: "Thông Tin Thành Viên"),
         body: _getBody(),
       ),
